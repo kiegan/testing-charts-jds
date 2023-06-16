@@ -36,7 +36,8 @@ knitr::opts_chunk$set(echo = F,
                       fig.path="./images/", 
                       fig.env="figure*", 
                       fig.align = "center",
-                      dpi = 72) 
+                      dpi = 72,
+                      cache = TRUE) 
 library(readr)
 library(tidyverse)
 library(knitr)
