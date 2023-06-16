@@ -6,7 +6,7 @@ keywords: 'list, keywords, here, 3-6, are, fine'
 format: 
   pdf:
     include-in-header:
-     # - edits.tex
+      - edits.tex
       - authors.tex
       # - refs.tex
     keep-tex: true
@@ -64,7 +64,7 @@ data.frame(x = runif(100), y = runif(100)) %>%
   geom_point()
 ```
 
-
+\hh{This is Heike's color for making changes}
 # Introduction
 
 
