@@ -32,11 +32,11 @@ documentclass: jds
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
-                      eval = F, 
-                      fig.path="./images/", 
+                      eval = T, 
+                      fig.path="./figures/", # figures are created on the fly, images are pictures like the stimuli
                       fig.env="figure*", 
                       fig.align = "center",
-                      dpi = 72,
+                      dpi = 72, # we can set the resolution up to 300 later.
                       cache = TRUE) 
 library(readr)
 library(tidyverse)
@@ -50,7 +50,7 @@ library(patchwork)
 ```
 
 
-```{r eyefitting-lmer-residualplots, warning = F, message = F}
+```{r showplot, warning = F, message = F}
 #| fig-cap: "quarto figure caption."
 #| out-width: \columnwidth
 #| label: fig-label-we-decide-on
