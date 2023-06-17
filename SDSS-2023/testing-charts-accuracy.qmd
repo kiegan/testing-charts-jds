@@ -1,7 +1,7 @@
 ---
 title: "Testing Charts: viewer's perceptual accuracy in surveys"
-bibliography: references.bib
-abstract: " "
+bibliography: "`r rbbt::bbt_write_bib('references.bib', overwrite = TRUE, library_id=rbbt::bbt_library_id('Graphics Research'))`"
+abstract: "The use of visuals is a key component in scientific communication, and decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'list, keywords, here, 3-6, are, fine'
 format: 
   pdf:
@@ -30,12 +30,15 @@ documentclass: jds
 <!-- 2. Algorithms: Articles here focus on the performance side of the computing needs arising from domain applications. For example, one can propose algorithms that make infeasible tasks feasible or speed up existing algorithms. -->
 <!-- 3. Methods: Articles here are similar to those in Journal of Computational and Graphic Statistics or Statistics and Computing. The computing methods need to be motivated by a domain application with the properties carefully studied. -->
 
+@clevelandGraphicalPerceptionTheory1984
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
                       eval = T, 
                       fig.path="./figures/", # figures are created on the fly, images are pictures like the stimuli
                       fig.env="figure*", 
                       fig.align = "center",
+                      out.width = "50%",
                       dpi = 72, # we can set the resolution up to 300 later.
                       cache = TRUE) 
 library(readr)
@@ -55,8 +58,8 @@ library(patchwork)
 #| out-width: \columnwidth
 #| label: fig-label-we-decide-on
 #| fig-res: 300
-#| fig-width: 9 # set only if different from the default
-#| fig-height: 9
+#| fig-width: 5 # set only if different from the default
+#| fig-height: 5
 #| fig-env: figure
 #| 
 
@@ -66,20 +69,242 @@ data.frame(x = runif(100), y = runif(100)) %>%
 ```
 
 \hh{This is Heike's color for making changes}
-# Introduction
+## Introduction
+
+How do structural design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+How do aesthetic design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization? 
 
 
-# Development 
+Structural design choices: 
+
+Structural design choices 
+
+Mapping, Stacked bar, Vertical, Horizontal, Horizontal wide 
+
+Facetted bar 
+
+Only have a split sample for this  
+
+Pie, Alignment  
+
+We have this for all above mappings, but the setup is a little different for facetted bar 
 
 
+Aesthetic design choices (structural choices seems stronger/there could be a lot to talk about there… should we skip aesthetic on this one?) 
 
-# Application
+Colors 
 
-## Validation Study
+Use of gridlines 
+
+Outcomes/responses for modeling:  
+
+Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) 
+
+Ordinal response (a/b/they are the same) 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Time spent on question (continuous, in seconds) 
+
+
+Certainty  
+
+I’ve noted this below, but: how do model? Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+## Survey setup - Stimulus description
+
+We decided to show respondents a stacked bar chart (because there is little research on stacked bars) and ask to compare the sizes of two tiles (labelled A vs B or C vs D) to each other. 
+
+
+DATA THAT MAY BE INCLUDED IN ANALYSIS:  
+
+ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned 
+
+ROUND 3: Horizontal and horizontal wide, aligned and unaligned 
+
+ROUND 5: Horizontal wide gridlines (only dark grid split sample) 
+
+ROUND 6: Facetted bar (split sample w/o forcing choice) 
+
+ROUND 7: Aligned vs unaligned pie (full sample) 
 
 
 ## Data Analysis and Results
 
+
+COMBINING SAMPLES AND WEIGHTING NOTES:  
+
+We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model 
+
+Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
+
+Analysis should be done using the ‘survey’ package and weights should be taken into account. 
+
+
+ANALYSIS PLAN:  
+
+Models below structured as: 
+
+Response 
+
+Covariates to use in each model 
+
+STRUCTURAL VARIATION – START HERE 
+
+Binary accuracy across structural choices 
+
+Model 1: 
+
+Alignment only, just vertical stacked bar 
+
+Model 2:  
+
+Alignment 
+
+Bar vs pie (comparable question for pie is A vs B) 
+
+Model 3:  
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 4: 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+% yes across each different structural condition 
+
+Facet by aligned/unaligned? 
+
+Model estimates + CIs 
+
+Ordinal response 
+
+Model 1: 
+
+Alignment only, just vertical stacked bar 
+
+Model 2:  
+
+Alignment 
+
+Bar vs pie (comparable question for pie is A vs B) 
+
+Model 3:  
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 4: 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+All responses across each different structural condition 
+
+Facet by aligned/unaligned? 
+
+Model estimates + CIs 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Model 1:  
+
+Device type 
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Visuals:  
+
+% zoomed by device + alignment (already have this chart) 
+
+Model estimates + CIs 
+
+Time spent on question (in seconds) 
+
+Model 1:  
+
+Device type 
+
+Zoom 
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 2 (this may not be feasible for comparison depending on what level the ‘TOTALTIME’ is captured at):  
+
+Device type 
+
+Zoom 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+Distribution of time spent variable 
+
+Facet by device type, zoom, structural condition, alignment? Play around with it  
+
+Average time spent by each of the conditions 
+
+Certainty?  
+
+Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+AESTHETIC VARIATION – ONLY IF TIME 
+
+Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) across structural choices 
+
+Model 1: 
+
+Dark grid vs no grid (only have for horizontal wide) 
+
+Response choice (ordinal response) 
+
+Model 1: 
+
+Dark grid vs no grid (only have for horizontal wide) 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Model 1:  
+
+Device type 
+
+Dark grid vs no grid 
+
+Time spent on question (in seconds) 
+
+Model 1:  
+
+Device type 
+
+Zoom 
+
+Dark grid vs no grid 
+
+Certainty?  
+
+Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+ 
 
 # Conclusion
 
