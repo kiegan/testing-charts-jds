@@ -116,10 +116,12 @@ I’ve noted this below, but: how to model? Ordinal response? Binary (certain or
 
 ## Survey setup - Stimulus description
 
+<!-- motivate the use of just noticeable differences -->
 Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. For the height difference of barcharts, @luModelingJustNoticeable2022 determined that the distance between bars is the main contributor to differentiating sizes. Based on their models, a tile difference of 155 pixels leads to a just noticeable difference of 3.5 pixels. \autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Their heights are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
 
-<!-- log_{10}(JND) = -.4653 + .0065 distance -->
+<!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
+<!-- describe stimulus -->
 Both charts in \autoref{tbl-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
 
 1. A is bigger
@@ -179,7 +181,6 @@ Model 1:
 Alignment only, just vertical stacked bar 
 
 \hh{Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.}
-
 
 
 Model 2:  
