@@ -112,11 +112,29 @@ Time spent on question (continuous, in seconds)
 
 Certainty  
 
-I’ve noted this below, but: how do model? Ordinal response? Binary (certain or very certain vs everybody else)? 
+I’ve noted this below, but: how to model? Ordinal response? Binary (certain or very certain vs everybody else)? 
 
 ## Survey setup - Stimulus description
 
-We decided to show respondents a stacked bar chart (because there is little research on stacked bars) and ask to compare the sizes of two tiles (labelled A vs B or C vs D) to each other. 
+Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. For the height difference of barcharts, @luModelingJustNoticeable2022 determined that the distance between bars is the main contributor to differentiating sizes. Based on their models, a tile difference of 155 pixels leads to a just noticeable difference of 3.5 pixels. \autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Their heights are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
+
+<!-- log_{10}(JND) = -.4653 + .0065 distance -->
+
+Both charts in \autoref{tbl-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
+
+1. A is bigger
+2. B is bigger
+3. They are the same
+
+Answer 2 is the correct answer for both charts. Both charts are shown at the same size, i.e. in both cases the difference in size between the bars is exactly the same, the vertical distance between the bars is the exact same amount.
+This leaves the vertical positioning of the bars as the only difference between the charts. Any differences in observed accuracy can therefore be attributed to this difference in presentation.
+
+|                                   |                                   |
+|-----------------------------------|-----------------------------------|
+| **Unaligned positions**           | **Aligned positions**             |
+| ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) |
+
+: The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"}
 
 
 DATA THAT MAY BE INCLUDED IN ANALYSIS:  
@@ -137,7 +155,7 @@ ROUND 7: Aligned vs unaligned pie (full sample)
 
 COMBINING SAMPLES AND WEIGHTING NOTES:  
 
-We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model 
+\hh{We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].}
 
 Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
 
@@ -159,6 +177,10 @@ Binary accuracy across structural choices
 Model 1: 
 
 Alignment only, just vertical stacked bar 
+
+\hh{Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.}
+
+
 
 Model 2:  
 
