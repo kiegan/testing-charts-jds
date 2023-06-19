@@ -1,6 +1,6 @@
 ---
 title: "Testing Charts: viewer's perceptual accuracy in surveys"
-bibliography: "`r rbbt::bbt_write_bib('references.bib', overwrite = TRUE, library_id=rbbt::bbt_library_id('Graphics Research'))`"
+bibliography: "`r rbbt::bbt_write_bib('references.bib', overwrite = TRUE, library_id=rbbt::bbt_library_id('Graphics Research'), translator='bibtex')`"
 abstract: "The use of visuals is a key component in scientific communication, and decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'list, keywords, here, 3-6, are, fine'
 format: 
@@ -50,7 +50,27 @@ theme_set(theme_bw())
 library(readxl)
 library(lubridate)
 library(patchwork)
+library(survey)
 ```
+
+```{r data}
+# other github repo. 
+round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
+round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
+
+survey1 <- survey::svydesign(
+  data = round1 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB"), 
+  ids = round1$CaseId, weights = round1$weight)
+
+survey2 <- survey::svydesign(
+  data = round2 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB"), 
+  ids = round2$CaseId, weights = round2$weight)
+
+
+```
+
 
 
 ```{r showplot, warning = F, message = F}
@@ -139,6 +159,8 @@ This leaves the vertical positioning of the bars as the only difference between 
 : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"}
 
 
+
+
 DATA THAT MAY BE INCLUDED IN ANALYSIS:  
 
 ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned 
@@ -162,6 +184,14 @@ COMBINING SAMPLES AND WEIGHTING NOTES:
 Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
 
 Analysis should be done using the ‘survey’ package and weights should be taken into account. 
+
+```{r}
+round_n1 <- nrow(round1)
+round_n2 <- nrow(round2)
+# effective sample size n/D, where D is the design effect
+d1 <- deff(survey1)
+```
+All calculations in this paper are done in R [@R2022] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
 
 ANALYSIS PLAN:  
