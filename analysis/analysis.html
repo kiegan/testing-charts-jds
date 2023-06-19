@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-06-19">
+
+<title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="analysis_files/libs/quarto-html/quarto.js"></script>
+<script src="analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="analysis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="analysis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#survey-rounds" id="toc-survey-rounds" class="nav-link active" data-scroll-target="#survey-rounds"><span class="header-section-number">1</span> Survey rounds</a></li>
+  <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Aligned versus Unaligned</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="analysis.pdf"><i class="bi bi-file-pdf"></i>PDF (jasa)</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 19, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="survey-rounds" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="survey-rounds"><span class="header-section-number">1</span> Survey rounds</h2>
+<p>The data for this paper were collected in several rounds as part of the NORC Omnibus.</p>
+<div id="tbl-rounds" class="anchored">
+<table class="table">
+<caption>Table&nbsp;1: Survey rounds: dates, number of participants (nominal sample size), and sum of weights.</caption>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Date</th>
+<th style="text-align: right;"># Participants</th>
+<th style="text-align: right;">Weights <span class="math inline">\(\sum_i w_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Round 1</td>
+<td>April 2022</td>
+<td style="text-align: right;">942</td>
+<td style="text-align: right;">934.9</td>
+</tr>
+<tr class="even">
+<td>Round 2</td>
+<td>May 2022</td>
+<td style="text-align: right;">960</td>
+<td style="text-align: right;">953.4</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> suggest combining surveys <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> by multiplying weights in <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> by <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(1 - \lambda\)</span>, respectively. <span class="math display">\[
+\lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
+\]</span> where <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the nominal sample sizes and <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are the design effects for the estimators. Instead of using design effects itself, <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are estimated as <span class="math display">\[
+d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
+\]</span> <span class="math inline">\(CV\)</span> is the coefficient of variation of the weights within each sample.</p>
+<p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> calculated <span class="math inline">\(\lambda\)</span> separately for any combination of race/ethnicity by sex.</p>
+<p>We will calculate <span class="math inline">\(\lambda\)</span> separately whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.</p>
+<p>All calculations are done in R <span class="citation" data-cites="R2022">(<a href="#ref-R2022" role="doc-biblioref">R Core Team 2022</a>)</span> using the <code>survey</code> package <span class="citation" data-cites="lumleyAnalysisComplexSurvey2004">(<a href="#ref-lumleyAnalysisComplexSurvey2004" role="doc-biblioref">Lumley 2004</a>)</span> version 4.0 <span class="citation" data-cites="survey">(<a href="#ref-survey" role="doc-biblioref">Lumley 2020</a>)</span> based on <span class="citation" data-cites="lumleyComplexSurveysGuide2010">Lumley (<a href="#ref-lumleyComplexSurveysGuide2010" role="doc-biblioref">2010</a>)</span>.</p>
+</section>
+<section id="sec-model1" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Aligned versus Unaligned</h2>
+<p>Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.495 for an effective sample size of 944.2. (a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The resulting <span class="math inline">\(t\)</span>-statistic is highly significant (<span class="math inline">\(t\)</span> statistic: 16.1, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_972ac12809d3ca1a7f61835c2a8ca26b">
+<div class="cell-output-display">
+<div id="fig-alignment" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-alignment-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to 95% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There’s a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level2 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-lumleyAnalysisComplexSurvey2004" class="csl-entry" role="listitem">
+Lumley, T. (2004), <span>“Analysis of complex survey samples,”</span> <em>Journal of Statistical Software</em>, 9, 1–19.
+</div>
+<div id="ref-lumleyComplexSurveysGuide2010" class="csl-entry" role="listitem">
+Lumley, T. (2010), <em>Complex surveys: <span>A</span> guide to analysis using <span>R</span>: <span>A</span> guide to analysis using <span>R</span></em>, <span>John Wiley and Sons</span>.
+</div>
+<div id="ref-survey" class="csl-entry" role="listitem">
+Lumley, T. (2020), <span>“Survey: Analysis of complex survey samples.”</span>
+</div>
+<div id="ref-omuircheartaighCombiningSamplesVs2002" class="csl-entry" role="listitem">
+O’Muircheartaigh, C., and Pedlow, S. (2002), <span>“<a href="http://www.asasrms.org/Proceedings/y2002/Files/JSM2002-001082.pdf">Combining <span>Samples Vs</span>. <span>Cumulating Cases</span>: <span>A Comparison</span> of <span>Two Weighting Strategies</span> in <span>NLSY97</span></a>,”</span> in <em><span>ASA Proceedings</span> of the <span>Joint Statistical Meetings</span></em>, pp. 2557–2562.
+</div>
+<div id="ref-R2022" class="csl-entry" role="listitem">
+R Core Team (2022), <em><a href="https://www.R-project.org/">R: <span>A</span> language and environment for statistical computing</a></em>, Manual, <span>Vienna, Austria</span>: <span>R Foundation for Statistical Computing</span>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
