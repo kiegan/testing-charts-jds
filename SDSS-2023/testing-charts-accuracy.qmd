@@ -51,6 +51,7 @@ library(readxl)
 library(lubridate)
 library(patchwork)
 library(survey)
+library(ggpcp)
 ```
 
 ```{r data}
@@ -58,35 +59,30 @@ library(survey)
 round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
 round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
 
+round1_adj <- round1 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
+            mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
+                   CorrectABCD = paste(CorrectAB, CorrectCD),
+                   one = 1)
+
+round2_adj <- round2 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
+            mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
+                   CorrectABCD = paste(CorrectAB, CorrectCD),
+                   one = 1)
+
 survey1 <- survey::svydesign(
-  data = round1 %>% 
-            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB"), 
-  ids = round1$CaseId, weights = round1$weight)
+  data = round1_adj, 
+  ids = ~CaseId, weights = ~weight)
 
 survey2 <- survey::svydesign(
-  data = round2 %>% 
-            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB"), 
-  ids = round2$CaseId, weights = round2$weight)
-
-
+  data = round2_adj,
+  ids = ~CaseId, weights = ~weight)
 ```
 
 
 
-```{r showplot, warning = F, message = F}
-#| fig-cap: "quarto figure caption."
-#| out-width: \columnwidth
-#| label: fig-label-we-decide-on
-#| fig-res: 300
-#| fig-width: 5 # set only if different from the default
-#| fig-height: 5
-#| fig-env: figure
-#| 
 
-data.frame(x = runif(100), y = runif(100)) %>%
-  ggplot(aes(x = x, y = y)) +
-  geom_point()
-```
 
 \hh{This is Heike's color for making changes}
 ## Introduction
@@ -185,13 +181,117 @@ Question for Ed: If we compare a full sample to a split sample, do we still want
 
 Analysis should be done using the ‘survey’ package and weights should be taken into account. 
 
-```{r}
-round_n1 <- nrow(round1)
-round_n2 <- nrow(round2)
-# effective sample size n/D, where D is the design effect
-d1 <- deff(survey1)
-```
+
 All calculations in this paper are done in R [@R2022] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
+
+
+```{r lambdas}
+n1 <- nrow(round1_adj)
+n2 <- nrow(round2_adj)
+neff1 <- svytotal(~one, survey1, deff=TRUE)
+neff2 <- svytotal(~one, survey2, deff=TRUE)
+#abcd1 <- svytotal(~CorrectABCD, survey1, deff=TRUE)
+#abcd2 <- svytotal(~CorrectABCD, survey2, deff=TRUE)
+
+d1 <- 1 + cv(neff1)^2
+d2 <- 1 + cv(neff2)^2
+
+denom <- n1/d1 + n2/d2
+
+lambda <- n1/(d1*denom) 
+```
+
+
+```{r combine_rounds_1_and_2}
+round_12 <- round1_adj %>% 
+            mutate(weight = lambda[1]*weight) %>% 
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
+    rbind(round2_adj %>% 
+            mutate(weight = (1-lambda[1])*weight) %>% 
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
+round_12_long <- round_12 %>% 
+  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+
+survey_12 <- 
+  survey::svydesign(
+  data = round_12_long, 
+  ids = ~CaseId, weights = ~weight)
+```
+
+```{r ttest}
+paired <- svyttest(Response~Question, survey_12)
+abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
+
+marginal_results <- data.frame(abcd)
+```
+
+
+The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. Rounds 1 and 2 are combined by adjusting the weights  with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(sum(round_12_long$weight/2),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
+Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+
+
+```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| label: fig-alignment
+#| out-width: 80%
+#| fig-env: figure
+
+gg1 <- round_12_long %>%
+  mutate(
+    Response = ifelse(Response, "Correct", "Not correct"),
+    Response = factor(Response, levels=c("Not correct", "Correct")),
+    Question = ifelse(Question=="CorrectAB",
+                      "Unaligned: A or B?", "Aligned: C or D?")
+  ) %>%
+#  filter(Response == "Correct") %>%
+  ggplot(aes(x = Question, fill = Response, weight = weight)) +
+  geom_bar() +
+  ylab("Number of (effective) Respondents") +
+  xlab("") +
+  scale_fill_manual(values=c("grey", "forestgreen")) +
+  scale_y_continuous(
+      sec.axis = sec_axis(~./sum(round_12$weight)*100,
+                          name="Percent responses")
+  ) +
+  theme(legend.position = "bottom") +
+  ggtitle("(a) Accuracy of survey responses")  +
+  geom_rect(
+    aes(
+      x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
+      xmin = 2:1 - 0.45,
+      ymin = ResponseTRUE - 1.96* se.ResponseTRUE,
+      xmax = 2:1 + 0.45,
+      ymax = ResponseTRUE + 1.96* se.ResponseTRUE,
+      weight = 1),
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = marginal_results
+  )
+
+gg2 <- round_12 %>%
+  mutate(
+    `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"), 
+    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
+    ) %>%
+  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
+  pcp_scale() %>%
+  pcp_arrange() %>%
+  ggplot(aes_pcp()) + 
+    geom_pcp_axes() + 
+    geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
+    geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
+    geom_pcp_labels(colour = "black") +
+  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
+                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+                     sec.axis = sec_axis(~.*100,
+                          name="Percent responses")) +
+  xlab("") + 
+  scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) +
+  ggtitle("(b) Combinations of responses") +
+  theme(legend.position = "none")
+
+gg1 + gg2
+```
+
 
 
 ANALYSIS PLAN:  

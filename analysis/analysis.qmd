@@ -69,8 +69,8 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 | Name    | Date  | # Participants | Weights $\sum_i w_i$ |
 |---------|-------|--------:|----------:|
-| Round 1 | April 2022 |  942    |    `r round(sum(round1_adj$weight),1)`       |
-| Round 2 | May 2022 |  960   |    `r round(sum(round2_adj$weight),1)`       |
+| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(sum(round1_adj$weight),1)`       |
+| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(sum(round2_adj$weight),1)`       |
 |         |       |         |           |
 
 : Survey rounds: dates, number of participants (nominal sample size), and sum of weights. {#tbl-rounds}
@@ -141,11 +141,11 @@ marginal_results <- data.frame(abcd)
 ```
 
 
-Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(sum(round_12_long$weight/2),1)`. \autoref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
+Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(sum(round_12_long$weight/2),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
 Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
 
-```{r, fig.height = 5, fig.width = 10, warning=FALSE}
+```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
 #| out-width: 80%
