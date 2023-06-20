@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-06-19">
+<meta name="dcterms.date" content="2023-06-20">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -68,7 +68,10 @@ div.csl-indent {
    
   <ul>
   <li><a href="#survey-rounds" id="toc-survey-rounds" class="nav-link active" data-scroll-target="#survey-rounds"><span class="header-section-number">1</span> Survey rounds</a></li>
-  <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Aligned versus Unaligned</a></li>
+  <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</a>
+  <ul class="collapse">
+  <li><a href="#ordinal-response" id="toc-ordinal-response" class="nav-link" data-scroll-target="#ordinal-response"><span class="header-section-number">2.1</span> Ordinal response</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="analysis.pdf"><i class="bi bi-file-pdf"></i>PDF (jasa)</a></li></ul></div></nav>
@@ -88,7 +91,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 19, 2023</p>
+      <p class="date">June 20, 2023</p>
     </div>
   </div>
   
@@ -103,13 +106,21 @@ div.csl-indent {
 <p>The data for this paper were collected in several rounds as part of the NORC Omnibus.</p>
 <div id="tbl-rounds" class="anchored">
 <table class="table">
-<caption>Table&nbsp;1: Survey rounds: dates, number of participants (nominal sample size), and sum of weights.</caption>
+<caption>Table&nbsp;1: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights.</caption>
+<colgroup>
+<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 19%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
 <th>Date</th>
 <th style="text-align: right;"># Participants</th>
-<th style="text-align: right;">Weights <span class="math inline">\(\sum_i w_i\)</span></th>
+<th style="text-align: right;">effective sample size</th>
+<th style="text-align: right;">Sum of weights <span class="math inline">\(\sum_i w_i\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -117,12 +128,14 @@ div.csl-indent {
 <td>Round 1</td>
 <td>April 2022</td>
 <td style="text-align: right;">933</td>
+<td style="text-align: right;">521.1</td>
 <td style="text-align: right;">934.9</td>
 </tr>
 <tr class="even">
 <td>Round 2</td>
 <td>May 2022</td>
 <td style="text-align: right;">953</td>
+<td style="text-align: right;">485.7</td>
 <td style="text-align: right;">953.4</td>
 </tr>
 <tr class="odd">
@@ -130,23 +143,27 @@ div.csl-indent {
 <td></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> suggest combining surveys <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> by multiplying weights in <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> by <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(1 - \lambda\)</span>, respectively. <span class="math display">\[
+<p>We are using a strategy of <em>combining</em> (rather than cumulating) surveys <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>, as described in <span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span>, by multiplying weights in <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> by <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(1 - \lambda\)</span>, respectively. <span class="math display">\[
 \lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
 \]</span> where <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the nominal sample sizes and <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are the design effects for the estimators. Instead of using design effects itself, <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are estimated as <span class="math display">\[
 d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
-\]</span> <span class="math inline">\(CV\)</span> is the coefficient of variation of the weights within each sample.</p>
+\]</span> <span class="math inline">\(CV\)</span> is the coefficient of variation of the weights within each sample, and can be estimated as</p>
+<p><span class="math display">\[
+CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
+\]</span></p>
 <p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> calculated <span class="math inline">\(\lambda\)</span> separately for any combination of race/ethnicity by sex.</p>
 <p>We will calculate <span class="math inline">\(\lambda\)</span> separately whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.</p>
 <p>All calculations are done in R <span class="citation" data-cites="R2022">(<a href="#ref-R2022" role="doc-biblioref">R Core Team 2022</a>)</span> using the <code>survey</code> package <span class="citation" data-cites="lumleyAnalysisComplexSurvey2004">(<a href="#ref-lumleyAnalysisComplexSurvey2004" role="doc-biblioref">Lumley 2004</a>)</span> version 4.0 <span class="citation" data-cites="survey">(<a href="#ref-survey" role="doc-biblioref">Lumley 2020</a>)</span> based on <span class="citation" data-cites="lumleyComplexSurveysGuide2010">Lumley (<a href="#ref-lumleyComplexSurveysGuide2010" role="doc-biblioref">2010</a>)</span>.</p>
 </section>
 <section id="sec-model1" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Aligned versus Unaligned</h2>
-<p>Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.495 for an effective sample size of 944.2. Figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The resulting <span class="math inline">\(t\)</span>-statistic is highly significant (<span class="math inline">\(t\)</span> statistic: 16.1, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_26b043005230f4007fcf1d110e09f5b3">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</h2>
+<p>Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.518 for an effective sample size of 1007. Figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The resulting <span class="math inline">\(t\)</span>-statistic is highly significant (<span class="math inline">\(t\)</span> statistic: 16, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_a0461cac8a6f1b0a6a7ebbb12821fba8">
 <div class="cell-output-display">
 <div id="fig-alignment" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -156,6 +173,9 @@ d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
 </div>
 </div>
 </div>
+<section id="ordinal-response" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="ordinal-response"><span class="header-section-number">2.1</span> Ordinal response</h3>
+</section>
 </section>
 <section id="references" class="level2 unnumbered">
 

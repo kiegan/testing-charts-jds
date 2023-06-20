@@ -33,6 +33,12 @@ library(survey)
 #library(ggmosaic)
 library(ggpcp)
 
+# Kish's Effective Sample Size
+neff <- function(weight) {
+  n <- length(weight)
+  L <- var(weight)/mean(weight)^2
+  n/(1+L)
+}
 ```
 
 ## Survey rounds
@@ -45,14 +51,12 @@ round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
             mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
-                   CorrectABCD = paste(CorrectAB, CorrectCD),
-                   one = 1)
+                   CorrectABCD = paste(CorrectAB, CorrectCD))
 
 round2_adj <- round2 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
             mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
-                   CorrectABCD = paste(CorrectAB, CorrectCD),
-                   one = 1)
+                   CorrectABCD = paste(CorrectAB, CorrectCD))
 
 survey1 <- survey::svydesign(
   data = round1_adj, 
@@ -67,17 +71,17 @@ survey2 <- survey::svydesign(
 
 The data for this paper were collected in several rounds as part of the NORC Omnibus. 
 
-| Name    | Date  | # Participants | Weights $\sum_i w_i$ |
-|---------|-------|--------:|----------:|
-| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(sum(round1_adj$weight),1)`       |
-| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(sum(round2_adj$weight),1)`       |
-|         |       |         |           |
+| Name    | Date  | # Participants | effective sample size | Sum of weights $\sum_i w_i$ |
+|---------|-------|--------:|----------:|----------:|
+| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
+| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
+|         |       |         |           |           |   
 
-: Survey rounds: dates, number of participants (nominal sample size), and sum of weights. {#tbl-rounds}
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
 
 
 
-@omuircheartaighCombiningSamplesVs2002 suggest combining surveys $S_1$ and $S_2$ by 
+We are using a strategy of *combining* (rather than cumulating) surveys $S_1$ and $S_2$, as described in @omuircheartaighCombiningSamplesVs2002,  by 
 multiplying weights in $S_1$ and $S_2$ by $\lambda$ and $1 - \lambda$, respectively.
 $$
 \lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
@@ -87,7 +91,11 @@ Instead of using design effects itself, $d_1$ and $d_2$ are estimated as
 $$
 d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
 $$
-$CV$ is the coefficient of variation of the weights within each sample. 
+$CV$ is the coefficient of variation of the weights within each sample, and can be estimated as
+
+$$ 
+CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
+$$
 
 @omuircheartaighCombiningSamplesVs2002 calculated
 $\lambda$ separately for any combination of race/ethnicity by sex. 
@@ -98,18 +106,19 @@ All calculations are done in R [@R2022] using the `survey` package [@lumleyAnaly
 
 
 
-## Model 1: Aligned versus Unaligned {#sec-model1}
+## Model 1: Comparing Aligned and Unaligned Tiles {#sec-model1}
+
 
 ```{r lambdas}
+
+d1 <- 1+var(round1_adj$weight)/mean(round1_adj$weight)^2
+d2 <- 1+var(round2_adj$weight)/mean(round2_adj$weight)^2
+
 n1 <- nrow(round1_adj)
 n2 <- nrow(round2_adj)
-neff1 <- svytotal(~one, survey1, deff=TRUE)
-neff2 <- svytotal(~one, survey2, deff=TRUE)
-#abcd1 <- svytotal(~CorrectABCD, survey1, deff=TRUE)
-#abcd2 <- svytotal(~CorrectABCD, survey2, deff=TRUE)
 
-d1 <- 1 + cv(neff1)^2
-d2 <- 1 + cv(neff2)^2
+neff1 <- n1/d1
+neff2 <- n2/d2
 
 denom <- n1/d1 + n2/d2
 
@@ -119,13 +128,19 @@ lambda <- n1/(d1*denom)
 
 ```{r combine_rounds_1_and_2}
 round_12 <- round1_adj %>% 
-            mutate(weight = lambda[1]*weight) %>% 
+            mutate(weight = lambda*weight) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
     rbind(round2_adj %>% 
-            mutate(weight = (1-lambda[1])*weight) %>% 
+            mutate(weight = (1-lambda)*weight) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
+
+wt_scalar <- neff(round_12$weight)/sum(round_12$weight)
+round_12$weight <- wt_scalar*round_12$weight 
+# should not affect the further analysis, but helps with the interpretation of results
+
 round_12_long <- round_12 %>% 
   pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+
 
 survey_12 <- 
   survey::svydesign(
@@ -141,7 +156,12 @@ marginal_results <- data.frame(abcd)
 ```
 
 
-Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(sum(round_12_long$weight/2),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
+The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. 
+
+### Binary response
+
+Defining an accurate response as "B is bigger" in the chart of unaligned tiles, and "D is bigger" in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure \ref{fig-alignment}(a): we see
+ that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
 Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
 
@@ -150,6 +170,8 @@ Because each particpant was shown both versions of the chart, we can use a paire
 #| label: fig-alignment
 #| out-width: 80%
 #| fig-env: figure
+
+
 
 gg1 <- round_12_long %>%
   mutate(
@@ -196,7 +218,7 @@ gg2 <- round_12 %>%
     geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
     geom_pcp_labels(colour = "black") +
   scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
-                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+                     labels = round(sum(round_12$weight*wt_scalar)*seq(0,1,by=0.25),0),
                      sec.axis = sec_axis(~.*100,
                           name="Percent responses")) +
   xlab("") + 
@@ -206,5 +228,38 @@ gg2 <- round_12 %>%
 
 gg1 + gg2
 ```
+
+### Ordinal response
+
+
+```{r}
+round_12_ord_long <- round_12 %>% 
+  pivot_longer(ab:cd, names_to = "Question", values_to = "Response") 
+
+round_12_ord_long <- round_12_ord_long %>% 
+  mutate(
+    Response = ifelse(Response %in% c("B is bigger", "D is bigger"), "Y is bigger (Correct)", 
+                      ifelse(Response == "They are the same", "They are the same", "X is bigger (Wrong)"))
+  )
+
+survey_12_ord <- 
+  survey::svydesign(
+  data = round_12_ord_long, 
+  ids = ~CaseId, weights = ~weight)
+
+
+
+model1_ord <- svyloglin(~Response*Question, survey_12_ord)
+
+# two logisting regressions
+model1_logist1 <- svyglm(I(Response == "Y is bigger (Correct)")~Question, survey_12_ord)
+# parameter Questioncd is effect of increase in accuracy due to alignment
+
+model1_logist2 <- svyglm(I(Response %in% c("Y is bigger (Correct)", "They are the same"))~Question, survey_12_ord)
+# For aligned tiles, 4.55 percentage points more respondents correctly pick D as the correct response or said the two tiles were the same size than picked B (or said they were the same size) in the unaligned tiles. 
+
+summary(model1_logist2)
+```
+
 
 ## References{-}
