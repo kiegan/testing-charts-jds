@@ -53,3 +53,6 @@ rsconnect/
 *.synctex.gz
 *.bbl
 */*.tex
+
+# Derivatives from knitting
+*figures/
