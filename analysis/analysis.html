@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-06-20">
+<meta name="dcterms.date" content="2023-06-21">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -70,7 +70,8 @@ div.csl-indent {
   <li><a href="#survey-rounds" id="toc-survey-rounds" class="nav-link active" data-scroll-target="#survey-rounds"><span class="header-section-number">1</span> Survey rounds</a></li>
   <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</a>
   <ul class="collapse">
-  <li><a href="#ordinal-response" id="toc-ordinal-response" class="nav-link" data-scroll-target="#ordinal-response"><span class="header-section-number">2.1</span> Ordinal response</a></li>
+  <li><a href="#binary-response" id="toc-binary-response" class="nav-link" data-scroll-target="#binary-response"><span class="header-section-number">2.1</span> Binary response</a></li>
+  <li><a href="#ordinal-response" id="toc-ordinal-response" class="nav-link" data-scroll-target="#ordinal-response"><span class="header-section-number">2.2</span> Ordinal response</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -91,7 +92,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 20, 2023</p>
+      <p class="date">June 21, 2023</p>
     </div>
   </div>
   
@@ -162,19 +163,77 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 </section>
 <section id="sec-model1" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</h2>
-<p>Accuracy comparing aligned versus unaligned bars. The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.518 for an effective sample size of 1007. Figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The resulting <span class="math inline">\(t\)</span>-statistic is highly significant (<span class="math inline">\(t\)</span> statistic: 16, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_a0461cac8a6f1b0a6a7ebbb12821fba8">
+<p>The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.518 for an effective sample size of 1007.</p>
+<section id="binary-response" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="binary-response"><span class="header-section-number">2.1</span> Binary response</h3>
+<p>Defining an accurate response as “B is bigger” in the chart of unaligned tiles, and “D is bigger” in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a): we see that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The difference in mean accuracy is 0.3. This difference is highly significant (<span class="math inline">\(t\)</span> statistic: 16, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_a8adc4b36fa096ff08a7a55616de526e">
 <div class="cell-output-display">
 <div id="fig-alignment" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-alignment-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to 95% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There’s a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;1: On the left (a), a stacked barchart shows the number of respondents with correct (blue) and incorrect (orange) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the blue tiles corresponds to 95% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There’s a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<section id="ordinal-response" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="ordinal-response"><span class="header-section-number">2.1</span> Ordinal response</h3>
+</section>
+<section id="ordinal-response" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="ordinal-response"><span class="header-section-number">2.2</span> Ordinal response</h3>
+<p>When moving beyond the binary accuracy measure of the response and using all three levels of the response as dependent variable, we see that by far the largest change in responses comes from a change from ‘they are the same’ to the (perceptually) correct response of ‘D is bigger’ when the tiles are aligned along the same axis for a comparison (see <span class="math inline">\(\ref{fig-ordinal}\)</span>). Even though the number of wrong responses (orange) is only slightly different (0.045) between aligned and unaligned comparisons, it is still highly significant (<span class="math inline">\(t\)</span> statistic: 3.9, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-ordinal_c069030b31f3a93cf721177729c5238a">
+<div class="cell-output-display">
+<div id="fig-ordinal" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-ordinal-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: On the left (a), a stacked barchart shows the number of respondents for each level of response: by aligning tiles, the number of responses of ‘they are the same’ is cut in half. On the right (b), a parallel coordinate plot shows all combinations of responses. The largest nuber of changes are from ‘D is bigger’ to ‘they are the same’.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/model-ord_2010857dfc9e4fef1096218028bc92c3">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.</caption>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 10%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">level</th>
+<th style="text-align: right;">log odds</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">t-statistic</th>
+<th style="text-align: right;">p-value</th>
+<th style="text-align: right;">percent change</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">correct | same or wrong</td>
+<td style="text-align: right;">-1.3</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">-14.9</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">-31.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">correct or same | wrong</td>
+<td style="text-align: right;">-0.5</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-3.8</td>
+<td style="text-align: right;">2e-04</td>
+<td style="text-align: right;">-4.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 </section>
 <section id="references" class="level2 unnumbered">

@@ -134,9 +134,8 @@ round_12 <- round1_adj %>%
             mutate(weight = (1-lambda)*weight) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
 
-wt_scalar <- neff(round_12$weight)/sum(round_12$weight)
-round_12$weight <- wt_scalar*round_12$weight 
-# should not affect the further analysis, but helps with the interpretation of results
+round_12$weight <- neff(round_12$weight)/sum(round_12$weight)*round_12$weight 
+# does not affect the further analysis, but helps with the interpretation of results
 
 round_12_long <- round_12 %>% 
   pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
@@ -162,11 +161,11 @@ The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r r
 
 Defining an accurate response as "B is bigger" in the chart of unaligned tiles, and "D is bigger" in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure \ref{fig-alignment}(a): we see
  that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
-Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The difference in mean accuracy is `r round(paired$estimate,1)`. This difference is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
 
 ```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
-#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (blue) and incorrect (orange) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the blue tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
 #| out-width: 80%
 #| fig-env: figure
@@ -185,7 +184,7 @@ gg1 <- round_12_long %>%
   geom_bar() +
   ylab("Number of (effective) Respondents") +
   xlab("") +
-  scale_fill_manual(values=c("grey", "forestgreen")) +
+  scale_fill_manual(values=c("orange", "steelblue")) +
   scale_y_continuous(
       sec.axis = sec_axis(~./sum(round_12$weight)*100,
                           name="Percent responses")
@@ -207,59 +206,147 @@ gg1 <- round_12_long %>%
 gg2 <- round_12 %>%
   mutate(
     `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"), 
-    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
+    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct"),
+    changed = `Unaligned: A or B?` != `Aligned: C or D?`,
+    changed = ifelse(changed, "changed", "unchanged")
     ) %>%
   pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
   pcp_scale() %>%
   pcp_arrange() %>%
   ggplot(aes_pcp()) + 
     geom_pcp_axes() + 
-    geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
+    geom_pcp(aes(colour = changed), alpha = 0.2)+
     geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
     geom_pcp_labels(colour = "black") +
   scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
-                     labels = round(sum(round_12$weight*wt_scalar)*seq(0,1,by=0.25),0),
+                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
                      sec.axis = sec_axis(~.*100,
                           name="Percent responses")) +
   xlab("") + 
-  scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) +
+  scale_colour_manual("Response", values = c("purple", "grey")) +
   ggtitle("(b) Combinations of responses") +
-  theme(legend.position = "none")
+  theme(legend.position = "bottom") +
+  guides(colour=guide_legend(override.aes = list(alpha = 1)))
 
 gg1 + gg2
 ```
 
 ### Ordinal response
 
-
-```{r}
+```{r data-ordinal}
 round_12_ord_long <- round_12 %>% 
   pivot_longer(ab:cd, names_to = "Question", values_to = "Response") 
 
 round_12_ord_long <- round_12_ord_long %>% 
   mutate(
-    Response = ifelse(Response %in% c("B is bigger", "D is bigger"), "Y is bigger (Correct)", 
-                      ifelse(Response == "They are the same", "They are the same", "X is bigger (Wrong)"))
+    Response3 = ifelse(Response %in% c("B is bigger", "D is bigger"), "Y is bigger (Correct)", 
+                      ifelse(Response == "They are the same", "They are the same", "X is bigger (Wrong)")),
+    Response3 = factor(Response3, levels = c("X is bigger (Wrong)", "They are the same", "Y is bigger (Correct)")),
+    Question = ifelse(Question=="ab",
+                      "Unaligned: A or B?", "Aligned: C or D?")
   )
 
 survey_12_ord <- 
   survey::svydesign(
   data = round_12_ord_long, 
   ids = ~CaseId, weights = ~weight)
+```
+
+```{r}
+paired2 <- svyttest(I(Response3=="X is bigger (Wrong)")~Question, survey_12_ord)
+```
 
 
+When moving beyond the binary accuracy measure of the response and using all three levels of the response as dependent variable, we see that by far the largest change in responses comes from a change from 'they are the same' to the (perceptually) correct response of 'D is bigger' when the tiles are aligned along the same axis for a comparison (see \ref{fig-ordinal}). Even though the number of wrong responses (orange) is only slightly different (`r round(paired2$estimate,3)`) between aligned and unaligned comparisons, it is still highly significant ($t$ statistic: `r round(paired2$statistic,1)`, df: `r paired2$parameter`, $p$-value: < 2.2e-16). 
+ 
 
-model1_ord <- svyloglin(~Response*Question, survey_12_ord)
+```{r fig-ordinal, fig.height = 5, fig.width = 10, warning=FALSE}
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents for each level of response: by aligning tiles, the number of responses of 'they are the same' is cut in half.  On the right (b), a parallel coordinate plot shows all combinations of responses. The largest nuber of changes are from 'D is bigger' to 'they are the same'. "
+#| label: fig-ordinal
+#| out-width: 80%
+#| fig-env: figure
+
+gg1 <- round_12_ord_long %>%
+#  filter(Response == "Correct") %>%
+  ggplot(aes(x = Question, fill = Response3, weight = weight)) +
+  geom_bar() +
+  ylab("Number of (effective) Respondents") +
+  xlab("") +
+  scale_fill_manual(values=c("darkorange", "grey", "steelblue")) +
+  scale_y_continuous(
+      sec.axis = sec_axis(~./sum(round_12$weight)*100,
+                          name="Percent responses")
+  ) +
+  theme(legend.position = "none")
+
+gg1_build <- gg1 %>% ggplot2::ggplot_build()
+gg1_labels <- gg1_build$data[[1]] %>% mutate(
+  x = (xmin+xmax)/2,
+  y = (ymin+ymax)/2,
+  label = c("C is bigger (Wrong)", "They are the same", "D is bigger (Correct)",
+            "A is bigger (Wrong)", "They are the same", "B is bigger (Correct)"),
+  Response3 = rep(c("X is bigger (Wrong)", "They are the same", "Y is bigger (Correct)"),2)
+)
+
+gg1 <- gg1 +
+  ggtitle("(a) Three levels of survey responses")  +
+  geom_label(aes(x = x, y = y, label=label, weight=NULL), 
+             fill="white", alpha = 0.5, colour="black", data = gg1_labels)
+  
+
+gg2 <- round_12 %>%
+  mutate(
+    `Unaligned: A or B?` = factor(ab, levels=c("B is bigger", "They are the same", "A is bigger")), 
+    `Aligned: C or D?` = factor(cd, levels=c("D is bigger", "They are the same", "C is bigger")), 
+    changed = (as.numeric(ab) != as.numeric(cd)),
+    changed = ifelse(changed, "changed", "unchanged")
+    ) %>%
+  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
+  pcp_scale() %>%
+  pcp_arrange() %>%
+  ggplot(aes_pcp()) + 
+    geom_pcp_axes() + 
+    geom_pcp(aes(colour = changed), alpha = 0.2)+
+    geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
+    geom_pcp_labels(colour = "black") +
+  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
+                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+                     sec.axis = sec_axis(~.*100,
+                          name="Percent responses")) +
+  xlab("") + 
+  scale_colour_manual("Response", values = c("purple", "grey")) +
+  ggtitle("(b) Combinations of responses") +
+  theme(legend.position = "bottom") + 
+  guides(colour=guide_legend(override.aes = list(alpha = 1)))
+
+gg1 + gg2
+```
+
+
+```{r model-ord}
+
+#model1_ord <- svyloglin(~Response3*Question, survey_12_ord)
 
 # two logisting regressions
-model1_logist1 <- svyglm(I(Response == "Y is bigger (Correct)")~Question, survey_12_ord)
+model1_logist1 <- svyglm(I(Response3 == "Y is bigger (Correct)")~Question, survey_12_ord, family = quasibinomial())
 # parameter Questioncd is effect of increase in accuracy due to alignment
 
-model1_logist2 <- svyglm(I(Response %in% c("Y is bigger (Correct)", "They are the same"))~Question, survey_12_ord)
+model1_logist2 <- svyglm(I(Response3 %in% c("Y is bigger (Correct)", "They are the same"))~Question, survey_12_ord, family = quasibinomial())
 # For aligned tiles, 4.55 percentage points more respondents correctly pick D as the correct response or said the two tiles were the same size than picked B (or said they were the same size) in the unaligned tiles. 
+# exp(1.93092+0.49588)/(1 + exp(1.93092+0.49588)) - exp(1.93092)/(1 + exp(1.93092))
 
-summary(model1_logist2)
+antilog <- function(x) {exp(x)/(1+ exp(x))}
+
+contrasts1 <- as.data.frame(summary(model1_logist1)$coefficients)
+contrasts2 <- as.data.frame(summary(model1_logist2)$coefficients)
+contrasts <- data.frame(c("correct | same or wrong", "correct or same | wrong"), rbind(contrasts1[2,], contrasts2[2,]), 
+percent = 100*c(antilog(sum(model1_logist1$coefficients)) - antilog(model1_logist1$coefficients[1]),
+antilog(sum(model1_logist2$coefficients)) - antilog(model1_logist2$coefficients[1]))
+)
+names(contrasts) <- c("level","log odds", "SE", "t-statistic", "p-value", "percent change")
+knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, caption = "Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.", label = "tab:logodds")
 ```
+
 
 
 ## References{-}
