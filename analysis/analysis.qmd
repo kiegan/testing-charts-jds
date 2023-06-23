@@ -7,7 +7,7 @@ format:
     journal:
       blinded: false
 date: last-modified
-bibliography: ../SDSS\-2023/references.bib
+bibliography: "`r rbbt::bbt_write_bib('references.bib', overwrite = TRUE, library_id=rbbt::bbt_library_id('Graphics Research'), translator='bibtex')`"
 ---
 
 
@@ -32,6 +32,9 @@ library(patchwork)
 library(survey)
 #library(ggmosaic)
 library(ggpcp)
+library(broom)
+library(latex2exp)
+library(gt) # grammar of tables
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -39,11 +42,14 @@ neff <- function(weight) {
   L <- var(weight)/mean(weight)^2
   n/(1+L)
 }
+
+# inverse of the logistic function
+inv_logit <- function(x) {exp(x)/(1+ exp(x))}
 ```
 
 ## Survey rounds
 
-```{r data}
+```{r data-1}
 # other github repo. 
 round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
 round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
@@ -67,6 +73,15 @@ survey2 <- survey::svydesign(
   ids = ~CaseId, weights = ~weight)
 ```
 
+```{r data-rnd7}
+# other github repo. 
+round7 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round7.rds")
+
+# filter out all of the 'skipped on web':
+round7_adj <- round7 %>% mutate(
+  weight = WEIGHT_NOLA
+)
+```
 
 
 The data for this paper were collected in several rounds as part of the NORC Omnibus. 
@@ -75,6 +90,7 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 |---------|-------|--------:|----------:|----------:|
 | Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
 | Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
+| Round 7 | Oct 22 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
 |         |       |         |           |           |   
 
 : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
@@ -91,23 +107,21 @@ Instead of using design effects itself, $d_1$ and $d_2$ are estimated as
 $$
 d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
 $$
-$CV$ is the coefficient of variation of the weights within each sample, and can be estimated as
+$CV$ is the coefficient of variation of the weights within each sample, and is estimated as @kishSurveySampling1965
 
 $$ 
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 $$
 
-@omuircheartaighCombiningSamplesVs2002 calculated
+@omuircheartaighCombiningSamplesVs2002 estimate
 $\lambda$ separately for any combination of race/ethnicity by sex. 
+We will use that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
 
-We will calculate $\lambda$ separately whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
-
-All calculations are done in R [@R2022] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
-
+All calculations are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
 
-## Model 1: Comparing Aligned and Unaligned Tiles {#sec-model1}
 
+## Model 1: Comparing Aligned and Unaligned Tiles in Vertical Stacked Barcharts {#sec-model1}
 
 ```{r lambdas}
 
@@ -147,21 +161,40 @@ survey_12 <-
   ids = ~CaseId, weights = ~weight)
 ```
 
+The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. Figure \ref{fig-tasks-12} shows the two stacked barcharts shown to all panelists.
+
+```{r}
+#| label: fig-tasks-12
+#| fig-cap: "The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger."
+#| fig-height: 3
+#| fig-width: 4
+#| out-width: 50%
+#| layout-nrow: 1
+#| fig-subcap:
+#| - "**Unaligned tiles:** Is A bigger than B?"
+#| - "**Aligned tiles:** Is C bigger than D?"
+knitr::include_graphics("images/vertical-ab.PNG")
+knitr::include_graphics("images/vertical-cd.PNG")
+```
+
+
+
 ```{r ttest}
 paired <- svyttest(Response~Question, survey_12)
+logit_12 <- svyglm(Response ~ Question, survey_12, family = quasibinomial())
+coefs_12 <- broom::tidy(logit_12)
 abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
 
 marginal_results <- data.frame(abcd)
 ```
 
 
-The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. 
-
 ### Binary response
 
 Defining an accurate response as "B is bigger" in the chart of unaligned tiles, and "D is bigger" in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure \ref{fig-alignment}(a): we see
  that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
-Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The difference in mean accuracy is `r round(paired$estimate,1)`. This difference is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The difference in mean accuracy is `r round(paired$estimate,2)`. This difference is highly significant ($t$ statistic: `r round(paired$statistic,2)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+
 
 
 ```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
@@ -230,6 +263,40 @@ gg2 <- round_12 %>%
 
 gg1 + gg2
 ```
+
+This test is equivalent to a logistic regression with response $Y_{ij}$, the response of participant $i$  to question $Q_j$ $j = 1/2$ is correct (=1) or incorrect (=0):
+$$
+\text{logit } P \left(Y = 1 \mid Q_j \right) = \alpha + \beta_j, 
+$$
+We assume that $Y \mid Q_j$ has a Bernoulli distribution with success probability $p_j$, $j = 1, 2$. 
+For the purpose of estimability, we will assume that $\beta_1 = 0$, i.e. $\text{logit} (p_1) = \alpha$ and $\beta_2 = \text{logit}(p_2) - \text{logit}(p_1)$. The odds of an accurate answer with aligned bars is therefore  exp (`r round(coefs_12$estimate[2],1)`) =  `r round(exp(coefs_12$estimate[2]),1)` times higher than for the unaligned bars of Question 1.
+
+```{r}
+coefs_12$term <- c("$$\\widehat{\\alpha}$$", "$$\\widehat{\\beta}_2$$")
+
+coefs_12 %>% 
+  gt() %>%
+  tab_header("Estimates for Model 1",
+             " accuracy of responses for unaligned (Question 1) and aligned bars (Question 2)") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  fmt_scientific(
+    columns = p.value,
+    decimals = 1
+  )
+```
+
 
 ### Ordinal response
 
@@ -335,18 +402,215 @@ model1_logist2 <- svyglm(I(Response3 %in% c("Y is bigger (Correct)", "They are t
 # For aligned tiles, 4.55 percentage points more respondents correctly pick D as the correct response or said the two tiles were the same size than picked B (or said they were the same size) in the unaligned tiles. 
 # exp(1.93092+0.49588)/(1 + exp(1.93092+0.49588)) - exp(1.93092)/(1 + exp(1.93092))
 
-antilog <- function(x) {exp(x)/(1+ exp(x))}
-
 contrasts1 <- as.data.frame(summary(model1_logist1)$coefficients)
 contrasts2 <- as.data.frame(summary(model1_logist2)$coefficients)
 contrasts <- data.frame(c("correct | same or wrong", "correct or same | wrong"), rbind(contrasts1[2,], contrasts2[2,]), 
-percent = 100*c(antilog(sum(model1_logist1$coefficients)) - antilog(model1_logist1$coefficients[1]),
-antilog(sum(model1_logist2$coefficients)) - antilog(model1_logist2$coefficients[1]))
+percent = 100*c(inv_logit(sum(model1_logist1$coefficients)) - inv_logit(model1_logist1$coefficients[1]),
+inv_logit(sum(model1_logist2$coefficients)) - inv_logit(model1_logist2$coefficients[1]))
 )
 names(contrasts) <- c("level","log odds", "SE", "t-statistic", "p-value", "percent change")
 knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, caption = "Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.", label = "tab:logodds")
 ```
 
+
+## Model 2: Comparing Aligned and Unaligned Elements Facets {#sec-model2}
+
+The survey setup and all stimuli are shown in \ref{fig-tasks-7}. A total of `r nrow(round7_adj)` panelists  (Effective sample size: `r round(neff(round7_adj$weight), 1)`) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right. 
+
+For each chart, panelists were asked to compare the sizes of the marked tiles against each other.  
+
+|                              |                                |                                |
+|------------------------------|--------------------------------|--------------------------------|
+|   **Everybody:**       |  **Question 1:** Facetted Pie, unaligned | **Question 2:** Facetted Pie, aligned |
+|   | ![Facetted pie charts, unaligned](images/round7/unaligned pie - all.png)   |   ![Facetted pie charts, aligned](images/round7/aligned pie - all.png)  |
+|   **Split Sample**      | Effective sample size:  `r round(neff(filter(round7_adj, RND_05 == 0)$weight), 1)`                   |   Effective sample size: `r round(neff(filter(round7_adj, RND_05 == 1)$weight), 1)`          |
+|   **Question 3:**  unaligned  |    Floating pie wedges | Framed pie wedges |
+|            | ![Question 3](images/round7/unaligned pie floating - sample 1.png)                    |            ![Question 3](images/round7/unaligned pie framed - sample 2.png)          |
+|  **Question 4:**  aligned     |     ![Question 4](images/round7/aligned pie floating - sample 1.png)                     |               ![Question 4](images/round7/aligned pie framed - sample 2.png)                    |
+
+: Setup of questions and stimuli for Round 7. {#tbl-tasks-7 tbl-colwidths="\[20,40,40\]"}
+
+
+
+For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same. 
+
+The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B. Nominally, the differences between the size of the marked elements can be expressed as multiples in $\delta = 0.8$, with $B = A + 2\delta = C + 3 \delta = D + 4 \delta$. A difference of $\delta = 0.8$ corresponds to about a $3^\degree$ difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy. 
+
+There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the **angle** of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its **area** (as part of the circle or some derivative) or the **arc length** of the wedge. Studies by  @kosaraJudgmentErrorPie2016 and @kosaraEvidenceAreaPrimary2019 show that the area of a piece in a pie chart is the primary evaluation method.
+
+```{r eval=TRUE}
+widths <- c(28, 16, 31, 38)
+heights <- c(206, 209, 206, 203)
+
+tan_est <- (pi-atan(widths/(heights-105)))/pi*180
+cos_est <- (pi/2+acos(widths/105))/pi*180
+alpha_est <- round((tan_est+cos_est)/2,1)
+
+values <- c(46, 47.6, 45.2,  44.4)
+names(values) <- LETTERS[1:4]
+```
+
+<!--
+In the (aligned wedges), those values are mapped to the angles `r alpha_est`, for an approximate ratio of angle to value of `r round(alpha_est/values,2)` degrees to 1. A circle with a radius of 105 pixels has a circumference of 660 pixels. The ratio of the wedges' arc length to the values are `r round((alpha_est/180) *105/values,2)` pixels to 1.
+
+A circle with a radius of 105 pixels has an area of 34636 square pixels. The ratio of the wedges' areas to the values are `r round((alpha_est/360) *105^2/values,1)` square pixels to 1.
+
+We only evaluated the aligned wedges for these ratios, most likely there are small differences in the exact pixel values for the unaligned wedges due to rounding issues.
+-->
+
+```{r survey-round7}
+response_type <- round7_adj %>%
+  pivot_longer(
+    matches("NOLA[1-6]_[1-6]"), 
+    names_to = "taskquestion", values_to = "responses") 
+
+response_type <- response_type %>% filter(!is.na(responses), responses!="SKIPPED ON WEB")
+
+response_type <- response_type %>% separate(col="taskquestion", into=c("task", "question"), sep="_")  
+
+response_type <- response_type %>% mutate(
+  question = parse_number(question),
+  labelled = c("AB", "AC", "AD", "BD", "BC", "CD")[question]
+)
+
+# D < C < A < B.
+response_type <- response_type %>% mutate(
+  correct = ifelse(labelled %in% c("AB", "BC", "BD"), responses == "B is bigger", 
+              ifelse(labelled %in% c("AC", "AD"), responses == "A is bigger",
+                     responses == "C is bigger")),
+  correct3 = correct | responses == "They are the same"
+)
+
+
+  
+response_type <- response_type %>% 
+  mutate(
+    responses = factor(responses, levels = c("B is bigger", "A is bigger", "C is bigger", "D is bigger", "They are the same")),
+    taskname = c("Pie", "Pie", "Float", "Float", "Frame", "Frame")[parse_number(gsub("NOLA_","",task))],
+    taskname = factor(taskname, levels=c("Frame", "Float", "Pie")),
+    concept = c("Un-", "A-", "Un-", "A-", "Un-", "A-")[parse_number(gsub("NOLA_","",task))],
+    signal = ifelse(labelled %in% "BD", 4, 
+              ifelse(labelled %in% "BC", 3, 
+                ifelse(labelled %in% c("AB", "AD"), 2, 1)))
+  )
+
+survey_7 <- svydesign(~CaseId, data = response_type, weights = ~weight)
+```
+
+
+```{r fig-pies, eval=TRUE, fig.width = 10, fig.height = 5, fig.cap="Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.", out.width="100%", warning =FALSE}
+# D < C < A < B.
+#   1   1.  2
+
+correct_ci <- as.data.frame(svyby(~correct, by=~interaction(labelled, concept,taskname), svymean, design = survey_7))
+correct_ci <- correct_ci %>% 
+  mutate(
+    labels = row.names(correct_ci),
+  ) 
+correct_ci <- correct_ci %>% separate_wider_delim(
+    labels, delim = ".", names =c("labelled", "concept", "taskname")
+  ) %>% mutate(
+    taskname = factor(taskname, levels=c("Frame", "Float", "Pie")),
+    labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD")),
+    ct = interaction(concept, taskname)
+  )
+
+correct3_ci <- as.data.frame(svyby(~correct3, by=~interaction(labelled, concept,taskname), svymean, design = survey_7))
+correct3_ci <- correct3_ci %>% 
+  mutate(
+    labels = row.names(correct3_ci),
+  ) 
+correct3_ci <- correct3_ci %>% separate_wider_delim(
+    labels, delim = ".", names =c("labelled", "concept", "taskname")
+  ) %>% mutate(
+    taskname = factor(taskname, levels=c("Frame", "Float", "Pie")),
+    labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD")),
+    ct = interaction(concept, taskname)
+  )
+
+
+
+gg2b <- response_type %>% 
+  mutate(
+    labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD")),
+    ct = interaction(concept, taskname)
+  ) %>% 
+  ggplot(aes(x = ct, fill=factor(as.numeric(correct)+as.numeric(correct3)), weight = weight)) +
+  geom_bar(position="fill") +
+  facet_grid(~labelled, space = "free") +
+  theme_bw() +
+  ggtitle("Which piece is bigger?") +
+  scale_fill_manual(values=rev(c("steelblue", "grey", "orange"))) + 
+  scale_x_discrete(labels=c("Frame\nA", "\nN", "Float\nA", "\nU", "Pie\nA", "\nU")) +
+  ylab("") +
+  geom_rect(
+    aes(
+      xmin = as.numeric(ct) - 0.45,
+      ymin = (correctTRUE - 1.96* se.correctTRUE),
+      xmax = as.numeric(ct) + 0.45,
+      ymax = (correctTRUE + 1.96* se.correctTRUE),
+      weight = 1), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = correct_ci
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(ct) - 0.45,
+      ymin = (correct3TRUE - 1.96* se.correct3TRUE),
+      xmax = as.numeric(ct) + 0.45,
+      ymax = (correct3TRUE + 1.96* se.correct3TRUE),
+      weight = 1), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = correct3_ci
+  ) +
+  geom_hline(yintercept=c(.25,.50,.75), colour = "grey50", linewidth=0.35) +
+  geom_hline(yintercept=c(.25,.50,.75), colour = "grey90", linewidth=0.35,
+             linetype="dashed") +
+  xlab("") +
+  theme(legend.position = "none") 
+  
+gg2b
+```
+
+Figure \ref{fig-pies} shows a summary of panelists' accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from Table \ref{tab-model7}, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?).
+Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a  comparison of the same-size, unaliged pieces.  
+Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of 'the same' responses as well as in identifying the smaller piece as the bigger.
+
+Using a frame as an additional visual cue was shown by @clevelandGraphicalPerceptionTheory1984 to significantly improve the accuracy of perceiving the height of bars (cf. Fig. 12, p. 538; difference between 'length' and 'position along an unaligned identical axis'). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).
+
+The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in @talbotFourExperimentsPerception2014 for bars. @talbotFourExperimentsPerception2014 report that other bars serve as distractors when comparing two other bars.
+
+```{r}
+logit_7 <- svyglm(correct ~ labelled + concept + taskname, family = quasibinomial(), design = survey_7)
+coefs_7 <- broom::tidy(logit_7)
+
+#logit_7b <- svyglm(correct ~ factor(signal) + concept + taskname, family = quasibinomial(), design = survey_7)
+#logit_7c <- svyglm(correct ~ signal + concept + taskname, family = quasibinomial(), design = survey_7)
+
+coefs_7 %>% 
+  mutate(
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))) %>%
+  gt() %>%
+  tab_header("Estimates for Model 2",
+             " accuracy of responses across conditions of Round 7") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
+```
 
 
 ## References{-}

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-06-21">
+<meta name="dcterms.date" content="2023-06-23">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -68,11 +68,12 @@ div.csl-indent {
    
   <ul>
   <li><a href="#survey-rounds" id="toc-survey-rounds" class="nav-link active" data-scroll-target="#survey-rounds"><span class="header-section-number">1</span> Survey rounds</a></li>
-  <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</a>
+  <li><a href="#sec-model1" id="toc-sec-model1" class="nav-link" data-scroll-target="#sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles in Vertical Stacked Barcharts</a>
   <ul class="collapse">
   <li><a href="#binary-response" id="toc-binary-response" class="nav-link" data-scroll-target="#binary-response"><span class="header-section-number">2.1</span> Binary response</a></li>
   <li><a href="#ordinal-response" id="toc-ordinal-response" class="nav-link" data-scroll-target="#ordinal-response"><span class="header-section-number">2.2</span> Ordinal response</a></li>
   </ul></li>
+  <li><a href="#sec-model2" id="toc-sec-model2" class="nav-link" data-scroll-target="#sec-model2"><span class="header-section-number">3</span> Model 2: Comparing Aligned and Unaligned Elements Facets</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="analysis.pdf"><i class="bi bi-file-pdf"></i>PDF (jasa)</a></li></ul></div></nav>
@@ -92,7 +93,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 21, 2023</p>
+      <p class="date">June 23, 2023</p>
     </div>
   </div>
   
@@ -140,6 +141,13 @@ div.csl-indent {
 <td style="text-align: right;">953.4</td>
 </tr>
 <tr class="odd">
+<td>Round 7</td>
+<td>Oct 22</td>
+<td style="text-align: right;">984</td>
+<td style="text-align: right;">524.5</td>
+<td style="text-align: right;">984</td>
+</tr>
+<tr class="even">
 <td></td>
 <td></td>
 <td style="text-align: right;"></td>
@@ -153,27 +161,529 @@ div.csl-indent {
 \lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
 \]</span> where <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the nominal sample sizes and <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are the design effects for the estimators. Instead of using design effects itself, <span class="math inline">\(d_1\)</span> and <span class="math inline">\(d_2\)</span> are estimated as <span class="math display">\[
 d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
-\]</span> <span class="math inline">\(CV\)</span> is the coefficient of variation of the weights within each sample, and can be estimated as</p>
+\]</span> <span class="math inline">\(CV\)</span> is the coefficient of variation of the weights within each sample, and is estimated as <span class="citation" data-cites="kishSurveySampling1965">Kish (<a href="#ref-kishSurveySampling1965" role="doc-biblioref">1965</a>)</span></p>
 <p><span class="math display">\[
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 \]</span></p>
-<p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> calculated <span class="math inline">\(\lambda\)</span> separately for any combination of race/ethnicity by sex.</p>
-<p>We will calculate <span class="math inline">\(\lambda\)</span> separately whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.</p>
-<p>All calculations are done in R <span class="citation" data-cites="R2022">(<a href="#ref-R2022" role="doc-biblioref">R Core Team 2022</a>)</span> using the <code>survey</code> package <span class="citation" data-cites="lumleyAnalysisComplexSurvey2004">(<a href="#ref-lumleyAnalysisComplexSurvey2004" role="doc-biblioref">Lumley 2004</a>)</span> version 4.0 <span class="citation" data-cites="survey">(<a href="#ref-survey" role="doc-biblioref">Lumley 2020</a>)</span> based on <span class="citation" data-cites="lumleyComplexSurveysGuide2010">Lumley (<a href="#ref-lumleyComplexSurveysGuide2010" role="doc-biblioref">2010</a>)</span>.</p>
+<p><span class="citation" data-cites="omuircheartaighCombiningSamplesVs2002">O’Muircheartaigh and Pedlow (<a href="#ref-omuircheartaighCombiningSamplesVs2002" role="doc-biblioref">2002</a>)</span> estimate <span class="math inline">\(\lambda\)</span> separately for any combination of race/ethnicity by sex. We will use that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.</p>
+<p>All calculations are done in R <span class="citation" data-cites="RLanguage">(<a href="#ref-RLanguage" role="doc-biblioref">R Core Team 2022</a>)</span> using the <code>survey</code> package <span class="citation" data-cites="lumleyAnalysisComplexSurvey2004">(<a href="#ref-lumleyAnalysisComplexSurvey2004" role="doc-biblioref">Lumley 2004</a>)</span> version 4.0 <span class="citation" data-cites="survey">(<a href="#ref-survey" role="doc-biblioref">Lumley 2020</a>)</span> based on <span class="citation" data-cites="lumleyComplexSurveysGuide2010">Lumley (<a href="#ref-lumleyComplexSurveysGuide2010" role="doc-biblioref">2010</a>)</span>.</p>
 </section>
 <section id="sec-model1" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles</h2>
-<p>The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.518 for an effective sample size of 1007.</p>
+<h2 data-number="2" class="anchored" data-anchor-id="sec-model1"><span class="header-section-number">2</span> Model 1: Comparing Aligned and Unaligned Tiles in Vertical Stacked Barcharts</h2>
+<p>The data used for this is a combination of rounds 1 and 2, with <span class="math inline">\(\lambda\)</span> = 0.518 for an effective sample size of 1007. Figure <span class="math inline">\(\ref{fig-tasks-12}\)</span> shows the two stacked barcharts shown to all panelists.</p>
+<div id="fig-tasks-12" class="cell quarto-layout-panel" data-hash="analysis_cache/html/fig-tasks-12_b1b972106c933806e267e3e8869ce998">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-tasks-12-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/vertical-ab.PNG" class="img-fluid figure-img" data-ref-parent="fig-tasks-12"></p>
+<figcaption class="figure-caption">(a) <strong>Unaligned tiles:</strong> Is A bigger than B?</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-tasks-12-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/vertical-cd.PNG" class="img-fluid figure-img" data-ref-parent="fig-tasks-12"></p>
+<figcaption class="figure-caption">(b) <strong>Aligned tiles:</strong> Is C bigger than D?</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger.</figcaption><p></p>
+</figure>
+</div>
 <section id="binary-response" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="binary-response"><span class="header-section-number">2.1</span> Binary response</h3>
-<p>Defining an accurate response as “B is bigger” in the chart of unaligned tiles, and “D is bigger” in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a): we see that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The difference in mean accuracy is 0.3. This difference is highly significant (<span class="math inline">\(t\)</span> statistic: 16, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
+<p>Defining an accurate response as “B is bigger” in the chart of unaligned tiles, and “D is bigger” in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure <span class="math inline">\(\ref{fig-alignment}\)</span>(a): we see that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. Because each particpant was shown both versions of the chart, we can use a paired <span class="math inline">\(t\)</span>-test to compare mean accuracy between the two charts. The difference in mean accuracy is 0.31. This difference is highly significant (<span class="math inline">\(t\)</span> statistic: 15.97, df: 1656, <span class="math inline">\(p\)</span>-value: &lt; 2.2e-16).</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-alignment_a8adc4b36fa096ff08a7a55616de526e">
 <div class="cell-output-display">
 <div id="fig-alignment" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-alignment-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: On the left (a), a stacked barchart shows the number of respondents with correct (blue) and incorrect (orange) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the blue tiles corresponds to 95% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There’s a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;2: On the left (a), a stacked barchart shows the number of respondents with correct (blue) and incorrect (orange) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the blue tiles corresponds to 95% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There’s a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles.</figcaption>
 </figure>
+</div>
+</div>
+</div>
+<p>This test is equivalent to a logistic regression with response <span class="math inline">\(Y_{ij}\)</span>, the response of participant <span class="math inline">\(i\)</span> to question <span class="math inline">\(Q_j\)</span> <span class="math inline">\(j = 1/2\)</span> is correct (=1) or incorrect (=0): <span class="math display">\[
+\text{logit } P \left(Y = 1 \mid Q_j \right) = \alpha + \beta_j,
+\]</span> We assume that <span class="math inline">\(Y \mid Q_j\)</span> has a Bernoulli distribution with success probability <span class="math inline">\(p_j\)</span>, <span class="math inline">\(j = 1, 2\)</span>. For the purpose of estimability, we will assume that <span class="math inline">\(\beta_1 = 0\)</span>, i.e.&nbsp;<span class="math inline">\(\text{logit} (p_1) = \alpha\)</span> and <span class="math inline">\(\beta_2 = \text{logit}(p_2) - \text{logit}(p_1)\)</span>. The odds of an accurate answer with aligned bars is therefore exp (1.3) = 3.7 times higher than for the unaligned bars of Question 1.</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-2_c2f2fa7b38b6431ac22ea3bacac47e06">
+<div class="cell-output-display">
+
+<div id="ctdelmkknu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ctdelmkknu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ctdelmkknu thead, #ctdelmkknu tbody, #ctdelmkknu tfoot, #ctdelmkknu tr, #ctdelmkknu td, #ctdelmkknu th {
+  border-style: none;
+}
+
+#ctdelmkknu p {
+  margin: 0;
+  padding: 0;
+}
+
+#ctdelmkknu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ctdelmkknu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ctdelmkknu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ctdelmkknu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ctdelmkknu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ctdelmkknu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ctdelmkknu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ctdelmkknu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ctdelmkknu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ctdelmkknu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ctdelmkknu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ctdelmkknu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ctdelmkknu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ctdelmkknu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ctdelmkknu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctdelmkknu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ctdelmkknu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ctdelmkknu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ctdelmkknu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctdelmkknu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ctdelmkknu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctdelmkknu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ctdelmkknu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctdelmkknu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ctdelmkknu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctdelmkknu .gt_left {
+  text-align: left;
+}
+
+#ctdelmkknu .gt_center {
+  text-align: center;
+}
+
+#ctdelmkknu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ctdelmkknu .gt_font_normal {
+  font-weight: normal;
+}
+
+#ctdelmkknu .gt_font_bold {
+  font-weight: bold;
+}
+
+#ctdelmkknu .gt_font_italic {
+  font-style: italic;
+}
+
+#ctdelmkknu .gt_super {
+  font-size: 65%;
+}
+
+#ctdelmkknu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ctdelmkknu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ctdelmkknu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ctdelmkknu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ctdelmkknu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ctdelmkknu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ctdelmkknu .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style="">Estimates for Model 1</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style=""> accuracy of responses for unaligned (Question 1) and aligned bars (Question 2)</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="term">term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="estimate">estimate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SE">SE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="t-statistic">t-statistic</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p-value">p-value</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="term" class="gt_row gt_left">$$\widehat{\alpha}$$</td>
+<td headers="estimate" class="gt_row gt_right">−0.89</td>
+<td headers="std.error" class="gt_row gt_right">0.07</td>
+<td headers="statistic" class="gt_row gt_right">−13.0</td>
+<td headers="p.value" class="gt_row gt_right">5.7 × 10<sup style="font-size: 65%;">−37</sup></td></tr>
+    <tr><td headers="term" class="gt_row gt_left">$$\widehat{\beta}_2$$</td>
+<td headers="estimate" class="gt_row gt_right">1.30</td>
+<td headers="std.error" class="gt_row gt_right">0.09</td>
+<td headers="statistic" class="gt_row gt_right">14.9</td>
+<td headers="p.value" class="gt_row gt_right">2.5 × 10<sup style="font-size: 65%;">−47</sup></td></tr>
+  </tbody>
+  
+  
+</table>
 </div>
 </div>
 </div>
@@ -186,31 +696,23 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 <div id="fig-ordinal" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-ordinal-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: On the left (a), a stacked barchart shows the number of respondents for each level of response: by aligning tiles, the number of responses of ‘they are the same’ is cut in half. On the right (b), a parallel coordinate plot shows all combinations of responses. The largest nuber of changes are from ‘D is bigger’ to ‘they are the same’.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;3: On the left (a), a stacked barchart shows the number of respondents for each level of response: by aligning tiles, the number of responses of ‘they are the same’ is cut in half. On the right (b), a parallel coordinate plot shows all combinations of responses. The largest nuber of changes are from ‘D is bigger’ to ‘they are the same’.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/model-ord_2010857dfc9e4fef1096218028bc92c3">
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/model-ord_3228c3622364984ebeca895ee0dea05e">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.</caption>
-<colgroup>
-<col style="width: 37%">
-<col style="width: 11%">
-<col style="width: 6%">
-<col style="width: 15%">
-<col style="width: 10%">
-<col style="width: 19%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">level</th>
-<th style="text-align: right;">log odds</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">t-statistic</th>
-<th style="text-align: right;">p-value</th>
-<th style="text-align: right;">percent change</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">level</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">log odds</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t-statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p-value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">percent change</th>
 </tr>
 </thead>
 <tbody>
@@ -232,9 +734,594 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 </section>
+</section>
+<section id="sec-model2" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-model2"><span class="header-section-number">3</span> Model 2: Comparing Aligned and Unaligned Elements Facets</h2>
+<p>The survey setup and all stimuli are shown in <span class="math inline">\(\ref{fig-tasks-7}\)</span>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
+<p>For each chart, panelists were asked to compare the sizes of the marked tiles against each other.</p>
+<div id="tbl-tasks-7" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2: Setup of questions and stimuli for Round 7.</caption>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Everybody:</strong></td>
+<td><strong>Question 1:</strong> Facetted Pie, unaligned</td>
+<td><strong>Question 2:</strong> Facetted Pie, aligned</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><img src="images/round7/unaligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, unaligned"></td>
+<td><img src="images/round7/aligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, aligned"></td>
+</tr>
+<tr class="odd">
+<td><strong>Split Sample</strong></td>
+<td>Effective sample size: 257.3</td>
+<td>Effective sample size: 267.7</td>
+</tr>
+<tr class="even">
+<td><strong>Question 3:</strong> unaligned</td>
+<td>Floating pie wedges</td>
+<td>Framed pie wedges</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><img src="images/round7/unaligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 3"></td>
+<td><img src="images/round7/unaligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 3"></td>
+</tr>
+<tr class="even">
+<td><strong>Question 4:</strong> aligned</td>
+<td><img src="images/round7/aligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 4"></td>
+<td><img src="images/round7/aligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 4"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same.</p>
+<p>The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D &lt; C &lt; A &lt; B. Nominally, the differences between the size of the marked elements can be expressed as multiples in <span class="math inline">\(\delta = 0.8\)</span>, with <span class="math inline">\(B = A + 2\delta = C + 3 \delta = D + 4 \delta\)</span>. A difference of <span class="math inline">\(\delta = 0.8\)</span> corresponds to about a <span class="math inline">\(3^\degree\)</span> difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy.</p>
+<p>There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the <strong>angle</strong> of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its <strong>area</strong> (as part of the circle or some derivative) or the <strong>arc length</strong> of the wedge. Studies by <span class="citation" data-cites="kosaraJudgmentErrorPie2016">Kosara and Skau (<a href="#ref-kosaraJudgmentErrorPie2016" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="kosaraEvidenceAreaPrimary2019">Kosara (<a href="#ref-kosaraEvidenceAreaPrimary2019" role="doc-biblioref">2019</a>)</span> show that the area of a piece in a pie chart is the primary evaluation method.</p>
+<!--
+In the (aligned wedges), those values are mapped to the angles 164.5, 171.2, 162.9, 158.8, for an approximate ratio of angle to value of 3.58, 3.6, 3.6, 3.58 degrees to 1. A circle with a radius of 105 pixels has a circumference of 660 pixels. The ratio of the wedges' arc length to the values are 2.09, 2.1, 2.1, 2.09 pixels to 1.
+
+A circle with a radius of 105 pixels has an area of 34636 square pixels. The ratio of the wedges' areas to the values are 109.5, 110.1, 110.4, 109.5 square pixels to 1.
+
+We only evaluated the aligned wedges for these ratios, most likely there are small differences in the exact pixel values for the unaligned wedges due to rounding issues.
+-->
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-pies_07e68220d50e3e4ed18e676f88f1742d">
+<div class="cell-output-display">
+<div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure <span class="math inline">\(\ref{fig-pies}\)</span> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from Table <span class="math inline">\(\ref{tab-model7}\)</span>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
+Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
+<p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
+<p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-5_73f11d0584dd09bcdd3a05ddcfd0e36d">
+<div class="cell-output-display">
+
+<div id="wzoctvwcri" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wzoctvwcri table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wzoctvwcri thead, #wzoctvwcri tbody, #wzoctvwcri tfoot, #wzoctvwcri tr, #wzoctvwcri td, #wzoctvwcri th {
+  border-style: none;
+}
+
+#wzoctvwcri p {
+  margin: 0;
+  padding: 0;
+}
+
+#wzoctvwcri .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wzoctvwcri .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wzoctvwcri .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wzoctvwcri .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wzoctvwcri .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wzoctvwcri .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wzoctvwcri .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wzoctvwcri .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wzoctvwcri .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wzoctvwcri .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wzoctvwcri .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wzoctvwcri .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wzoctvwcri .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wzoctvwcri .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wzoctvwcri .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wzoctvwcri .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wzoctvwcri .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wzoctvwcri .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wzoctvwcri .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wzoctvwcri .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wzoctvwcri .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wzoctvwcri .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wzoctvwcri .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wzoctvwcri .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wzoctvwcri .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wzoctvwcri .gt_left {
+  text-align: left;
+}
+
+#wzoctvwcri .gt_center {
+  text-align: center;
+}
+
+#wzoctvwcri .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wzoctvwcri .gt_font_normal {
+  font-weight: normal;
+}
+
+#wzoctvwcri .gt_font_bold {
+  font-weight: bold;
+}
+
+#wzoctvwcri .gt_font_italic {
+  font-style: italic;
+}
+
+#wzoctvwcri .gt_super {
+  font-size: 65%;
+}
+
+#wzoctvwcri .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wzoctvwcri .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wzoctvwcri .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wzoctvwcri .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wzoctvwcri .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wzoctvwcri .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wzoctvwcri .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style="">Estimates for Model 2</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style=""> accuracy of responses across conditions of Round 7</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="term">term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="estimate">estimate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SE">SE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="t-statistic">t-statistic</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p-value">p-value</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="term" class="gt_row gt_left">(Intercept)</td>
+<td headers="estimate" class="gt_row gt_right">0.17</td>
+<td headers="std.error" class="gt_row gt_right">0.10</td>
+<td headers="statistic" class="gt_row gt_right">1.7</td>
+<td headers="p.value" class="gt_row gt_right">0.0837</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">labelledAC</td>
+<td headers="estimate" class="gt_row gt_right">−0.85</td>
+<td headers="std.error" class="gt_row gt_right">0.08</td>
+<td headers="statistic" class="gt_row gt_right">−10.8</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">labelledAD</td>
+<td headers="estimate" class="gt_row gt_right">−0.48</td>
+<td headers="std.error" class="gt_row gt_right">0.07</td>
+<td headers="statistic" class="gt_row gt_right">−6.8</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">labelledBC</td>
+<td headers="estimate" class="gt_row gt_right">0.15</td>
+<td headers="std.error" class="gt_row gt_right">0.05</td>
+<td headers="statistic" class="gt_row gt_right">2.8</td>
+<td headers="p.value" class="gt_row gt_right">0.0059</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">labelledBD</td>
+<td headers="estimate" class="gt_row gt_right">0.26</td>
+<td headers="std.error" class="gt_row gt_right">0.05</td>
+<td headers="statistic" class="gt_row gt_right">4.8</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">labelledCD</td>
+<td headers="estimate" class="gt_row gt_right">−1.23</td>
+<td headers="std.error" class="gt_row gt_right">0.08</td>
+<td headers="statistic" class="gt_row gt_right">−14.9</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">conceptUn-</td>
+<td headers="estimate" class="gt_row gt_right">−0.24</td>
+<td headers="std.error" class="gt_row gt_right">0.05</td>
+<td headers="statistic" class="gt_row gt_right">−5.1</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">tasknameFloat</td>
+<td headers="estimate" class="gt_row gt_right">−0.10</td>
+<td headers="std.error" class="gt_row gt_right">0.12</td>
+<td headers="statistic" class="gt_row gt_right">−0.9</td>
+<td headers="p.value" class="gt_row gt_right">0.3894</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">tasknamePie</td>
+<td headers="estimate" class="gt_row gt_right">−0.33</td>
+<td headers="std.error" class="gt_row gt_right">0.08</td>
+<td headers="statistic" class="gt_row gt_right">−4.3</td>
+<td headers="p.value" class="gt_row gt_right">&lt; 0.0001</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
 </section>
 <section id="references" class="level2 unnumbered">
 
@@ -242,6 +1329,18 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-clevelandGraphicalPerceptionTheory1984" class="csl-entry" role="listitem">
+Cleveland, W. S., and McGill, R. (1984), <span>“Graphical perception: <span>Theory</span>, experimentation, and application to the development of graphical methods,”</span> <em>Journal of the American Statistical Association</em>, 79, 531–554. <a href="https://doi.org/10.1080/01621459.1984.10478080">https://doi.org/10.1080/01621459.1984.10478080</a>.
+</div>
+<div id="ref-kishSurveySampling1965" class="csl-entry" role="listitem">
+Kish, L. (1965), <em>Survey <span>Sampling</span></em>, <span>Wiley</span>.
+</div>
+<div id="ref-kosaraEvidenceAreaPrimary2019" class="csl-entry" role="listitem">
+Kosara, R. (2019), <span>“Evidence for <span>Area</span> as the <span>Primary Visual Cue</span> in <span>Pie Charts</span>,”</span> in <em>2019 <span>IEEE Visualization Conference</span> (<span>VIS</span>)</em>, pp. 101–105. <a href="https://doi.org/10.1109/VISUAL.2019.8933547">https://doi.org/10.1109/VISUAL.2019.8933547</a>.
+</div>
+<div id="ref-kosaraJudgmentErrorPie2016" class="csl-entry" role="listitem">
+Kosara, R., and Skau, D. (2016), <span>“Judgment <span>Error</span> in <span>Pie Chart Variations</span>,”</span> <em>EuroVis 2016 - Short Papers</em>, <span>The Eurographics Association</span>, 5 pages. <a href="https://doi.org/10.2312/EUROVISSHORT.20161167">https://doi.org/10.2312/EUROVISSHORT.20161167</a>.
+</div>
 <div id="ref-lumleyAnalysisComplexSurvey2004" class="csl-entry" role="listitem">
 Lumley, T. (2004), <span>“Analysis of complex survey samples,”</span> <em>Journal of Statistical Software</em>, 9, 1–19.
 </div>
@@ -254,8 +1353,11 @@ Lumley, T. (2020), <span>“Survey: Analysis of complex survey samples.”</span
 <div id="ref-omuircheartaighCombiningSamplesVs2002" class="csl-entry" role="listitem">
 O’Muircheartaigh, C., and Pedlow, S. (2002), <span>“<a href="http://www.asasrms.org/Proceedings/y2002/Files/JSM2002-001082.pdf">Combining <span>Samples Vs</span>. <span>Cumulating Cases</span>: <span>A Comparison</span> of <span>Two Weighting Strategies</span> in <span>NLSY97</span></a>,”</span> in <em><span>ASA Proceedings</span> of the <span>Joint Statistical Meetings</span></em>, pp. 2557–2562.
 </div>
-<div id="ref-R2022" class="csl-entry" role="listitem">
+<div id="ref-RLanguage" class="csl-entry" role="listitem">
 R Core Team (2022), <em><a href="https://www.R-project.org/">R: <span>A</span> language and environment for statistical computing</a></em>, Manual, <span>Vienna, Austria</span>: <span>R Foundation for Statistical Computing</span>.
+</div>
+<div id="ref-talbotFourExperimentsPerception2014" class="csl-entry" role="listitem">
+Talbot, J., Setlur, V., and Anand, A. (2014), <span>“Four <span>Experiments</span> on the <span>Perception</span> of <span>Bar Charts</span>,”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em>, 20, 2152–2160. <a href="https://doi.org/10.1109/TVCG.2014.2346320">https://doi.org/10.1109/TVCG.2014.2346320</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
