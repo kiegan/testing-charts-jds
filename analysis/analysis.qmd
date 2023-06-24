@@ -446,6 +446,14 @@ names(contrasts) <- c("level","log odds", "SE", "t-statistic", "p-value", "perce
 knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, caption = "Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.", label = "tab:logodds")
 ```
 
+### How certain are participants?
+
+
+### Certainty and Accuracy
+
+HH: For rounds 1 and 2 we do not have individual timing of tasks. 
+
+
 ## Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts {#sec-model2}
 
 A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. 
