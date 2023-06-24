@@ -45,14 +45,30 @@ neff <- function(weight) {
 
 # inverse of the logistic function
 inv_logit <- function(x) {exp(x)/(1+ exp(x))}
+
+# calculate lambda for combining weights
+calculate_lambda <- function(weights1, weights2) {
+  d1 <- 1+var(weights1)/mean(weights1)^2
+  d2 <- 1+var(weights2)/mean(weights2)^2
+
+  n1 <- length(weights1)
+  n2 <- length(weights2)
+
+  denom <- n1/d1 + n2/d2
+
+  lambda <- n1/(d1*denom) 
+  lambda
+}
+
+vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
 ```
 
 ## Survey rounds
 
 ```{r data-1}
 # other github repo. 
-round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
-round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
+round1 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round1.rds"))
+round2 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round2.rds"))
 
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
@@ -73,9 +89,20 @@ survey2 <- survey::svydesign(
   ids = ~CaseId, weights = ~weight)
 ```
 
+```{r data-rnd6}
+# other github repo. 
+round6 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round6.rds"))
+
+round6_adj <- round6 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(RND_01 == 0) # same type of questions as round 7
+```
+
+
+
 ```{r data-rnd7}
 # other github repo. 
-round7 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round7.rds")
+round7 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round7.rds"))
 
 # filter out all of the 'skipped on web':
 round7_adj <- round7 %>% mutate(
@@ -90,7 +117,8 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 |---------|-------|--------:|----------:|----------:|
 | Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
 | Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
-| Round 7 | Oct 22 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
+| Round 6 | Sep 2022 |  `r nrow(round6_adj)` [Split]  |    `r round(neff(round6_adj$weight),1)`       | `r round(sum(round6_adj$weight),1)`       |
+| Round 7 | Oct 2022 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
 |         |       |         |           |           |   
 
 : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
@@ -141,11 +169,14 @@ lambda <- n1/(d1*denom)
 
 
 ```{r combine_rounds_1_and_2}
+# all weights are scaled to add to 1 first, then lambda is used to 
+# get the convex weight assignment, 
+# then the weights are scaled to the effective sample size
 round_12 <- round1_adj %>% 
-            mutate(weight = lambda*weight) %>% 
+            mutate(weight = lambda*weight/sum(weight)) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
     rbind(round2_adj %>% 
-            mutate(weight = (1-lambda)*weight) %>% 
+            mutate(weight = (1-lambda)*weight/sum(weight)) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
 
 round_12$weight <- neff(round_12$weight)/sum(round_12$weight)*round_12$weight 
@@ -275,6 +306,9 @@ For the purpose of estimability, we will assume that $\beta_1 = 0$, i.e. $\text{
 coefs_12$term <- c("$$\\widehat{\\alpha}$$", "$$\\widehat{\\beta}_2$$")
 
 coefs_12 %>% 
+  mutate(
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+  ) %>%
   gt() %>%
   tab_header("Estimates for Model 1",
              " accuracy of responses for unaligned (Question 1) and aligned bars (Question 2)") %>%
@@ -291,9 +325,9 @@ coefs_12 %>%
     columns = statistic,
     decimals = 1
   ) %>%
-  fmt_scientific(
+  cols_align(
     columns = p.value,
-    decimals = 1
+    align = "right"
   )
 ```
 
@@ -412,12 +446,236 @@ names(contrasts) <- c("level","log odds", "SE", "t-statistic", "p-value", "perce
 knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, caption = "Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.", label = "tab:logodds")
 ```
 
+## Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts {#sec-model2}
 
-## Model 2: Comparing Aligned and Unaligned Elements Facets {#sec-model2}
+A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. 
+The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B.
+
+```{r}
+#| label: fig-tasks-67
+#| fig-cap: "Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated against each other. "
+#| fig-height: 3
+#| fig-width: 4
+#| layout-nrow: 1
+#| fig-subcap:
+#| - "**Round 6**: Facetted barcharts"
+#| - "**Round 7**: Facetted piecharts with unaligned wedges"
+#| - "**Round 7**: Facetted piecharts with aligned wedges"
+knitr::include_graphics("images/Round 6 - Sept 2022.png")
+knitr::include_graphics("images/round7/unaligned pie - all.png")
+knitr::include_graphics("images/round7/aligned pie - all.png")
+```
+
+```{r combine_rnds67}
+lambda6 <- calculate_lambda(round6_adj$weight, round7_adj$weight)
+round6_adj <- round6_adj %>% 
+  mutate(
+    weight = lambda6*weight/sum(weight)
+  )
+round7_adj <- round7_adj %>% 
+  mutate(
+    weight = (1-lambda6)*weight/sum(weight)
+  )
+
+response_6 <- round6_adj %>%
+  pivot_longer(
+    ab1:cd1, # barcharts 
+    names_to = "taskquestion", values_to = "responses") %>%
+  filter(!is.na(responses), responses!="SKIPPED ON WEB") %>%
+  mutate(
+    labelled = toupper(gsub("1", "", taskquestion)),
+    task = "Bar"
+  )
+
+
+response_7 <- round7_adj %>%
+  pivot_longer(
+    matches("NOLA[1-2]_[1-6]"), # only pie charts
+    names_to = "taskquestion", values_to = "responses") %>%
+  filter(!is.na(responses), responses!="SKIPPED ON WEB") %>%
+  separate(col="taskquestion", into=c("task", "question"), sep="_")  %>%
+  mutate(
+    question = parse_number(question),
+    labelled = c("AB", "AC", "AD", "BD", "BC", "CD")[question],
+    task = c("Pie\nUn-", "Pie\nA-")[parse_number(task)]
+  )
+
+# D < C < A < B.
+response_67 <- rbind(
+    response_6 %>% select(CaseId, labelled, task, responses, weight),
+    response_7 %>% select(CaseId, labelled, task, responses, weight)
+  ) %>% mutate(
+  correct = ifelse(labelled %in% c("AB", "BC", "BD"), responses == "B is bigger", 
+              ifelse(labelled %in% c("AC", "AD"), responses == "A is bigger",
+                     responses == "C is bigger")),
+  correct3 = correct | responses == "They are the same",
+  response3 = factor(correct+correct3, labels = c("Wrong", "Same", "Correct"))
+)
+
+
+survey_67 <- svydesign(~CaseId, data = response_67, weights = ~weight)
+```
+
+Figure \ref{fig-response-67} gives an overview of all responses to size assessments of the marked tiles. The panels are ordered according to the difference in signal and hypothesized difficulty from easiest (left) to hardest (right) comparison. We see, that in general the percentage of correct responses decreases from left to right. 
+Design does not seem to matter for easy comparisons (BD, BC) or the hard comparison (CD). 
+The three comparisons in the middle show interesting patterns, highlighted in the reordered figure \ref{fig-response-67b}.
+
+```{r}
+#| label: fig-response-67
+#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs. Responses to the same comparison are shown side-by-side for the three designs. Comparisons are ordered from least difficult (BD) to most difficult (CD). The increasing difficulty of comparisons is reflected in the overall decreasing percentage of correct responses (height of blue tiles). The overlaid rectangles represent 95% confidence intervals."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+
+props_ci <- as.data.frame(svyby(~response3, by=~interaction(labelled, task), svymean, design = survey_67))
+props_ci <- props_ci %>% 
+  mutate(
+    labels = row.names(props_ci),
+  ) 
+props_ci <- props_ci %>% separate_wider_delim(
+    labels, delim = ".", names =c("labelled", "task")
+  ) %>% mutate(
+    task = factor(task, levels=c("Bar", "Pie\nA-", "Pie\nUn-")),
+    labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD"))
+  )
+
+
+response_67 %>% 
+  mutate(
+    labelled = factor(labelled, levels=c("BD", "BC", "AB", "AD", "AC", "CD"))
+  ) %>% 
+  ggplot(aes(x = task)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  facet_grid(.~labelled) + 
+  theme(legend.position="bottom") + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(task) - 0.45,
+      ymin = (response3Correct - 1.96* se.response3Correct),
+      xmax = as.numeric(task) + 0.45,
+      ymax = (response3Correct + 1.96* se.response3Correct),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(task) - 0.45,
+      y = (response3Correct ),
+      xend = as.numeric(task) + 0.45,
+      yend = (response3Correct )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(task) - 0.45,
+      ymin = (1- response3Wrong - 1.96* se.response3Wrong),
+      xmax = as.numeric(task) + 0.45,
+      ymax = (1-response3Wrong + 1.96* se.response3Wrong),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(task) - 0.45,
+      y = (1- response3Wrong ),
+      xend = as.numeric(task) + 0.45,
+      yend = (1-response3Wrong )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = props_ci
+  ) +
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25))
+```
+
+For the facetteed barcharts, there is an abrupt drop in accuracy of responses between 'easy' and 'hard' comparisons. (HH: All of these comparisons could be affected by the context of their light blue neighbors. 'B' is bigger than its light blue neighbor, and also the overall biggest. 'A' is only a bit smaller than 'B', but quite a bit smaller than the light blue bar next to it. This seems to make comparisons with A harder.)  For pie charts the accuracy in responses is reacting a lot more gentle to the increasing difficulty. There is no apparent effect in pie charts due to alignment. However, all comparisons are very close to 50% - the intrinsic reference lines [@lipkusVisualCommunicationRisk1999] in pie charts (at 180 degrees, and to a lesser degree at 90 degree angles) might be helping with this particular set of comparisons.
+
+```{r}
+#| label: fig-response-67b
+#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs, reordered. Now, responses to the same design are shown side-by-side across comparisons. Comparisons are ordered from least difficult (BD) to most difficult (CD). The three different designs result in different response patterns for increasing comparison difficulty. "
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+
+props_ci <- as.data.frame(svyby(~response3, by=~interaction(labelled, task), svymean, design = survey_67))
+props_ci <- props_ci %>% 
+  mutate(
+    labels = row.names(props_ci),
+  ) 
+props_ci <- props_ci %>% separate_wider_delim(
+  labels, delim = ".", names =c("labelled", "task")
+) %>% mutate(
+  task = factor(task, levels=c("Bar", "Pie\nA-", "Pie\nUn-")),
+  labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD"))
+)
+
+
+response_67 %>% 
+  mutate(
+    labelled = factor(labelled, levels=c("BD", "BC", "AB", "AD", "AC", "CD"))
+  ) %>% 
+  ggplot(aes(x = labelled)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  facet_grid(.~task) + 
+  theme(legend.position="bottom") + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(labelled) - 0.45,
+      ymin = (response3Correct - 1.96* se.response3Correct),
+      xmax = as.numeric(labelled) + 0.45,
+      ymax = (response3Correct + 1.96* se.response3Correct),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(labelled) - 0.45,
+      y = (response3Correct ),
+      xend = as.numeric(labelled) + 0.45,
+      yend = (response3Correct )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(labelled) - 0.45,
+      ymin = (1- response3Wrong - 1.96* se.response3Wrong),
+      xmax = as.numeric(labelled) + 0.45,
+      ymax = (1-response3Wrong + 1.96* se.response3Wrong),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = props_ci
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(labelled) - 0.45,
+      y = (1- response3Wrong ),
+      xend = as.numeric(labelled) + 0.45,
+      yend = (1-response3Wrong )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = props_ci
+  ) +
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25))
+```
+
+
+## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 
 The survey setup and all stimuli are shown in \ref{fig-tasks-7}. A total of `r nrow(round7_adj)` panelists  (Effective sample size: `r round(neff(round7_adj$weight), 1)`) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right. 
 
-For each chart, panelists were asked to compare the sizes of the marked tiles against each other.  
+For each chart, panelists were asked to compare all marked tiles against each other.  
 
 |                              |                                |                                |
 |------------------------------|--------------------------------|--------------------------------|
@@ -450,13 +708,6 @@ values <- c(46, 47.6, 45.2,  44.4)
 names(values) <- LETTERS[1:4]
 ```
 
-<!--
-In the (aligned wedges), those values are mapped to the angles `r alpha_est`, for an approximate ratio of angle to value of `r round(alpha_est/values,2)` degrees to 1. A circle with a radius of 105 pixels has a circumference of 660 pixels. The ratio of the wedges' arc length to the values are `r round((alpha_est/180) *105/values,2)` pixels to 1.
-
-A circle with a radius of 105 pixels has an area of 34636 square pixels. The ratio of the wedges' areas to the values are `r round((alpha_est/360) *105^2/values,1)` square pixels to 1.
-
-We only evaluated the aligned wedges for these ratios, most likely there are small differences in the exact pixel values for the unaligned wedges due to rounding issues.
--->
 
 ```{r survey-round7}
 response_type <- round7_adj %>%
