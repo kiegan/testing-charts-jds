@@ -30,7 +30,6 @@ documentclass: jds
 <!-- 2. Algorithms: Articles here focus on the performance side of the computing needs arising from domain applications. For example, one can propose algorithms that make infeasible tasks feasible or speed up existing algorithms. -->
 <!-- 3. Methods: Articles here are similar to those in Journal of Computational and Graphic Statistics or Statistics and Computing. The computing methods need to be motivated by a domain application with the properties carefully studied. -->
 
-@clevelandGraphicalPerceptionTheory1984
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
@@ -51,7 +50,11 @@ library(readxl)
 library(lubridate)
 library(patchwork)
 library(survey)
+#library(ggmosaic)
 library(ggpcp)
+library(broom)
+library(latex2exp)
+library(gt) # grammar of tables
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -59,6 +62,25 @@ neff <- function(weight) {
   L <- var(weight)/mean(weight)^2
   n/(1+L)
 }
+
+# inverse of the logistic function
+inv_logit <- function(x) {exp(x)/(1+ exp(x))}
+
+# calculate lambda for combining weights
+calculate_lambda <- function(weights1, weights2) {
+  d1 <- 1+var(weights1)/mean(weights1)^2
+  d2 <- 1+var(weights2)/mean(weights2)^2
+
+  n1 <- length(weights1)
+  n2 <- length(weights2)
+
+  denom <- n1/d1 + n2/d2
+
+  lambda <- n1/(d1*denom) 
+  lambda
+}
+
+vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
 ```
 
 ```{r data}
@@ -94,14 +116,47 @@ survey2 <- survey::svydesign(
 \hh{This is Heike's color for making changes}
 ## Introduction
 
-How do structural design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+<!-- What is our main objective? -->
+What do viewers see, when we show them a data chart? A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts. @clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons. What we always need to remember, is that these study results are based on only a few individuals recruited from the authors' coworkers and their spouses. 
+@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform.
 
-How do aesthetic design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+<!-- Bias from crowd-sourcing? sample size?  -->
+crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017 
 
-How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization? 
+
+Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.  
 
 
-Structural design choices: 
+```{r}
+#| label: fig-aligned-unaligned
+#| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. While the predominant response for the unaligned pair on the left is 'they are of the same size', more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
+#| fig-subcap:
+#| - "**Unaligned bars**"
+#| - "**Aligned bars**"
+#| fig-cap-location: "bottom"
+#| layout: [[45,45], [100]]
+#| fig-align: "center"
+#| out-width: 100%
+knitr::include_graphics("images/round5-modified.PNG")
+knitr::include_graphics("images/round3-modified.PNG")
+```
+
+<!-- motivate the use of just noticeable differences -->
+Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question with varied signals multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. We are using results from studies on barcharts and pie charts [@luModelingJustNoticeable2022] to inform the differences in charts shown to survey panelists.
+
+
+
+- How do structural design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+- How do aesthetic design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+- How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization? 
+
+
+
+
+
+
 
 Structural design choices 
 
@@ -139,8 +194,8 @@ I’ve noted this below, but: how to model? Ordinal response? Binary (certain or
 
 ## Survey setup - Stimulus description
 
-<!-- motivate the use of just noticeable differences -->
-Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. For the height difference of barcharts, @luModelingJustNoticeable2022 determined that the distance between bars is the main contributor to differentiating sizes. Based on their models, a tile difference of 155 pixels leads to a just noticeable difference of 3.5 pixels. \autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Their heights are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
+\autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
+The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
@@ -189,7 +244,7 @@ Question for Ed: If we compare a full sample to a split sample, do we still want
 Analysis should be done using the ‘survey’ package and weights should be taken into account. 
 
 
-All calculations in this paper are done in R [@R2022] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
+All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
 
 ```{r lambdas}

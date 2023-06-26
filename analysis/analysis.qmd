@@ -517,7 +517,11 @@ response_67 <- rbind(
               ifelse(labelled %in% c("AC", "AD"), responses == "A is bigger",
                      responses == "C is bigger")),
   correct3 = correct | responses == "They are the same",
-  response3 = factor(correct+correct3, labels = c("Wrong", "Same", "Correct"))
+  response3 = factor(correct+correct3, labels = c("Wrong", "Same", "Correct")),
+  labelled = factor(labelled, levels=c("BD", "BC", "AB", "AD", "AC", "CD")),
+  signal = ifelse(labelled=="BD", 4, 
+             ifelse(labelled=="BC", 3,
+               ifelse(labelled %in% c("AB", "AD"), 2, 1)))
 )
 
 
@@ -677,6 +681,15 @@ response_67 %>%
   ) +
   scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25))
 ```
+
+```{r model-67}
+# still putzing around with it
+logit_67_correct <- svyglm(correct~task+labelled + task, family=quasibinomial(), design=survey_67)
+
+logit_67_cont <- svyglm(correct~task*signal, family=quasibinomial(), design=survey_67)
+
+```
+
 
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
