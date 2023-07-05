@@ -3,6 +3,9 @@ title: "Supplement: Analysis and code for 'Testing Perceptual Accuracy in Charts
 format:
   jasa-html: default
   jasa-pdf:
+    include-in-header:
+      - edits.tex
+      - authors.tex
     keep-tex: true  
     journal:
       blinded: false
