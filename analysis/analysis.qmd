@@ -7,10 +7,16 @@ format:
     journal:
       blinded: false
 date: last-modified
-bibliography: "`r rbbt::bbt_write_bib('references.bib', overwrite = TRUE, library_id=rbbt::bbt_library_id('Graphics Research'), translator='bibtex')`"
+bibliography: references.bib 
 ---
 
-
+```{r run-to-update-bibfile, eval=TRUE, include=FALSE}
+keys <- rbbt::bbt_detect_citations("analysis.qmd")
+citations_only <- grep(pattern="[fig|tbl]-.*", keys, value=TRUE, invert=TRUE)
+rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
+                    library_id=rbbt::bbt_library_id('Graphics Research'),
+                    translator='bibtex')
+```
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
                       eval = T, 
@@ -194,7 +200,7 @@ survey_12 <-
   ids = ~CaseId, weights = ~weight)
 ```
 
-The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. Figure \ref{fig-tasks-12} shows the two stacked barcharts shown to all panelists.
+The data used for this is a combination of rounds 1 and 2, with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. @fig-tasks-12 shows the two stacked barcharts shown to all panelists.
 
 ```{r}
 #| label: fig-tasks-12
@@ -224,7 +230,7 @@ marginal_results <- data.frame(abcd)
 
 ### Binary response
 
-Defining an accurate response as "B is bigger" in the chart of unaligned tiles, and "D is bigger" in the aligned case, while calling the other two responses as incorrect, leads to the data shown in figure \ref{fig-alignment}(a): we see
+Defining an accurate response as "B is bigger" in the chart of unaligned tiles, and "D is bigger" in the aligned case, while calling the other two responses as incorrect, leads to the data shown in @fig-alignment(a): we see
  that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
 Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The difference in mean accuracy is `r round(paired$estimate,2)`. This difference is highly significant ($t$ statistic: `r round(paired$statistic,2)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
@@ -358,7 +364,7 @@ paired2 <- svyttest(I(Response3=="X is bigger (Wrong)")~Question, survey_12_ord)
 ```
 
 
-When moving beyond the binary accuracy measure of the response and using all three levels of the response as dependent variable, we see that by far the largest change in responses comes from a change from 'they are the same' to the (perceptually) correct response of 'D is bigger' when the tiles are aligned along the same axis for a comparison (see \ref{fig-ordinal}). Even though the number of wrong responses (orange) is only slightly different (`r round(paired2$estimate,3)`) between aligned and unaligned comparisons, it is still highly significant ($t$ statistic: `r round(paired2$statistic,1)`, df: `r paired2$parameter`, $p$-value: < 2.2e-16). 
+When moving beyond the binary accuracy measure of the response and using all three levels of the response as dependent variable, we see that by far the largest change in responses comes from a change from 'they are the same' to the (perceptually) correct response of 'D is bigger' when the tiles are aligned along the same axis for a comparison (see @fig-ordinal). Even though the number of wrong responses (orange) is only slightly different (`r round(paired2$estimate,3)`) between aligned and unaligned comparisons, it is still highly significant ($t$ statistic: `r round(paired2$statistic,1)`, df: `r paired2$parameter`, $p$-value: < 2.2e-16). 
  
 
 ```{r fig-ordinal, fig.height = 5, fig.width = 10, warning=FALSE}
@@ -556,7 +562,7 @@ The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and
 
 ```{r}
 #| label: fig-tasks-67
-#| fig-cap: "Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated against each other. "
+#| fig-cap: "Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated pairwise for their size difference. "
 #| fig-height: 3
 #| fig-width: 4
 #| layout-nrow: 1
@@ -623,9 +629,11 @@ response_67 <- rbind(
 survey_67 <- svydesign(~CaseId, data = response_67, weights = ~weight)
 ```
 
-Figure \ref{fig-response-67} gives an overview of all responses to size assessments of the marked tiles. The panels are ordered according to the difference in signal and hypothesized difficulty from easiest (left) to hardest (right) comparison. We see, that in general the percentage of correct responses decreases from left to right. 
+### Binary and Ordinal Correctness as Response
+
+@fig-response-67 gives an overview of all responses to size assessments of the marked tiles. The panels are ordered according to the difference in signal and hypothesized difficulty from easiest (left) to hardest (right) comparison. We see, that in general the percentage of correct responses decreases from left to right. 
 Design does not seem to matter for easy comparisons (BD, BC) or the hard comparison (CD). 
-The three comparisons in the middle show interesting patterns, highlighted in the reordered figure \ref{fig-response-67b}.
+The three comparisons in the middle show interesting patterns, highlighted in the reordered @fig-response-67b.
 
 ```{r}
 #| label: fig-response-67
@@ -786,10 +794,16 @@ logit_67_cont <- svyglm(correct~task*signal, family=quasibinomial(), design=surv
 ```
 
 
+### How certain are participants?
+
+```{r data-certainty-pie}
+
+```
+
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 
-The survey setup and all stimuli are shown in \ref{fig-tasks-7}. A total of `r nrow(round7_adj)` panelists  (Effective sample size: `r round(neff(round7_adj$weight), 1)`) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right. 
+The survey setup and all stimuli are shown in @tbl-tasks-7. A total of `r nrow(round7_adj)` panelists  (Effective sample size: `r round(neff(round7_adj$weight), 1)`) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right. 
 
 For each chart, panelists were asked to compare all marked tiles against each other.  
 
@@ -939,7 +953,7 @@ gg2b <- response_type %>%
 gg2b
 ```
 
-Figure \ref{fig-pies} shows a summary of panelists' accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from Table \ref{tab-model7}, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?).
+@fig-pies shows a summary of panelists' accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from @tbl-model7, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?).
 Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a  comparison of the same-size, unaliged pieces.  
 Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of 'the same' responses as well as in identifying the smaller piece as the bigger.
 
