@@ -455,8 +455,8 @@ round_12_certainty_long <- round_12 %>%
   mutate(
     Correct = ifelse(Question == "ab_certain", CorrectAB, CorrectCD),
     Question = ifelse(Question=="ab_certain", "A vs B (Unaligned)", "C vs D (Aligned)"),
-# ordering of levels in Response is from extremely=1 to not at all=5 - not very intuitive
-    Response = factor(Response, levels = rev(levels(Response)))
+# ordering of levels in Response is from extremely=6 to not at all=2 - not very intuitive
+    Response = factor(Response, levels = c("not at all", "slightly", "moderately", "very", "extremely")) # gets rid of the 'SKIPPED ON WEB' and makes the ordering go from 1 to 5
   )
 
 survey_12_crt <- 
@@ -490,18 +490,19 @@ round_12_certainty_long %>%
 
 ```
 
-Using linear scores for the response of `Certainty`, with `not certain at all` assigned a score of 1 and `extremely certain` assigned a score of 5, we can estimate the effects of task and correctness on certainty  by using  a general normal linear model of the form:
+Using linear scores for the response of `Certainty`, with `not certain at all` assigned a score of 1 and `extremely certain` assigned a score of 5, we can estimate the effects of task and correctness on certainty  by using  a cell-means model of the form:
 $$
-Y_{k} = \mu + \tau_{i(k)} + \gamma_{j(k)} + \epsilon_{k},
+Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 $$
-where $k = 1, ..., N$, $\mu$ is average certainty (measured on a scale from 1 to 5), $\tau_{i(k)}$ is the task in the $k$th response (with $i(k) = 1$ for unaligned and $i(k)=2$ for aligned comparisons) and $\gamma_{j(k)}$ is the correctness of the $k$th response (with $j(k) = 1$ for a correct and $j(k)=2$ for a wrong answer). We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$. We use a constraint of first effects as zero to make effects estimable, i.e. $\widehat{\mu}$ has to be interpreted as the average certainty of participants who are wrong on the unaligned comparison.
+where $k = 1, ..., N$, $\mu_{ij(k)}$ is average certainty (measured on a scale from 1 to 5) of the four combinations of task and correctness, where $i = 1, 2$ encodes unaligned/aligned, and $j=1,2$ encodes wrong, correct, respectively. We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$. What we find, is that we see the lowest score of certainty for correct responses to the unaligned comparison task. For aligned comparisons, the correctness of the response does not matter for the associated certainty.
 
 ```{r model-certainty}
-model_certain <- svyglm(as.numeric(Response)~Question+Correct, design = survey_12_crt)
+model_certain <- svyglm(as.numeric(Response)~Question:Correct-1, design = survey_12_crt)
 
 coefs_certainty <- broom::tidy(model_certain)
+terms <- coefs_certainty$term
 
-coefs_certainty$term <- c("$$\\widehat{\\mu}$$", "$$\\widehat{\\tau}_2$$", "$$\\widehat{\\gamma}_2$$")
+coefs_certainty$term <- c("$$\\widehat{\\mu}_{11}$$", "$$\\widehat{\\mu}_{21}$$", "$$\\widehat{\\mu}_{12}$$", "$$\\widehat{\\mu}_{22}$$")
 
 coefs_certainty %>% 
   mutate(
@@ -526,6 +527,24 @@ coefs_certainty %>%
   cols_align(
     columns = p.value,
     align = "right"
+  )
+```
+
+
+```{r}
+#| out-width: 80%
+#| fig-cap: "Certainty by task and correctness. Correct answers in the unaligned task have the least certainty associated with them. An incoorect response on the unaligned task shows a significant oost in certainty. "
+round_12_certainty_long %>% 
+  ggplot(aes(x = Response, weight=weight)) + geom_bar() + 
+  ylab("Number of (weighted) responses") + 
+  facet_grid(Correct~Question) +
+  geom_vline(
+    aes(xintercept = estimate),
+    colour = "darkorange",
+    data = data.frame(
+      coefs_certainty, 
+      Correct= gsub(".*(FALSE|TRUE)", "\\1", terms),
+      Question = gsub("Question(.*):Correct.*", "\\1", terms))
   )
 ```
 
