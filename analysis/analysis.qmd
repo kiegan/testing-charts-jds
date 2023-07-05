@@ -174,10 +174,12 @@ lambda <- n1/(d1*denom)
 # then the weights are scaled to the effective sample size
 round_12 <- round1_adj %>% 
             mutate(weight = lambda*weight/sum(weight)) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, weight) %>%
     rbind(round2_adj %>% 
             mutate(weight = (1-lambda)*weight/sum(weight)) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
+                   ab_certain, cd_certain, weight))
 
 round_12$weight <- neff(round_12$weight)/sum(round_12$weight)*round_12$weight 
 # does not affect the further analysis, but helps with the interpretation of results
@@ -231,10 +233,8 @@ Because each particpant was shown both versions of the chart, we can use a paire
 ```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (blue) and incorrect (orange) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the blue tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
-#| out-width: 80%
+#| out-width: 90%
 #| fig-env: figure
-
-
 
 gg1 <- round_12_long %>%
   mutate(
@@ -448,10 +448,86 @@ knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, captio
 
 ### How certain are participants?
 
+```{r certainty-data}
+round_12_certainty_long <- round_12 %>% 
+  pivot_longer(ab_certain:cd_certain, names_to = "Question", values_to = "Response") %>%
+  filter(Response != "SKIPPED ON WEB") %>%  # 13 participants
+  mutate(
+    Correct = ifelse(Question == "ab_certain", CorrectAB, CorrectCD),
+    Question = ifelse(Question=="ab_certain", "A vs B (Unaligned)", "C vs D (Aligned)"),
+# ordering of levels in Response is from extremely=1 to not at all=5 - not very intuitive
+    Response = factor(Response, levels = rev(levels(Response)))
+  )
 
-### Certainty and Accuracy
+survey_12_crt <- 
+  survey::svydesign(
+  data = round_12_certainty_long, 
+  ids = ~CaseId, weights = ~weight)
+```
 
-HH: For rounds 1 and 2 we do not have individual timing of tasks. 
+```{r}
+#| label: fig-certainty
+#| out-width: 45%
+#| fig-height: 5
+#| fig-width: 5
+#| fig-cap: "Two views of certainty: The barcharts in (a) show that aligning bars along the same access is associated with more participants who are very certain of their response compared to the unaligned comparison of A vs B, where the majority of participants resports 'moderate' certainty. In the barcharts in (b) we see that participants are not quite as certain of their responses when their answers are correct as when their answers are not correct. Both of these are significant (see model 2.3)."
+#| layout-nrow: 1
+#| fig-subcap: 
+#|   - Certainty by Task
+#|   - Certainty by Accuracy of Response
+round_12_certainty_long %>% 
+  ggplot(aes(x = Response, weight=weight)) + geom_bar() + 
+  ylab("Number of (weighted) responses") + 
+  facet_grid(Question~.) +
+  ggtitle("Certainty by Task")
+
+
+round_12_certainty_long %>% 
+  ggplot(aes(x = Response, weight=weight)) + geom_bar() + 
+  ylab("Number of (weighted) responses") + 
+  facet_grid(Correct~.) +
+  ggtitle("Certainty by Correctness")
+
+```
+
+Using linear scores for the response of `Certainty`, with `not certain at all` assigned a score of 1 and `extremely certain` assigned a score of 5, we can estimate the effects of task and correctness on certainty  by using  a general normal linear model of the form:
+$$
+Y_{k} = \mu + \tau_{i(k)} + \gamma_{j(k)} + \epsilon_{k},
+$$
+where $k = 1, ..., N$, $\mu$ is average certainty (measured on a scale from 1 to 5), $\tau_{i(k)}$ is the task in the $k$th response (with $i(k) = 1$ for unaligned and $i(k)=2$ for aligned comparisons) and $\gamma_{j(k)}$ is the correctness of the $k$th response (with $j(k) = 1$ for a correct and $j(k)=2$ for a wrong answer). We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$. We use a constraint of first effects as zero to make effects estimable, i.e. $\widehat{\mu}$ has to be interpreted as the average certainty of participants who are wrong on the unaligned comparison.
+
+```{r model-certainty}
+model_certain <- svyglm(as.numeric(Response)~Question+Correct, design = survey_12_crt)
+
+coefs_certainty <- broom::tidy(model_certain)
+
+coefs_certainty$term <- c("$$\\widehat{\\mu}$$", "$$\\widehat{\\tau}_2$$", "$$\\widehat{\\gamma}_2$$")
+
+coefs_certainty %>% 
+  mutate(
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+  ) %>%
+  gt() %>%
+  tab_header("Estimates for Model 2.3",
+             " certainty of responses by task and correctness of response") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
+```
 
 
 ## Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts {#sec-model2}
