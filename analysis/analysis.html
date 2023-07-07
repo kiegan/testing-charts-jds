@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-07-06">
+<meta name="dcterms.date" content="2023-07-07">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -99,7 +99,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 6, 2023</p>
+      <p class="date">July 7, 2023</p>
     </div>
   </div>
   
@@ -1273,7 +1273,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 </div>
 </div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-5_412d4147d9c2520a82c2483c49095764">
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-5_4437e16dc1041c5ca3926f60e62018f7">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Combining variables of class &lt;logical&gt; and &lt;character&gt; was deprecated in
 ggplot2 3.4.0.
@@ -1284,7 +1284,7 @@ ggplot2 3.4.0.
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./figures/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Certainty by task and correctness. Correct answers in the unaligned task have the least certainty associated with them. An incoorect response on the unaligned task shows a significant oost in certainty.</figcaption>
+<figcaption class="figure-caption">Certainty by task and correctness. Correct answers in the unaligned task have the least certainty associated with them. An incoorect response on the unaligned task shows a significant boost in certainty.</figcaption>
 </figure>
 </div>
 </div>
@@ -1293,7 +1293,8 @@ ggplot2 3.4.0.
 </section>
 <section id="sec-model2" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sec-model2"><span class="header-section-number">3</span> Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts</h2>
-<p>A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D &lt; C &lt; A &lt; B.</p>
+<p>The data this section is based on comes from (a part) of Round 6 and all responses from Round 7.</p>
+<p>A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. Each of the charts has four labelled pieces A, B, C, and D.</p>
 <div id="fig-tasks-67" class="cell quarto-layout-panel" data-hash="analysis_cache/html/fig-tasks-67_92ac26fc7e4060a7ec8ca59c00a55194">
 <figure class="figure">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -1325,6 +1326,506 @@ ggplot2 3.4.0.
 <p></p><figcaption class="figure-caption">Figure&nbsp;5: Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated pairwise for their size difference.</figcaption><p></p>
 </figure>
 </div>
+<p>The questions asked for each of these charts were of the form: “which of the marked pieces is bigger? Just your best guess is fine”.</p>
+<ol type="A">
+<li>A or B?</li>
+</ol>
+<p>RESPONSE OPTIONS:</p>
+<ol type="1">
+<li>A is bigger</li>
+<li>B is bigger</li>
+<li>They are the same</li>
+</ol>
+<p>Each participant was asked a total of six comparisons of this type: A vs B, A vs C, A vs D, B vs C, B vs C, and C vs D. The number of valid responses and the resulting effective sample sizes are shown in <a href="#tbl-combine-67">Table&nbsp;2</a></p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/tbl-combine-67_0d2d1be72a8b82c2770f0a15e297c87c">
+<div class="cell-output-display">
+<div id="tbl-combine-67" class="anchored">
+
+<div id="capiteknbq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#capiteknbq table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#capiteknbq thead, #capiteknbq tbody, #capiteknbq tfoot, #capiteknbq tr, #capiteknbq td, #capiteknbq th {
+  border-style: none;
+}
+
+#capiteknbq p {
+  margin: 0;
+  padding: 0;
+}
+
+#capiteknbq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#capiteknbq .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#capiteknbq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#capiteknbq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#capiteknbq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#capiteknbq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#capiteknbq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#capiteknbq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#capiteknbq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#capiteknbq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#capiteknbq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#capiteknbq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#capiteknbq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#capiteknbq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#capiteknbq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#capiteknbq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#capiteknbq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#capiteknbq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#capiteknbq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#capiteknbq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#capiteknbq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#capiteknbq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#capiteknbq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#capiteknbq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#capiteknbq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#capiteknbq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#capiteknbq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#capiteknbq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#capiteknbq .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#capiteknbq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#capiteknbq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#capiteknbq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#capiteknbq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#capiteknbq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#capiteknbq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#capiteknbq .gt_left {
+  text-align: left;
+}
+
+#capiteknbq .gt_center {
+  text-align: center;
+}
+
+#capiteknbq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#capiteknbq .gt_font_normal {
+  font-weight: normal;
+}
+
+#capiteknbq .gt_font_bold {
+  font-weight: bold;
+}
+
+#capiteknbq .gt_font_italic {
+  font-style: italic;
+}
+
+#capiteknbq .gt_super {
+  font-size: 65%;
+}
+
+#capiteknbq .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#capiteknbq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#capiteknbq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#capiteknbq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#capiteknbq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#capiteknbq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#capiteknbq .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;2:  <p>Table of the number of effective responses by task</p> </caption>
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Number of (effective) responses by task</td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="task">task</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of responses:<br>nominal">number of responses:<br>nominal</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of responses:<br>effective">number of responses:<br>effective</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of participants">number of participants</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="λ">λ</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="Round 6">Round 6</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Round 6  task" class="gt_row gt_left">Bar</td>
+<td headers="Round 6  responses" class="gt_row gt_right">2,618</td>
+<td headers="Round 6  effective" class="gt_row gt_right">1,480.3</td>
+<td headers="Round 6  participants" class="gt_row gt_right">447</td>
+<td headers="Round 6  lambda" class="gt_row gt_right">0.1948</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="Round 7">Round 7</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Round 7  task" class="gt_row gt_left">Pie-Aligned</td>
+<td headers="Round 7  responses" class="gt_row gt_right">5,749</td>
+<td headers="Round 7  effective" class="gt_row gt_right">3,058.5</td>
+<td headers="Round 7  participants" class="gt_row gt_right">972</td>
+<td headers="Round 7  lambda" class="gt_row gt_right">0.4026</td></tr>
+    <tr><td headers="Round 7  task" class="gt_row gt_left">Pie-Unaligned</td>
+<td headers="Round 7  responses" class="gt_row gt_right">5,759</td>
+<td headers="Round 7  effective" class="gt_row gt_right">3,058.2</td>
+<td headers="Round 7  participants" class="gt_row gt_right">978</td>
+<td headers="Round 7  lambda" class="gt_row gt_right">0.4025</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D &lt; C &lt; A &lt; B. Nominally, the differences between the size of the marked elements can be expressed as multiples in <span class="math inline">\(\delta = 0.8\)</span>, with <span class="math inline">\(B = A + 2\delta = C + 3 \delta = D + 4 \delta\)</span>. A difference of <span class="math inline">\(\delta = 0.8\)</span> corresponds to about a <span class="math inline">\(3^\degree\)</span> difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy.</p>
 <section id="binary-and-ordinal-correctness-as-response" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="binary-and-ordinal-correctness-as-response"><span class="header-section-number">3.1</span> Binary and Ordinal Correctness as Response</h3>
 <p><a href="#fig-response-67">Figure&nbsp;6</a> gives an overview of all responses to size assessments of the marked tiles. The panels are ordered according to the difference in signal and hypothesized difficulty from easiest (left) to hardest (right) comparison. We see, that in general the percentage of correct responses decreases from left to right. Design does not seem to matter for easy comparisons (BD, BC) or the hard comparison (CD). The three comparisons in the middle show interesting patterns, highlighted in the reordered <a href="#fig-response-67b">Figure&nbsp;7</a>. Colored letters below and above the bars encode significances between pairs of bars of the same color: two proportions are significantly different at a 5% significance level, if they do not have a letter in common <span class="citation" data-cites="piephoAlgorithmLetterBasedRepresentation2004">(<a href="#ref-piephoAlgorithmLetterBasedRepresentation2004" role="doc-biblioref">Piepho 2004</a>)</span>. Significances are adjusted for multiple comparisons as implemented in the <code>multcomp</code> package <span class="citation" data-cites="hothornSimultaneousInferenceGeneral2008">(<a href="#ref-hothornSimultaneousInferenceGeneral2008" role="doc-biblioref">Hothorn et al. 2008</a>)</span>.</p>
@@ -1349,10 +1850,12 @@ ggplot2 3.4.0.
 </div>
 </div>
 </div>
+<p>Besides intrinsic reference lines, the overall size of the stimulus might be another factor contributing to the difference in accuracy between the tiles and the wedges. In the shown example, the marked tiles have an area between <span class="math inline">\(133 \times 55 = 7315\)</span> pixels (for D) to <span class="math inline">\(144 \times 55 = 7920\)</span> pixels (for B), while the pie wedges are based on circles with a diameter of 105 pixels, and therefore cover visually more than twice the area of the tiles in the barchart. The area of D in form of a pie-wedge is <span class="math inline">\(\frac{44.4}{100} \times 105^2 \pi \approx\)</span> 15,378 pixels and B has an area of <span class="math inline">\(\frac{47.6}{100} \times 105^2 \pi \approx\)</span> 16,487 pixels.</p>
+<p>There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the <strong>angle</strong> of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its <strong>area</strong> (as part of the circle or some derivative) or the <strong>arc length</strong> of the wedge. Studies by <span class="citation" data-cites="kosaraJudgmentErrorPie2016">Kosara and Skau (<a href="#ref-kosaraJudgmentErrorPie2016" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="kosaraEvidenceAreaPrimary2019">Kosara (<a href="#ref-kosaraEvidenceAreaPrimary2019" role="doc-biblioref">2019</a>)</span> show that the area of a piece in a pie chart is the primary evaluation method.</p>
 </section>
 <section id="how-much-time-did-participants-spend-on-each-task" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="how-much-time-did-participants-spend-on-each-task"><span class="header-section-number">3.2</span> How much time did participants spend on each task?</h3>
-<p>Note: we do not have certainty for round 7. We also do not have timing by individual comparison.</p>
+<p>Note: we do not have certainty for round 7. We also do not have timing by individual comparisons.</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-time-67_60c59964feca4e93181c2ef87654461a">
 <div class="cell-output-display">
 <div id="fig-time-67" class="quarto-figure quarto-figure-center anchored">
@@ -1389,11 +1892,11 @@ Number of Fisher Scoring iterations: 2</code></pre>
 </section>
 <section id="sec-modelX" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="sec-modelX"><span class="header-section-number">4</span> Model X: Comparing Aligned and Unaligned Elements Facets</h2>
-<p>The survey setup and all stimuli are shown in <a href="#tbl-tasks-7">Table&nbsp;2</a>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
+<p>The survey setup and all stimuli are shown in <a href="#tbl-tasks-7">Table&nbsp;3</a>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
 <p>For each chart, panelists were asked to compare all marked tiles against each other.</p>
 <div id="tbl-tasks-7" class="anchored">
 <table class="table">
-<caption>Table&nbsp;2: Setup of questions and stimuli for Round 7.</caption>
+<caption>Table&nbsp;3: Setup of questions and stimuli for Round 7.</caption>
 <colgroup>
 <col style="width: 20%">
 <col style="width: 40%">
@@ -1434,8 +1937,6 @@ Number of Fisher Scoring iterations: 2</code></pre>
 </table>
 </div>
 <p>For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same.</p>
-<p>The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D &lt; C &lt; A &lt; B. Nominally, the differences between the size of the marked elements can be expressed as multiples in <span class="math inline">\(\delta = 0.8\)</span>, with <span class="math inline">\(B = A + 2\delta = C + 3 \delta = D + 4 \delta\)</span>. A difference of <span class="math inline">\(\delta = 0.8\)</span> corresponds to about a <span class="math inline">\(3^\degree\)</span> difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy.</p>
-<p>There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the <strong>angle</strong> of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its <strong>area</strong> (as part of the circle or some derivative) or the <strong>arc length</strong> of the wedge. Studies by <span class="citation" data-cites="kosaraJudgmentErrorPie2016">Kosara and Skau (<a href="#ref-kosaraJudgmentErrorPie2016" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="kosaraEvidenceAreaPrimary2019">Kosara (<a href="#ref-kosaraEvidenceAreaPrimary2019" role="doc-biblioref">2019</a>)</span> show that the area of a piece in a pie chart is the primary evaluation method.</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-pies_07e68220d50e3e4ed18e676f88f1742d">
 <div class="cell-output-display">
 <div id="fig-pies" class="quarto-figure quarto-figure-center anchored">

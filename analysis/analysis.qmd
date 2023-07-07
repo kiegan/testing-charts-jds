@@ -171,12 +171,12 @@ d2 <- 1+var(round2_adj$weight)/mean(round2_adj$weight)^2
 n1 <- nrow(round1_adj)
 n2 <- nrow(round2_adj)
 
-neff1 <- n1/d1
+neff1 <- n1/d1 # same as neff(round1_adj$weight)
 neff2 <- n2/d2
 
 denom <- n1/d1 + n2/d2
 
-lambda <- n1/(d1*denom) 
+lambda <- n1/(d1*denom) # same as calculate_lambda(round1_adj$weight, round2_adj$weight)
 ```
 
 
@@ -545,7 +545,7 @@ coefs_certainty %>%
 
 ```{r}
 #| out-width: 80%
-#| fig-cap: "Certainty by task and correctness. Correct answers in the unaligned task have the least certainty associated with them. An incoorect response on the unaligned task shows a significant oost in certainty. "
+#| fig-cap: "Certainty by task and correctness. Correct answers in the unaligned task have the least certainty associated with them. An incoorect response on the unaligned task shows a significant boost in certainty. "
 round_12_certainty_long %>% 
   ggplot(aes(x = Response, weight=weight)) + geom_bar() + 
   ylab("Number of (weighted) responses") + 
@@ -563,23 +563,7 @@ round_12_certainty_long %>%
 
 ## Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts {#sec-model2}
 
-A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. 
-The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B.
-
-```{r}
-#| label: fig-tasks-67
-#| fig-cap: "Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated pairwise for their size difference. "
-#| fig-height: 3
-#| fig-width: 4
-#| layout-nrow: 1
-#| fig-subcap:
-#| - "**Round 6**: Facetted barcharts"
-#| - "**Round 7**: Facetted piecharts with unaligned wedges"
-#| - "**Round 7**: Facetted piecharts with aligned wedges"
-knitr::include_graphics("images/Round 6 - Sept 2022.png")
-knitr::include_graphics("images/round7/unaligned pie - all.png")
-knitr::include_graphics("images/round7/aligned pie - all.png")
-```
+The data this section is based on comes from (a part) of Round 6 and all responses from Round 7. 
 
 ```{r combine_rnds67}
 lambda6 <- calculate_lambda(round6_adj$weight, round7_adj$weight)
@@ -639,6 +623,88 @@ response_67 <- rbind(
 
 survey_67 <- svydesign(~CaseId, data = response_67, weights = ~weight)
 ```
+
+A total of three different charts were shown to (a part) of the panelists from Round 6 and all panelists of Round 7. 
+Each of the charts has four labelled pieces A, B, C, and D.
+
+```{r}
+#| label: fig-tasks-67
+#| fig-cap: "Stimuli shown to panelists. For each of the charts, all marked pieces were evaluated pairwise for their size difference. "
+#| fig-height: 3
+#| fig-width: 4
+#| layout-nrow: 1
+#| fig-subcap:
+#| - "**Round 6**: Facetted barcharts"
+#| - "**Round 7**: Facetted piecharts with unaligned wedges"
+#| - "**Round 7**: Facetted piecharts with aligned wedges"
+knitr::include_graphics("images/Round 6 - Sept 2022.png")
+knitr::include_graphics("images/round7/unaligned pie - all.png")
+knitr::include_graphics("images/round7/aligned pie - all.png")
+```
+
+The questions asked for each of these charts were of the form: "which of the marked pieces is bigger? Just your best guess is fine". 
+
+A.	A or B?
+
+RESPONSE OPTIONS:
+
+1.	A is bigger
+2.	B is bigger
+3.	They are the same
+
+Each participant was asked a total of six comparisons of this type: A vs B, A vs C, A vs D, B vs C, B vs C, and C vs D. The number of valid responses and the resulting effective sample sizes are shown in @tbl-combine-67
+
+
+```{r tbl-combine-67}
+#| label: tbl-combine-67
+#| tbl-cap: Table of the number of effective responses by task 
+dframe <- data.frame(
+  round = c("Round 6", "Round 7", "Round 7"),
+  task = c("Bar", "Pie-Aligned", "Pie-Unaligned"),
+  responses = c(nrow(response_6), nrow(response_7 %>% filter(task=="Pie\nA-")), nrow(response_7 %>% filter(task=="Pie\nUn-"))),
+  effective = c(neff(response_6$weight), neff((response_7 %>% filter(task=="Pie\nA-"))$weight),
+                neff((response_7 %>% filter(task=="Pie\nUn-"))$weight)),
+  participants = c(length(unique(response_6$CaseId)),
+                   nrow(unique(response_7 %>% filter(task=="Pie\nA-") %>% dplyr::select(CaseId))),
+                   nrow(unique(response_7 %>% filter(task=="Pie\nUn-") %>% dplyr::select(CaseId)))),
+  lambda = c(calculate_lambda(response_6$weight, response_7$weight), 
+             calculate_lambda((response_7 %>% filter(task=="Pie\nA-"))$weight, 
+                               c(response_6$weight,(response_7 %>% filter(task=="Pie\nUn-"))$weight)),
+             calculate_lambda((response_7 %>% filter(task=="Pie\nUn-"))$weight, 
+                               c(response_6$weight,(response_7 %>% filter(task=="Pie\nA-"))$weight)))
+)
+
+dframe %>% 
+  group_by(round) %>%
+  gt() %>%
+  tab_header("Number of (effective) responses by task") %>%
+  cols_label(
+    responses = md("number of responses:<br>nominal"),
+    effective = md("number of responses:<br>effective"),
+    participants = md("number of participants"),
+    lambda = md("λ"),
+  ) %>%
+  fmt_number(
+    everything(), 
+    decimals = 0,
+    use_seps=TRUE
+  ) %>%
+  fmt_number(
+    columns = effective,
+    decimals = 1
+  ) %>%
+  fmt_number(
+    columns = c(lambda),
+    decimals = 4
+  ) %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    row_group.font.weight = "bold"
+  )
+```
+
+The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B. Nominally, the differences between the size of the marked elements can be expressed as multiples in $\delta = 0.8$, with $B = A + 2\delta = C + 3 \delta = D + 4 \delta$. A difference of $\delta = 0.8$ corresponds to about a $3^\degree$ difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy. 
+
 
 ### Binary and Ordinal Correctness as Response
 
@@ -869,10 +935,14 @@ coefs_67 %>%
   )
 ```
 
+Besides intrinsic reference lines, the overall size of the stimulus might be another factor contributing to the difference in accuracy between the tiles and the wedges. In the shown example, the marked tiles have an  area between $133 \times 55 = 7315$  pixels (for D) to  $144 \times 55 = 7920$ pixels (for B), while the pie wedges  are based on circles with a diameter of 105 pixels, and therefore cover visually more than twice the area of the tiles in the barchart. The area of D in form of a pie-wedge is $\frac{44.4}{100} \times 105^2 \pi  \approx$ 15,378 pixels and B has an area of $\frac{47.6}{100} \times 105^2 \pi  \approx$ 16,487 pixels.
+
+There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the **angle** of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its **area** (as part of the circle or some derivative) or the **arc length** of the wedge. Studies by  @kosaraJudgmentErrorPie2016 and @kosaraEvidenceAreaPrimary2019 show that the area of a piece in a pie chart is the primary evaluation method.
+
 
 ### How much time did participants spend on each task?
 
-Note: we do not have certainty for round 7. We also do not have timing by individual comparison.
+Note: we do not have certainty for round 7. We also do not have timing by individual comparisons.
 
 ```{r vis-time-pie}
 #| label: fig-time-67
@@ -913,9 +983,7 @@ For each chart, panelists were asked to compare all marked tiles against each ot
 
 For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same. 
 
-The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B. Nominally, the differences between the size of the marked elements can be expressed as multiples in $\delta = 0.8$, with $B = A + 2\delta = C + 3 \delta = D + 4 \delta$. A difference of $\delta = 0.8$ corresponds to about a $3^\degree$ difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy. 
 
-There are different possible strategies for evaluating the size of a wedge in a pie chart. Panelists can use the **angle** of the wedge (or a suitable derivative of it, such as the complementary angle or the remainder to 180 degrees), its **area** (as part of the circle or some derivative) or the **arc length** of the wedge. Studies by  @kosaraJudgmentErrorPie2016 and @kosaraEvidenceAreaPrimary2019 show that the area of a piece in a pie chart is the primary evaluation method.
 
 ```{r eval=TRUE}
 widths <- c(28, 16, 31, 38)

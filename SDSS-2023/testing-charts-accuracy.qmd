@@ -289,7 +289,7 @@ marginal_results <- data.frame(abcd)
 
 
 The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. Rounds 1 and 2 are combined by adjusting the weights  with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
-Because each particpant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
 
 ```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
