@@ -13,13 +13,16 @@ date: last-modified
 bibliography: references.bib 
 ---
 
-```{r run-to-update-bibfile, eval=TRUE, include=FALSE}
+```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
 keys <- rbbt::bbt_detect_citations("analysis.qmd")
 citations_only <- grep(pattern="[fig|tbl]-.*", keys, value=TRUE, invert=TRUE)
 rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
                     library_id=rbbt::bbt_library_id('Graphics Research'),
                     translator='bibtex')
 ```
+
+
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
                       eval = T, 
@@ -614,8 +617,8 @@ response_7 <- round7_adj %>%
 
 # D < C < A < B.
 response_67 <- rbind(
-    response_6 %>% select(CaseId, labelled, task, responses, weight),
-    response_7 %>% select(CaseId, labelled, task, responses, weight)
+    response_6 %>% dplyr::select(CaseId, labelled, task, responses, weight),
+    response_7 %>% dplyr::select(CaseId, labelled, task, responses, weight)
   ) %>% mutate(
   correct = ifelse(labelled %in% c("AB", "BC", "BD"), responses == "B is bigger", 
               ifelse(labelled %in% c("AC", "AD"), responses == "A is bigger",
@@ -625,7 +628,8 @@ response_67 <- rbind(
   labelled = factor(labelled, levels=c("BD", "BC", "AB", "AD", "AC", "CD")),
   signal = ifelse(labelled=="BD", 4, 
              ifelse(labelled=="BC", 3,
-               ifelse(labelled %in% c("AB", "AD"), 2, 1)))
+               ifelse(labelled %in% c("AB", "AD"), 2, 1))),
+  task_labelled = factor(paste(task, labelled, sep="_"))
 )
 
 
@@ -636,11 +640,50 @@ survey_67 <- svydesign(~CaseId, data = response_67, weights = ~weight)
 
 @fig-response-67 gives an overview of all responses to size assessments of the marked tiles. The panels are ordered according to the difference in signal and hypothesized difficulty from easiest (left) to hardest (right) comparison. We see, that in general the percentage of correct responses decreases from left to right. 
 Design does not seem to matter for easy comparisons (BD, BC) or the hard comparison (CD). 
-The three comparisons in the middle show interesting patterns, highlighted in the reordered @fig-response-67b.
+The three comparisons in the middle show interesting patterns, highlighted in the reordered @fig-response-67b. Colored letters below and above the bars encode significances between pairs of bars of the same color: two proportions are significantly different at a 5% significance level, if they do not have a letter in common [@piephoAlgorithmLetterBasedRepresentation2004]. Significances are adjusted for multiple comparisons as implemented in the `multcomp` package [@hothornSimultaneousInferenceGeneral2008]. 
+
+```{r model-67, warning = FALSE}
+# same model as for plot 
+logit_67_correct <- svyglm(correct~task_labelled-1, family=quasibinomial(), design=survey_67)
+
+logit_67_correct3 <- svyglm(correct3~task_labelled-1, family=quasibinomial(), design=survey_67)
+
+ci_confint <- svyby(~correct, by=~task_labelled, design=survey_67, svyciprop)
+ci_confint3 <- svyby(~correct3, by=~task_labelled, design=survey_67, svyciprop)
+
+
+coefs_67 <- broom::tidy(logit_67_correct)
+coefs_67_relaxed <- broom::tidy(logit_67_correct3)
+
+# create all pairwise comparisons for tasks and questions.
+cross_compare <- glht(logit_67_correct, mcp(task_labelled="Tukey"))
+cross_compare3 <- glht(logit_67_correct3, mcp(task_labelled="Tukey"))
+
+# get letters for each confidence 
+ci_confint$letters <- cld(cross_compare)$mcletters$Letters
+ci_confint3$letters <- cld(cross_compare3)$mcletters$Letters
+
+ci_confint <- ci_confint %>% 
+separate_wider_delim(
+  task_labelled, delim = "_", names =c("task", "labelled")
+)  %>% mutate(
+  task = factor(task, levels=c("Bar", "Pie\nA-", "Pie\nUn-")),
+  labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD"))
+)
+
+ci_confint3 <- ci_confint3 %>% 
+separate_wider_delim(
+  task_labelled, delim = "_", names =c("task", "labelled")
+)  %>% mutate(
+  task = factor(task, levels=c("Bar", "Pie\nA-", "Pie\nUn-")),
+  labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD"))
+)
+```
+
 
 ```{r}
 #| label: fig-response-67
-#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs. Responses to the same comparison are shown side-by-side for the three designs. Comparisons are ordered from least difficult (BD) to most difficult (CD). The increasing difficulty of comparisons is reflected in the overall decreasing percentage of correct responses (height of blue tiles). The overlaid rectangles represent 95% confidence intervals."
+#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs. Responses to the same comparison are shown side-by-side for the three designs. Comparisons are ordered from least difficult (BD) to most difficult (CD). The increasing difficulty of comparisons is reflected in the overall decreasing percentage of correct responses (height of blue tiles). The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter."
 #| fig-height: 4.25
 #| fig-width: 7
 #| out-width: 80%
@@ -709,14 +752,19 @@ response_67 %>%
     alpha = 1, colour = "black", linewidth = 0.25,
     data = props_ci
   ) +
-  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25))
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limits = c(-0.1, 1.1)) + 
+  geom_text(aes(label=letters), y = -0.05, data = ci_confint, colour = "steelblue") +
+  geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
 ```
 
 For the facetteed barcharts, there is an abrupt drop in accuracy of responses between 'easy' and 'hard' comparisons. (HH: All of these comparisons could be affected by the context of their light blue neighbors. 'B' is bigger than its light blue neighbor, and also the overall biggest. 'A' is only a bit smaller than 'B', but quite a bit smaller than the light blue bar next to it. This seems to make comparisons with A harder.)  For pie charts the accuracy in responses is reacting a lot more gentle to the increasing difficulty. There is no apparent effect in pie charts due to alignment. However, all comparisons are very close to 50% - the intrinsic reference lines [@lipkusVisualCommunicationRisk1999] in pie charts (at 180 degrees, and to a lesser degree at 90 degree angles) might be helping with this particular set of comparisons.
 
+
+
+
 ```{r}
 #| label: fig-response-67b
-#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs, reordered. Now, responses to the same design are shown side-by-side across comparisons. Comparisons are ordered from least difficult (BD) to most difficult (CD). The three different designs result in different response patterns for increasing comparison difficulty. "
+#| fig-cap: "Responses for comparisons AB through CD on the three different facetted designs, reordered. Now, responses to the same design are shown side-by-side across comparisons. Comparisons are ordered from least difficult (BD) to most difficult (CD). The three different designs result in different response patterns for increasing comparison difficulty.  "
 #| fig-height: 4.25
 #| fig-width: 7
 #| out-width: 80%
@@ -733,7 +781,6 @@ props_ci <- props_ci %>% separate_wider_delim(
   task = factor(task, levels=c("Bar", "Pie\nA-", "Pie\nUn-")),
   labelled = factor(labelled, levels =c("BD", "BC", "AB", "AD", "AC", "CD"))
 )
-
 
 response_67 %>% 
   mutate(
@@ -785,15 +832,37 @@ response_67 %>%
     alpha = 1, colour = "black", linewidth = 0.25,
     data = props_ci
   ) +
-  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25))
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limits = c(-0.1, 1.1)) + 
+  geom_text(aes(label=letters), y = -0.05, data = ci_confint, colour = "steelblue") +
+  geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
 ```
 
-```{r model-67}
-# still putzing around with it
-logit_67_correct <- svyglm(correct~task+labelled + task, family=quasibinomial(), design=survey_67)
 
-logit_67_cont <- svyglm(correct~task*signal, family=quasibinomial(), design=survey_67)
-
+```{r estimates, eval=FALSE}
+coefs_67 %>% 
+  mutate(
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))) %>%
+  gt() %>%
+  tab_header("Estimates for Model 3.2",
+             " accuracy of responses across pairwise evalulations") %>%
+  cols_label(
+    estimate = "log odds",
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
 ```
 
 
