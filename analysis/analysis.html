@@ -77,7 +77,7 @@ div.csl-indent {
   <li><a href="#sec-model2" id="toc-sec-model2" class="nav-link" data-scroll-target="#sec-model2"><span class="header-section-number">3</span> Model 2: Aligned and unaligned comparisons between facetted barcharts and facetted piecharts</a>
   <ul class="collapse">
   <li><a href="#binary-and-ordinal-correctness-as-response" id="toc-binary-and-ordinal-correctness-as-response" class="nav-link" data-scroll-target="#binary-and-ordinal-correctness-as-response"><span class="header-section-number">3.1</span> Binary and Ordinal Correctness as Response</a></li>
-  <li><a href="#how-certain-are-participants-1" id="toc-how-certain-are-participants-1" class="nav-link" data-scroll-target="#how-certain-are-participants-1"><span class="header-section-number">3.2</span> How certain are participants?</a></li>
+  <li><a href="#how-much-time-did-participants-spend-on-each-task" id="toc-how-much-time-did-participants-spend-on-each-task" class="nav-link" data-scroll-target="#how-much-time-did-participants-spend-on-each-task"><span class="header-section-number">3.2</span> How much time did participants spend on each task?</a></li>
   </ul></li>
   <li><a href="#sec-modelX" id="toc-sec-modelX" class="nav-link" data-scroll-target="#sec-modelX"><span class="header-section-number">4</span> Model X: Comparing Aligned and Unaligned Elements Facets</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -1350,8 +1350,41 @@ ggplot2 3.4.0.
 </div>
 </div>
 </section>
-<section id="how-certain-are-participants-1" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="how-certain-are-participants-1"><span class="header-section-number">3.2</span> How certain are participants?</h3>
+<section id="how-much-time-did-participants-spend-on-each-task" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="how-much-time-did-participants-spend-on-each-task"><span class="header-section-number">3.2</span> How much time did participants spend on each task?</h3>
+<p>Note: we do not have certainty for round 7. We also do not have timing by individual comparison.</p>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-time-67_60c59964feca4e93181c2ef87654461a">
+<div class="cell-output-display">
+<div id="fig-time-67" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-time-67-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: Comparisons for aligned pie slices were on average the fastest. Comparisons in the facetted barcharts took the longest. The difference in average times are significant for aligned pies versus either of the other designs, but not different between barcharts and unaligned pie charts.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/model-time_dfa4df6ff9235a0e0786a4cfe872033d">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+svyglm(formula = time_spent ~ task, design = survey_67)
+
+Survey design:
+svydesign(~CaseId, data = response_67, weights = ~weight)
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    98.841      5.865  16.851  &lt; 2e-16 ***
+taskPie\nA-   -40.637      6.267  -6.484 1.25e-10 ***
+taskPie\nUn-   -6.351      6.712  -0.946    0.344    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for gaussian family taken to be 6933.628)
+
+Number of Fisher Scoring iterations: 2</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="sec-modelX" class="level2" data-number="4">
@@ -1408,12 +1441,12 @@ ggplot2 3.4.0.
 <div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;9: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-pies">Figure&nbsp;8</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <strong>?@tbl-model7</strong>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
+<p><a href="#fig-pies">Figure&nbsp;9</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <strong>?@tbl-model7</strong>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
 Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
 <p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
 <p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>

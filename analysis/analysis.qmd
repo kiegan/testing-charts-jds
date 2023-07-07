@@ -612,18 +612,22 @@ response_7 <- round7_adj %>%
   mutate(
     question = parse_number(question),
     labelled = c("AB", "AC", "AD", "BD", "BC", "CD")[question],
+    time_spent = ifelse(parse_number(task) == 1, NOLA1_TOTALTIME, NOLA2_TOTALTIME),
     task = c("Pie\nUn-", "Pie\nA-")[parse_number(task)]
   )
 
 # D < C < A < B.
 response_67 <- rbind(
-    response_6 %>% dplyr::select(CaseId, labelled, task, responses, weight),
-    response_7 %>% dplyr::select(CaseId, labelled, task, responses, weight)
+    response_6 %>% dplyr::select(CaseId, labelled, task, responses, 
+                                 time_spent = NOLA1_TOTALTIME, weight),
+    response_7 %>% dplyr::select(CaseId, labelled, task, responses, 
+                                 time_spent, weight)
   ) %>% mutate(
   correct = ifelse(labelled %in% c("AB", "BC", "BD"), responses == "B is bigger", 
               ifelse(labelled %in% c("AC", "AD"), responses == "A is bigger",
                      responses == "C is bigger")),
   correct3 = correct | responses == "They are the same",
+  time_spent = parse_number(time_spent),
   response3 = factor(correct+correct3, labels = c("Wrong", "Same", "Correct")),
   labelled = factor(labelled, levels=c("BD", "BC", "AB", "AD", "AC", "CD")),
   signal = ifelse(labelled=="BD", 4, 
@@ -866,10 +870,25 @@ coefs_67 %>%
 ```
 
 
-### How certain are participants?
+### How much time did participants spend on each task?
 
-```{r data-certainty-pie}
+Note: we do not have certainty for round 7. We also do not have timing by individual comparison.
 
+```{r vis-time-pie}
+#| label: fig-time-67
+#| fig-cap: "Comparisons for aligned pie slices were on average the fastest. Comparisons in the facetted barcharts took the longest. The difference in average times are significant for aligned pies versus either of the other designs, but not different between barcharts and unaligned pie charts."
+response_67 %>%
+  mutate(task = reorder(task, time_spent)) %>%
+  ggplot(aes(y = task, x = time_spent)) + 
+  geom_boxplot() +
+  scale_x_log10(breaks=c(1, 5, 10, 20, 30, 60, 120, 300, 600), labels = c("1 sec", "5 secs", "10", "20", "30", "1 min", "2", "5", "10 mins")) + 
+  ylab("") + xlab("") + 
+  ggtitle("Time spent on comparing all six pairs by design") 
+```
+
+```{r model-time}
+time_mod <- svyglm(time_spent~task, design = survey_67)
+summary(time_mod)
 ```
 
 
