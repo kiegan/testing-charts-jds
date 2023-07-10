@@ -1,0 +1,604 @@
+---
+title: "Testing Charts: viewer's perceptual accuracy in surveys"
+short-title: Testing charts in surveys # running title
+author:
+  - first: Kiegan                 # first name
+    first-init: K.              # initial of first name
+    last: Rice                  # last name
+    marker: '1,2'               # identifier for the affiliation
+    footnote-id: 1              # optional identifier for the footnote
+    email: foo@bar.com          # optional email address
+  - first: Brett
+    first-init: B.
+    last: Berger
+    marker: 2
+    footnote-id: 2
+  - first: Carl
+    first-init: C.
+    last: Camp
+    marker: 3
+  - first: David
+    first-init: D.
+    last: Dodge
+    marker: 3
+footnote:
+  - content: Corresponding author
+    type: corresp               # set type for the corresponding author
+    id: 1
+  - content: Another footnote.
+    id: 2
+affiliation:
+  - institution: University of Achievement
+    prefix: Department A        # optional
+    country: Country A
+    marker: 1
+  - institution: Institution B
+    country: Country B
+    marker: 2
+  - institution: Institution C
+    country: Country C
+    marker: 3
+bibliography: references.bib
+abstract: "The use of visuals is a key component in scientific communication, and decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
+keywords: 'list, keywords, here, 3-6, are, fine'
+format:
+  pdf:
+    template: template-jdsart.cls.tex
+    include-in-header: 
+      - text: |
+          \usepackage{amsfonts,amsmath,amssymb,amsthm}
+          \usepackage{booktabs}
+          \usepackage{graphicx}
+          \usepackage{longtable}
+          \usepackage{hyperref}
+      - file: edits.tex
+    cite-method: natbib
+---
+
+<!--
+\newcommand{\hh}[1]{{\textcolor{orange}{#1}}}
+\setlength{\parindent}{0pt}
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+  \usepackage{booktabs}
+  \usepackage{lipsum}
+  \usepackage{subfig}
+  \usepackage{graphicx}
+  \usepackage{longtable}
+\hh{hello world!}
+-->
+
+```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
+keys <- rbbt::bbt_detect_citations("testing-charts-accuracy.Rmd")
+citations_only <- grep(pattern="[fig|tbl|eq][-|:].*", keys, value=TRUE, invert=TRUE)
+rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
+                    library_id=rbbt::bbt_library_id('Graphics Research'),
+                    translator='bibtex')
+```
+
+<!-- Article Types -->
+<!-- https://jds-online.org/journal/JDS/information/Article%20Types -->
+
+<!-- Statistical Data Science -->
+
+<!-- This section is the home base of the reformed journal covering statistical methods that are motivated by real-world applications. It is not for papers with technical proofs that push the frontiers of theoretical developments. In addition to classic topics in Statistics, cutting-edge works on big data, visualization, machine learning, and artificial intelligence are also welcome. -->
+
+<!-- Computing in Data Science -->
+
+<!-- Computing is an indispensable component of all data science and big data applications. As more journals on data science and big data emerge, it is of great interest for the data science community to have a highly regarded outlet with a specialization in computing, covering a wide spectrum from methods, algorithms, software implementations, to case studies. Existing journals on statistical computing have their own traditions and may not meet the increasing demands. Some research works on cutting-edge problems may not fit well in any existing journal. -->
+
+<!-- This section covers the following types of articles. -->
+<!-- 1. Software: Articles here are similar to those in the Journal of Statistical Software. They are not referencing manuals but vignettes that introduce the methods being implemented as well as the usage of the software with reproducible code chunks. The software implementation can be in any computer language with a sufficiently large user base. -->
+<!-- 2. Algorithms: Articles here focus on the performance side of the computing needs arising from domain applications. For example, one can propose algorithms that make infeasible tasks feasible or speed up existing algorithms. -->
+<!-- 3. Methods: Articles here are similar to those in Journal of Computational and Graphic Statistics or Statistics and Computing. The computing methods need to be motivated by a domain application with the properties carefully studied. -->
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = F, 
+                      eval = T, 
+                      fig.path="./figures/", # figures are created on the fly, images are pictures like the stimuli
+                      fig.env="figure*", 
+                      fig.align = "center",
+                      out.width = "50%",
+                      dpi = 72, # we can set the resolution up to 300 later.
+                      cache = TRUE) 
+library(readr)
+library(tidyverse)
+library(knitr)
+library(bibtex)
+theme_set(theme_bw())
+
+library(readxl)
+library(lubridate)
+library(patchwork)
+library(survey)
+#library(ggmosaic)
+library(ggpcp)
+library(broom)
+library(latex2exp)
+library(gt) # grammar of tables
+
+# Kish's Effective Sample Size
+neff <- function(weight) {
+  n <- length(weight)
+  L <- var(weight)/mean(weight)^2
+  n/(1+L)
+}
+
+# inverse of the logistic function
+inv_logit <- function(x) {exp(x)/(1+ exp(x))}
+
+# calculate lambda for combining weights
+calculate_lambda <- function(weights1, weights2) {
+  d1 <- 1+var(weights1)/mean(weights1)^2
+  d2 <- 1+var(weights2)/mean(weights2)^2
+
+  n1 <- length(weights1)
+  n2 <- length(weights2)
+
+  denom <- n1/d1 + n2/d2
+
+  lambda <- n1/(d1*denom) 
+  lambda
+}
+
+vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
+```
+
+```{r data}
+# other github repo. 
+round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
+round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
+
+round1_adj <- round1 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
+            mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
+                   CorrectABCD = paste(CorrectAB, CorrectCD),
+                   one = 1)
+
+round2_adj <- round2 %>% 
+            filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
+            mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
+                   CorrectABCD = paste(CorrectAB, CorrectCD),
+                   one = 1)
+
+survey1 <- survey::svydesign(
+  data = round1_adj, 
+  ids = ~CaseId, weights = ~weight)
+
+survey2 <- survey::svydesign(
+  data = round2_adj,
+  ids = ~CaseId, weights = ~weight)
+```
+
+
+## Introduction
+
+<!-- What is our main objective? -->
+What do viewers see, when we show them a data chart? A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts. @clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons. What we always need to remember, is that these study results are based on only a few individuals recruited from the authors' coworkers and their spouses. 
+@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform.
+
+<!-- Bias from crowd-sourcing? sample size?  -->
+crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017 
+
+
+Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.  
+
+
+```{r}
+#| label: fig-aligned-unaligned
+#| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. While the predominant response for the unaligned pair on the left is 'they are of the same size', more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
+#| fig-subcap:
+#| - "**Unaligned bars**"
+#| - "**Aligned bars**"
+#| fig-cap-location: "bottom"
+#| layout: [[45,45], [100]]
+#| fig-align: "center"
+#| out-width: 100%
+knitr::include_graphics("images/round5-modified.PNG")
+knitr::include_graphics("images/round3-modified.PNG")
+```
+
+<!-- motivate the use of just noticeable differences -->
+Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question with varied signals multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. We are using results from studies on barcharts and pie charts [@luModelingJustNoticeable2022] to inform the differences in charts shown to survey panelists.
+
+
+
+- How do structural design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+- How do aesthetic design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+
+- How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization? 
+
+
+
+
+
+
+
+Structural design choices 
+
+Mapping, Stacked bar, Vertical, Horizontal, Horizontal wide 
+
+Facetted bar 
+
+Only have a split sample for this  
+
+Pie, Alignment  
+
+We have this for all above mappings, but the setup is a little different for facetted bar 
+
+
+Aesthetic design choices (structural choices seems stronger/there could be a lot to talk about there… should we skip aesthetic on this one?) 
+
+Colors 
+
+Use of gridlines 
+
+Outcomes/responses for modeling:  
+
+Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) 
+
+Ordinal response (a/b/they are the same) 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Time spent on question (continuous, in seconds) 
+
+
+Certainty  
+
+I’ve noted this below, but: how to model? Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+## Survey setup - Stimulus description
+
+\autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
+The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
+
+<!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
+
+<!-- describe stimulus -->
+Both charts in \autoref{tbl-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
+
+1. A is bigger
+2. B is bigger
+3. They are the same
+
+Answer 2 is the correct answer for both charts. Both charts are shown at the same size, i.e. in both cases the difference in size between the bars is exactly the same, the vertical distance between the bars is the exact same amount.
+This leaves the vertical positioning of the bars as the only difference between the charts. Any differences in observed accuracy can therefore be attributed to this difference in presentation.
+
+```{r}
+#| label: tbl-tasks-12
+#| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. While the predominant response for the unaligned pair on the left is 'they are of the same size', more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
+#| tbl-subcap:
+#| - "**Unaligned bars**"
+#| - "**Aligned bars**"
+#| layout: [[45,45], [100]]
+#| fig-align: "center"
+#| out-width: 100%
+knitr::include_graphics("../SDSS-2023/images/vertical-ab.PNG")
+knitr::include_graphics("../SDSS-2023/images/vertical-cd.PNG")
+```
+
+
+<!-- |                                   |                                   | -->
+<!-- |-----------------------------------|-----------------------------------| -->
+<!-- | **Unaligned positions**           | **Aligned positions**             | -->
+<!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
+
+<!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
+
+
+
+
+DATA THAT MAY BE INCLUDED IN ANALYSIS:  
+
+ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned 
+
+ROUND 3: Horizontal and horizontal wide, aligned and unaligned 
+
+ROUND 5: Horizontal wide gridlines (only dark grid split sample) 
+
+ROUND 6: Facetted bar (split sample w/o forcing choice) 
+
+ROUND 7: Aligned vs unaligned pie (full sample) 
+
+
+## Data Analysis and Results
+
+
+COMBINING SAMPLES AND WEIGHTING NOTES:  
+
+\hh{We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].}
+
+Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
+
+Analysis should be done using the ‘survey’ package and weights should be taken into account. 
+
+
+All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
+
+
+```{r lambdas}
+n1 <- nrow(round1_adj)
+n2 <- nrow(round2_adj)
+neff1 <- svytotal(~one, survey1, deff=TRUE)
+neff2 <- svytotal(~one, survey2, deff=TRUE)
+#abcd1 <- svytotal(~CorrectABCD, survey1, deff=TRUE)
+#abcd2 <- svytotal(~CorrectABCD, survey2, deff=TRUE)
+
+d1 <- 1 + cv(neff1)^2
+d2 <- 1 + cv(neff2)^2
+
+denom <- n1/d1 + n2/d2
+
+lambda <- n1/(d1*denom) 
+```
+
+
+```{r combine_rounds_1_and_2}
+round_12 <- round1_adj %>% 
+            mutate(weight = lambda[1]*weight) %>% 
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
+    rbind(round2_adj %>% 
+            mutate(weight = (1-lambda[1])*weight) %>% 
+            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
+round_12_long <- round_12 %>% 
+  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+
+survey_12 <- 
+  survey::svydesign(
+  data = round_12_long, 
+  ids = ~CaseId, weights = ~weight)
+```
+
+```{r ttest}
+paired <- svyttest(Response~Question, survey_12)
+abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
+
+marginal_results <- data.frame(abcd)
+```
+
+
+The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. Rounds 1 and 2 are combined by adjusting the weights  with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
+Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
+
+
+```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| label: fig-alignment
+#| out-width: 80%
+#| fig-env: figure
+
+gg1 <- round_12_long %>%
+  mutate(
+    Response = ifelse(Response, "Correct", "Not correct"),
+    Response = factor(Response, levels=c("Not correct", "Correct")),
+    Question = ifelse(Question=="CorrectAB",
+                      "Unaligned: A or B?", "Aligned: C or D?")
+  ) %>%
+#  filter(Response == "Correct") %>%
+  ggplot(aes(x = Question, fill = Response, weight = weight)) +
+  geom_bar() +
+  ylab("Number of (effective) Respondents") +
+  xlab("") +
+  scale_fill_manual(values=c("grey", "forestgreen")) +
+  scale_y_continuous(
+      sec.axis = sec_axis(~./sum(round_12$weight)*100,
+                          name="Percent responses")
+  ) +
+  theme(legend.position = "bottom") +
+  ggtitle("(a) Accuracy of survey responses")  +
+  geom_rect(
+    aes(
+      x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
+      xmin = 2:1 - 0.45,
+      ymin = ResponseTRUE - 1.96* se.ResponseTRUE,
+      xmax = 2:1 + 0.45,
+      ymax = ResponseTRUE + 1.96* se.ResponseTRUE,
+      weight = 1),
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = marginal_results
+  )
+
+gg2 <- round_12 %>%
+  mutate(
+    `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"), 
+    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
+    ) %>%
+  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
+  pcp_scale() %>%
+  pcp_arrange() %>%
+  ggplot(aes_pcp()) + 
+    geom_pcp_axes() + 
+    geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
+    geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
+    geom_pcp_labels(colour = "black") +
+  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
+                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+                     sec.axis = sec_axis(~.*100,
+                          name="Percent responses")) +
+  xlab("") + 
+  scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) +
+  ggtitle("(b) Combinations of responses") +
+  theme(legend.position = "none")
+
+gg1 + gg2
+```
+
+
+
+ANALYSIS PLAN:  
+
+Models below structured as: 
+
+Response 
+
+Covariates to use in each model 
+
+STRUCTURAL VARIATION – START HERE 
+
+Binary accuracy across structural choices 
+
+Model 1: 
+
+Alignment only, just vertical stacked bar 
+
+\hh{Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.}
+
+
+Model 2:  
+
+Alignment 
+
+Bar vs pie (comparable question for pie is A vs B) 
+
+Model 3:  
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 4: 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+% yes across each different structural condition 
+
+Facet by aligned/unaligned? 
+
+Model estimates + CIs 
+
+Ordinal response 
+
+Model 1: 
+
+Alignment only, just vertical stacked bar 
+
+Model 2:  
+
+Alignment 
+
+Bar vs pie (comparable question for pie is A vs B) 
+
+Model 3:  
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 4: 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+All responses across each different structural condition 
+
+Facet by aligned/unaligned? 
+
+Model estimates + CIs 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Model 1:  
+
+Device type 
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Visuals:  
+
+% zoomed by device + alignment (already have this chart) 
+
+Model estimates + CIs 
+
+Time spent on question (in seconds) 
+
+Model 1:  
+
+Device type 
+
+Zoom 
+
+Alignment 
+
+Vertical x horizontal x horizontal wide 
+
+Model 2 (this may not be feasible for comparison depending on what level the ‘TOTALTIME’ is captured at):  
+
+Device type 
+
+Zoom 
+
+Alignment 
+
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+
+Visuals:  
+
+Distribution of time spent variable 
+
+Facet by device type, zoom, structural condition, alignment? Play around with it  
+
+Average time spent by each of the conditions 
+
+Certainty?  
+
+Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+AESTHETIC VARIATION – ONLY IF TIME 
+
+Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) across structural choices 
+
+Model 1: 
+
+Dark grid vs no grid (only have for horizontal wide) 
+
+Response choice (ordinal response) 
+
+Model 1: 
+
+Dark grid vs no grid (only have for horizontal wide) 
+
+Zooming behavior (zoomed/did not zoom) 
+
+Model 1:  
+
+Device type 
+
+Dark grid vs no grid 
+
+Time spent on question (in seconds) 
+
+Model 1:  
+
+Device type 
+
+Zoom 
+
+Dark grid vs no grid 
+
+Certainty?  
+
+Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
+
+ 
+
+# Conclusion
+
+
+
+# Supplementary Material {-}
+
++ **Participant Data (Linear):** Link to csv file with the data. 
++ **Data Analysis Code:** Link to an html document with annotated code chunks.
+
+# References

@@ -1,8 +1,8 @@
 % Journal of Data Science document class file
-% v0.1.4 for LaTeX 2e
+% v0.1.8 for LaTeX 2e
 %
-% Copyright (C) 2020 Journal of Data Science Editorial Office
-% Developed by Wenjie Wang <https://wenjie-stat.me>
+% Copyright (C) 2020-2021 Journal of Data Science Editorial Office
+% Developed by Wenjie Wang <https://wwenjie.org/>
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -19,7 +19,7 @@
 % This work consists of the file jds.cls.
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{jds}[2020/07/13 v0.1.4 Journal of Data Science document class]
+\ProvidesClass{jds}[2021/07/06 v0.1.8 Journal of Data Science document class]
 
 % options
 \newif\if@review
@@ -27,6 +27,7 @@
 \newif\if@discussion
 \newif\if@chinese
 \newif\if@linenumber
+\newif\if@supp
 
 % defaults
 \@reviewtrue
@@ -34,6 +35,7 @@
 \@discussionfalse
 \@chinesefalse
 \@linenumberfalse
+\@suppfalse
 
 % only one of review and inpress can be true
 \DeclareOption{review}{\@reviewtrue \@inpressfalse \@linenumbertrue}
@@ -41,6 +43,7 @@
 \DeclareOption{discussion}{\@discussiontrue}
 \DeclareOption{chinese}{\@chinesetrue \@discussiontrue}
 \DeclareOption{linenumber}{\@linenumbertrue}
+\DeclareOption{supp}{\@supptrue}
 
 % other options from article.cls
 \DeclareOption{a4paper}
@@ -115,6 +118,9 @@
 \else
 \gdef\@pageprefix{}
 \fi
+
+%% JY 2021Feb05: no need for prefix S to articles in Chinese
+\gdef\@pageprefix{}
 
 %% reference: biom.cls for short title
 \def\title{\@ifnextchar [{\@titletwo}{\@titleone}}
@@ -335,8 +341,12 @@
 
 \newcommand\jdsyear{\gdef\@jdsyear}
 \jdsyear{2020}
-\newcommand\jdsdoi{\gdef\@jdsdoi}
-\jdsdoi{xx.xxxx/xxxxxxxx}
+\newcommand\jdssection{\gdef\@jdssection}
+\jdssection{}
+\newcommand\jdsdoi[1]{
+  \gdef\@jdsdoi{\detokenize{#1}}
+}
+\jdsdoi{xx.xxxx/xxxx_xxxx}
 
 % define more for Chinese title page
 \if@chinese
@@ -365,6 +375,13 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
+\if@supp
+\fancypagestyle{firstpage}{%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyhf{}%
+  \fancyfoot[LE,RO]{\@pageprefix\thepage}% number of the first page
+}
+\else
 \fancypagestyle{firstpage}{%
   \renewcommand{\headrulewidth}{0pt}%
   \fancyhf{}%
@@ -377,18 +394,22 @@
     }
     \@jdsmonth\ \@jdsyear
   }
-  \fancyhead[R]{\footnotesize DOI:\ \@jdsdoi\\}
+  \fancyhead[R]{\footnotesize
+    DOI:\ \@jdsdoi\\
+    \@jdssection
+  }
   \fancyfoot[LE,RO]{\@pageprefix\thepage}% number of the first page
   \fancyfoot[RE,LO]{\footnotesize
     \ifx\@jdsreceived\empty
     \else
-      \ifx\@jdsaccepted\empty
-      \else
-        Received \@jdsreceived; Accepted \@jdsaccepted
-      \fi
+    \ifx\@jdsaccepted\empty
+    \else
+    Received \@jdsreceived; Accepted \@jdsaccepted
+    \fi
     \fi
   }
 }
+\fi
 \if@discussion
 \fancypagestyle{doipage}{%
   \renewcommand{\headrulewidth}{0pt}%
@@ -408,28 +429,35 @@
 }
 \fi
 \if@chinese
-\fancypagestyle{chfirstpage}{%
-  \renewcommand{\headrulewidth}{0pt}%
-  \fancyhf{}%
-  \fancyhead[L]{\footnotesize {\scshape Journal of Data Science}
-    \@jdsvolume\ (\@jdsissue),
-    \@pageprefix\@discussionfirstpage--\@pageprefix\pageref*{LastPage}\\
-    \@jdsyear 年 \@jdsmonthnum 月
+  \if@supp
+  \fancypagestyle{chfirstpage}{
+    \renewcommand{\headrulewidth}{0pt}%
+    \fancyhf{}%
+    \fancyfoot[LE,RO]{\@pageprefix\thepage}% number of the first page
   }
-  \fancyhead[R]{\footnotesize DOI:\ \@jdsdoi\\}
-  \fancyfoot[LE,RO]{\@pageprefix\thepage}% number of the first page
-  \fancyfoot[RE,LO]{\footnotesize
-    \ifx\@jdsreceivedch\empty
-    \else
+  \else
+  \fancypagestyle{chfirstpage}{%
+    \renewcommand{\headrulewidth}{0pt}%
+    \fancyhf{}%
+    \fancyhead[L]{\footnotesize {\scshape Journal of Data Science}
+      \@jdsvolume\ (\@jdsissue),
+      \@pageprefix\@discussionfirstpage--\@pageprefix\pageref*{LastPage}\\
+      \@jdsyear 年 \@jdsmonthnum 月
+    }
+    \fancyhead[R]{\footnotesize DOI:\ \@jdsdoi\\}
+    \fancyfoot[LE,RO]{\@pageprefix\thepage}% number of the first page
+    \fancyfoot[RE,LO]{\footnotesize
+      \ifx\@jdsreceivedch\empty
+      \else
       \ifx\@jdsacceptedch\empty
       \else
-        投稿于 \@jdsreceivedch; 接收于 \@jdsacceptedch
+      投稿于 \@jdsreceivedch; 接收于 \@jdsacceptedch
       \fi
-    \fi
+      \fi
+    }
   }
-}
+  \fi
 \fi
-
 \if@linenumber
 \RequirePackage[pagewise,mathlines]{lineno}
 \linenumbers*[1]
@@ -471,5 +499,14 @@
 % \setcounter{topnumber}{50}
 % \setcounter{bottomnumber}{50}
 
+\RequirePackage{marginnote}
+% \reversemarginpar
+\setlength{\marginparwidth}{2.4cm}
+
+% figure and table number prefix for supplementary materials
+\if@supp
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\fi
 
 \endinput
