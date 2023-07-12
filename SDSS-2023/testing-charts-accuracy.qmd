@@ -53,6 +53,7 @@ format:
           \usepackage{hyperref}
       - file: edits.tex
     cite-method: natbib
+    keep-tex: true
 ---
 
 <!--
@@ -75,21 +76,6 @@ rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
                     translator='bibtex')
 ```
 
-<!-- Article Types -->
-<!-- https://jds-online.org/journal/JDS/information/Article%20Types -->
-
-<!-- Statistical Data Science -->
-
-<!-- This section is the home base of the reformed journal covering statistical methods that are motivated by real-world applications. It is not for papers with technical proofs that push the frontiers of theoretical developments. In addition to classic topics in Statistics, cutting-edge works on big data, visualization, machine learning, and artificial intelligence are also welcome. -->
-
-<!-- Computing in Data Science -->
-
-<!-- Computing is an indispensable component of all data science and big data applications. As more journals on data science and big data emerge, it is of great interest for the data science community to have a highly regarded outlet with a specialization in computing, covering a wide spectrum from methods, algorithms, software implementations, to case studies. Existing journals on statistical computing have their own traditions and may not meet the increasing demands. Some research works on cutting-edge problems may not fit well in any existing journal. -->
-
-<!-- This section covers the following types of articles. -->
-<!-- 1. Software: Articles here are similar to those in the Journal of Statistical Software. They are not referencing manuals but vignettes that introduce the methods being implemented as well as the usage of the software with reproducible code chunks. The software implementation can be in any computer language with a sufficiently large user base. -->
-<!-- 2. Algorithms: Articles here focus on the performance side of the computing needs arising from domain applications. For example, one can propose algorithms that make infeasible tasks feasible or speed up existing algorithms. -->
-<!-- 3. Methods: Articles here are similar to those in Journal of Computational and Graphic Statistics or Statistics and Computing. The computing methods need to be motivated by a domain application with the properties carefully studied. -->
 
 
 ```{r setup, include = FALSE}
@@ -99,8 +85,11 @@ knitr::opts_chunk$set(echo = F,
                       fig.env="figure*", 
                       fig.align = "center",
                       out.width = "50%",
-                      dpi = 72, # we can set the resolution up to 300 later.
-                      cache = TRUE) 
+                      fig.height = 5,
+                      fig.width = 5,
+                      dpi = 72#, # we can set the resolution up to 300 later.
+                      #cache = TRUE) 
+)
 library(readr)
 library(tidyverse)
 library(knitr)
@@ -144,6 +133,7 @@ calculate_lambda <- function(weights1, weights2) {
 vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
 ```
 
+
 ```{r data}
 # other github repo. 
 round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
@@ -184,18 +174,15 @@ crowd workers are known to be biased towards male, young and relatively higher e
 Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.  
 
 
-```{r}
+```{r out.width='\\textwidth'}
 #| label: fig-aligned-unaligned
 #| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. While the predominant response for the unaligned pair on the left is 'they are of the same size', more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
 #| fig-subcap:
 #| - "**Unaligned bars**"
 #| - "**Aligned bars**"
-#| fig-cap-location: "bottom"
-#| layout: [[45,45], [100]]
+#| layout-nrow: 1
 #| fig-align: "center"
-#| out-width: 100%
-knitr::include_graphics("images/round5-modified.PNG")
-knitr::include_graphics("images/round3-modified.PNG")
+knitr::include_graphics(c("images/round5-modified.PNG", "images/round3-modified.PNG"))
 ```
 
 <!-- motivate the use of just noticeable differences -->
@@ -251,13 +238,13 @@ I’ve noted this below, but: how to model? Ordinal response? Binary (certain or
 
 ## Survey setup - Stimulus description
 
-\autoref{tbl-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
+\autoref{fig-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
 The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
 <!-- describe stimulus -->
-Both charts in \autoref{tbl-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
+Both charts in \autoref{fig-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
 
 1. A is bigger
 2. B is bigger
@@ -267,14 +254,15 @@ Answer 2 is the correct answer for both charts. Both charts are shown at the sam
 This leaves the vertical positioning of the bars as the only difference between the charts. Any differences in observed accuracy can therefore be attributed to this difference in presentation.
 
 ```{r}
-#| label: tbl-tasks-12
-#| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. While the predominant response for the unaligned pair on the left is 'they are of the same size', more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
-#| tbl-subcap:
+#| label: fig-tasks-12
+#| fig-cap: "The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. In both instances, the tile on the right is (very slightly) larger."
+#| fig-subcap:
 #| - "**Unaligned bars**"
 #| - "**Aligned bars**"
-#| layout: [[45,45], [100]]
+#| layout-nrow: 1
 #| fig-align: "center"
 #| out-width: 100%
+#| fig-asp: 1
 knitr::include_graphics("../SDSS-2023/images/vertical-ab.PNG")
 knitr::include_graphics("../SDSS-2023/images/vertical-cd.PNG")
 ```
@@ -363,11 +351,12 @@ The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12
 Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
 
 
-```{r accuracy, fig.height = 5, fig.width = 10, warning=FALSE}
+```{r accuracy,   warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
 #| out-width: 80%
-#| fig-env: figure
+#| fig-height: 5 
+#| fig-width: 10
 
 gg1 <- round_12_long %>%
   mutate(
