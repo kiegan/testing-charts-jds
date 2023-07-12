@@ -3,10 +3,8 @@ title: "Supplement: Analysis and code for 'Testing Perceptual Accuracy in Charts
 format:
   jasa-html: default
   jasa-pdf:
-    include-in-header:
-      - edits.tex
-      - authors.tex
     keep-tex: true  
+    keep-md: true
     journal:
       blinded: false
 date: last-modified
@@ -31,7 +29,7 @@ knitr::opts_chunk$set(echo = F,
                       fig.align = "center",
                       out.width = "50%",
                       dpi = 72, # we can set the resolution up to 300 later.
-                      cache = TRUE) 
+                      cache = FALSE) 
 library(readr)
 library(tidyverse)
 library(knitr)
@@ -47,6 +45,8 @@ library(ggpcp)
 library(broom)
 library(latex2exp)
 library(gt) # grammar of tables
+library(multcomp)
+
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -186,11 +186,11 @@ lambda <- n1/(d1*denom) # same as calculate_lambda(round1_adj$weight, round2_adj
 # then the weights are scaled to the effective sample size
 round_12 <- round1_adj %>% 
             mutate(weight = lambda*weight/sum(weight)) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
                    ab_certain, cd_certain, weight) %>%
     rbind(round2_adj %>% 
             mutate(weight = (1-lambda)*weight/sum(weight)) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
                    ab_certain, cd_certain, weight))
 
 round_12$weight <- neff(round_12$weight)/sum(round_12$weight)*round_12$weight 
@@ -703,7 +703,7 @@ dframe %>%
   )
 ```
 
-The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B. Nominally, the differences between the size of the marked elements can be expressed as multiples in $\delta = 0.8$, with $B = A + 2\delta = C + 3 \delta = D + 4 \delta$. A difference of $\delta = 0.8$ corresponds to about a $3^\degree$ difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy. 
+The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and 44.4, respectively, i.e underlying each evaluation is the order D < C < A < B. Nominally, the differences between the size of the marked elements can be expressed as multiples in $\delta = 0.8$, with $B = A + 2\delta = C + 3 \delta = D + 4 \delta$. A difference of $\delta = 0.8$ corresponds to about a  3 degree difference for the angle of a wedge. We would expect that an increase in the difference in the values increases the accuracy in the responses. This is mitigated by the distance between wedges: more distance (should) lead to a decrease in accuracy. Similarly, if pieces have an axis or a line of reference in common, we would expect an increase in accuracy. 
 
 
 ### Binary and Ordinal Correctness as Response
@@ -712,7 +712,7 @@ The four labelled pieces A, B, C, and D correspond to values 46, 47.6, 45.2, and
 Design does not seem to matter for easy comparisons (BD, BC) or the hard comparison (CD). 
 The three comparisons in the middle show interesting patterns, highlighted in the reordered @fig-response-67b. Colored letters below and above the bars encode significances between pairs of bars of the same color: two proportions are significantly different at a 5% significance level, if they do not have a letter in common [@piephoAlgorithmLetterBasedRepresentation2004]. Significances are adjusted for multiple comparisons as implemented in the `multcomp` package [@hothornSimultaneousInferenceGeneral2008]. 
 
-```{r model-67, warning = FALSE}
+```{r model-67, warning = FALSE, cache=TRUE}
 # same model as for plot 
 logit_67_correct <- svyglm(correct~task_labelled-1, family=quasibinomial(), design=survey_67)
 
