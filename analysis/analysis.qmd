@@ -319,7 +319,8 @@ coefs_12$term <- c("$$\\widehat{\\alpha}$$", "$$\\widehat{\\beta}_2$$")
 
 coefs_12 %>% 
   mutate(
-    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value)),
+        term = ifelse(term=="(Intercept)", "Intercept", term)
   ) %>%
   gt() %>%
   tab_header("Estimates for Model 1",
@@ -518,7 +519,8 @@ coefs_certainty$term <- c("$$\\widehat{\\mu}_{11}$$", "$$\\widehat{\\mu}_{21}$$"
 
 coefs_certainty %>% 
   mutate(
-    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value)),
+        term = ifelse(term=="(Intercept)", "Intercept", term)
   ) %>%
   gt() %>%
   tab_header("Estimates for Model 2.3",
@@ -839,7 +841,6 @@ For the facetteed barcharts, there is an abrupt drop in accuracy of responses be
 #| fig-width: 7
 #| out-width: 80%
 
-
 props_ci <- as.data.frame(svyby(~response3, by=~interaction(labelled, task), svymean, design = survey_67))
 props_ci <- props_ci %>% 
   mutate(
@@ -911,6 +912,7 @@ response_67 %>%
 ```{r estimates, eval=FALSE}
 coefs_67 %>% 
   mutate(
+    term = ifelse(term=="(Intercept)", "Intercept", term),
     p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))) %>%
   gt() %>%
   tab_header("Estimates for Model 3.2",
@@ -958,7 +960,33 @@ response_67 %>%
 
 ```{r model-time}
 time_mod <- svyglm(time_spent~task, design = survey_67)
-summary(time_mod)
+coef_time <- broom::tidy(time_mod)
+
+coef_time %>% mutate(
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value)),
+    term = ifelse(term=="(Intercept)", "Intercept", term)
+  ) %>%
+  gt() %>%
+  tab_header("Estimates for Model 3.2",
+             " time spent (in seconds) on assessing the six pairs") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = c(estimate, statistic),
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
+
 ```
 
 
@@ -1129,6 +1157,7 @@ coefs_7 <- broom::tidy(logit_7)
 
 coefs_7 %>% 
   mutate(
+    term = ifelse(term=="(Intercept)", "Intercept", term),
     p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))) %>%
   gt() %>%
   tab_header("Estimates for Model 2",
