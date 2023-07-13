@@ -60,7 +60,7 @@ documentclass: jds
 
 
 ```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
-keys <- rbbt::bbt_detect_citations("testing-charts-accuracy.Rmd")
+keys <- rbbt::bbt_detect_citations("testing-charts-accuracy.qmd")
 citations_only <- grep(pattern="[fig|tbl|eq][-|:].*", keys, value=TRUE, invert=TRUE)
 rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
                     library_id=rbbt::bbt_library_id('Graphics Research'),
