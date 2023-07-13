@@ -3,8 +3,6 @@ title: "Supplement: Analysis and code for 'Testing Perceptual Accuracy in Charts
 format:
   jasa-html: default
   jasa-pdf:
-    keep-tex: true  
-    keep-md: true
     journal:
       blinded: false
 date: last-modified
@@ -438,6 +436,8 @@ gg1 + gg2
 
 
 ```{r model-ord}
+#| label: tbl-logodds
+#| tbl-cap: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.
 
 #model1_ord <- svyloglin(~Response3*Question, survey_12_ord)
 
@@ -456,7 +456,7 @@ percent = 100*c(inv_logit(sum(model1_logist1$coefficients)) - inv_logit(model1_l
 inv_logit(sum(model1_logist2$coefficients)) - inv_logit(model1_logist2$coefficients[1]))
 )
 names(contrasts) <- c("level","log odds", "SE", "t-statistic", "p-value", "percent change")
-knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE, caption = "Table 2: A change from aligned to unaligned tiles is detrimental to the level of correct (or correct and same) responses.", label = "tab:logodds")
+knitr::kable(contrasts, digits = c(NA, 1, 2, 1, 4, 1), row.names = FALSE)
 ```
 
 ### How certain are participants?
@@ -557,7 +557,7 @@ round_12_certainty_long %>%
     colour = "darkorange",
     data = data.frame(
       coefs_certainty, 
-      Correct= gsub(".*(FALSE|TRUE)", "\\1", terms),
+      Correct= as.logical(gsub(".*(FALSE|TRUE)", "\\1", terms)),
       Question = gsub("Question(.*):Correct.*", "\\1", terms))
   )
 ```
@@ -1149,6 +1149,8 @@ Using a frame as an additional visual cue was shown by @clevelandGraphicalPercep
 The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in @talbotFourExperimentsPerception2014 for bars. @talbotFourExperimentsPerception2014 report that other bars serve as distractors when comparing two other bars.
 
 ```{r}
+#| label: tbl-model7
+#| tbl-cap: Estimates for the cell means model
 logit_7 <- svyglm(correct ~ labelled + concept + taskname, family = quasibinomial(), design = survey_7)
 coefs_7 <- broom::tidy(logit_7)
 
