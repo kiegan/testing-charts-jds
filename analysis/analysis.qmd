@@ -44,7 +44,7 @@ library(broom)
 library(latex2exp)
 library(gt) # grammar of tables
 library(multcomp)
-
+library(here)
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -70,15 +70,15 @@ calculate_lambda <- function(weights1, weights2) {
   lambda
 }
 
-vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
+vs_repo_local <- here::here("data") # link to the data folder (of the visual_studies repo)
 ```
 
 ## Survey rounds
 
 ```{r data-1}
 # other github repo. 
-round1 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round1.rds"))
-round2 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round2.rds"))
+round1 <- readRDS(file.path(vs_repo_local, "round1.rds"))
+round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
 
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
@@ -101,7 +101,7 @@ survey2 <- survey::svydesign(
 
 ```{r data-rnd6}
 # other github repo. 
-round6 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round6.rds"))
+round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
 
 round6_adj <- round6 %>% mutate(
   weight = WEIGHT_NOLA
@@ -112,7 +112,7 @@ round6_adj <- round6 %>% mutate(
 
 ```{r data-rnd7}
 # other github repo. 
-round7 <- readRDS(file.path(vs_repo_local, "visual-studies/data/round7.rds"))
+round7 <- readRDS(file.path(vs_repo_local, "round7.rds"))
 
 # filter out all of the 'skipped on web':
 round7_adj <- round7 %>% mutate(
@@ -310,9 +310,11 @@ $$
 \text{logit } P \left(Y = 1 \mid Q_j \right) = \alpha + \beta_j, 
 $$
 We assume that $Y \mid Q_j$ has a Bernoulli distribution with success probability $p_j$, $j = 1, 2$. 
-For the purpose of estimability, we will assume that $\beta_1 = 0$, i.e. $\text{logit} (p_1) = \alpha$ and $\beta_2 = \text{logit}(p_2) - \text{logit}(p_1)$. The odds of an accurate answer with aligned bars is therefore  exp (`r round(coefs_12$estimate[2],1)`) =  `r round(exp(coefs_12$estimate[2]),1)` times higher than for the unaligned bars of Question 1.
+For the purpose of estimability, we will assume that $\beta_1 = 0$, i.e. $\text{logit} (p_1) = \alpha$ and $\beta_2 = \text{logit}(p_2) - \text{logit}(p_1)$. The odds of an accurate answer with aligned bars is therefore  exp (`r round(coefs_12$estimate[2],1)`) =  `r round(exp(coefs_12$estimate[2]),1)` times higher than for the unaligned bars of Question 1. Estimates for this model fit are shown in @tbl-coefs-12.
 
 ```{r}
+#| label: tbl-coefs-12
+#| tbl-cap: Estimates for the logit model of accuracy by task
 coefs_12$term <- c("$$\\widehat{\\alpha}$$", "$$\\widehat{\\beta}_2$$")
 
 coefs_12 %>% 
