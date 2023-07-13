@@ -112,6 +112,7 @@ library(ggpcp)
 library(broom)
 library(latex2exp)
 library(gt) # grammar of tables
+library(here)
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -137,14 +138,14 @@ calculate_lambda <- function(weights1, weights2) {
   lambda
 }
 
-vs_repo_local <- "~/Documents/projects/NORC" # link to local version of the visual_studies repo
+vs_repo_local <- here::here("data") # link to data folder
 ```
 
 
 ```{r data}
 # other github repo. 
-round1 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round1.rds")
-round2 <- readRDS("~/Documents/projects/NORC/visual-studies/data/round2.rds")
+round1 <- readRDS(file.path(vs_repo_local, "round1.rds"))
+round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
 
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
