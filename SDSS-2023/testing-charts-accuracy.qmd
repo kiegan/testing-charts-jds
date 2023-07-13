@@ -163,11 +163,21 @@ survey2 <- survey::svydesign(
 ## Introduction
 
 <!-- What is our main objective? -->
-What do viewers see, when we show them a data chart? A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts. @clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons. What we always need to remember, is that these study results are based on only a few individuals recruited from the authors' coworkers and their spouses. 
-@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform.
+What do viewers see, when we show them a data chart? A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts. @clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons. Based on mappings of quantitative variables to different graphical elements, 
+Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate. 
+@mackinlayAutomatingDesignGraphical1986 took this approach and expanded the tasks and their order to  ordinal and nominal scales, as shown in @fig-perceptual-tasks.
+
+```{r}
+#| label: fig-perceptual-tasks
+#| fig-cap: Ranking of perceptual tasks, as given by @mackinlayAutomatingDesignGraphical1986. The ranking of tasks on the quantitative scale are empirically verified by @clevelandGraphicalPerceptionTheory1984.
+knitr::include_graphics("images/mackinlay-tasks.png")
+```
+
+What we need to remember, is that Mackinlay's work is purely theoretical.  Cleveland and McGill's rankings based on a study. However, this study is a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses. 
+@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform. A total of XXX amazon turkers were involved. 
 
 <!-- Bias from crowd-sourcing? sample size?  -->
-crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017 
+Crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017 
 
 
 Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.  
