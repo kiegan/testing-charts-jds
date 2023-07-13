@@ -35,28 +35,26 @@ affiliation:
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication, and decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'list, keywords, here, 3-6, are, fine'
+preamble: >
+  \usepackage{amsfonts,amsmath,amssymb,amsthm}
+  \usepackage{booktabs}
+  \usepackage{graphicx}
+  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}}
+  \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
+  \setlength{\parindent}{0pt}
 format:
-  pdf:
-    documentclass: jds
-    fig-width: 6
-    fig-asp: 0.618
-    fig-align: center
-    include-in-header: 
-      - text: |
-          \usepackage{amsfonts,amsmath,amssymb,amsthm}
-          \usepackage{booktabs}
-          \usepackage{graphicx}
-          \usepackage{longtable}
-          \usepackage{hyperref}
-      - file: edits.tex
-    cite-method: natbib
-    keep-tex: true
-    keep-md: true
+  pdf: default
+documentclass: jds
 ---
 
-\hh{hello?}
 
-\kr{Kiegan, this is your editing color :) - you can choose a different color in edits.tex}
+
+<!-- \hh{hello?} -->
+<!-- fig-width: 6.5 -->
+<!-- fig-height: 4.5 -->
+<!-- template: template-jdsart.cls.tex -->
+
+<!-- \kr{Kiegan, this is your editing color :) - you can choose a different color above} -->
 
 
 <!--
@@ -95,6 +93,9 @@ knitr::opts_chunk$set(echo = F,
                       #cache = TRUE) 
 )
 
+knitr::opts_chunk$set(
+  jds.rmd::pdf_article()$knitr
+)
 
 
 library(readr)
@@ -304,7 +305,7 @@ ROUND 7: Aligned vs unaligned pie (full sample)
 
 COMBINING SAMPLES AND WEIGHTING NOTES:  
 
-\hh{We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].}
+We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].
 
 Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
 
@@ -440,7 +441,7 @@ Model 1:
 
 Alignment only, just vertical stacked bar 
 
-\hh{Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.}
+Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.
 
 
 Model 2:  
