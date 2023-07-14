@@ -40,8 +40,10 @@ preamble: >
   \usepackage{booktabs}
   \usepackage{graphicx}
 format:
-  pdf: default
-documentclass: jds
+  html: default
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{=latex}
@@ -49,15 +51,15 @@ documentclass: jds
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
   \setlength{\parindent}{0pt}
 ```
+\hh{hello?}
 
-\hh{hello?} 
-
-\kr{Kiegan, this is your editing color :) - you can choose a different color above} 
+\kr{Kiegan, this is your editing color :) - you can choose a different color above}
 
 <!-- fig-width: 6.5 -->
-<!-- fig-height: 4.5 -->
-<!-- template: template-jdsart.cls.tex -->
 
+<!-- fig-height: 4.5 -->
+
+<!-- template: template-jdsart.cls.tex -->
 
 ```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
 keys <- rbbt::bbt_detect_citations("testing-charts-accuracy.qmd")
@@ -66,8 +68,6 @@ rbbt::bbt_write_bib(keys=citations_only, 'references.bib', overwrite = TRUE,
                     library_id=rbbt::bbt_library_id('Graphics Research'),
                     translator='bibtex')
 ```
-
-
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = F, 
@@ -132,7 +132,6 @@ calculate_lambda <- function(weights1, weights2) {
 vs_repo_local <- here::here("data") # link to data folder
 ```
 
-
 ```{r data}
 # other github repo. 
 round1 <- readRDS(file.path(vs_repo_local, "round1.rds"))
@@ -159,13 +158,58 @@ survey2 <- survey::svydesign(
   ids = ~CaseId, weights = ~weight)
 ```
 
-
 ## Introduction
 
 <!-- What is our main objective? -->
-What do viewers see, when we show them a data chart? A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts. @clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons. Based on mappings of quantitative variables to different graphical elements, 
-Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate. 
-@mackinlayAutomatingDesignGraphical1986 took this approach and expanded the tasks and their order to  ordinal and nominal scales, as shown in @fig-perceptual-tasks.
+
+\kr{Should the abstract match -- or be close to -- our SDSS short abstract?}
+
+Outline for introduction:
+
+-   What do viewers see when we show them a data chart?
+
+-   Visuals allow us to make comparisons between values
+
+-   Design of a data visualization impacts viewer ability to make those comparisons
+
+    -   And more broadly, impacts how viewers interact with a chart
+
+-   There is prior work studying this topic
+
+    -   Cleveland and McGill laid the foundations
+
+    -   Mackinlay expanded to theoretical scales
+
+    -   Heer/Bostock expanded to larger study population
+
+-   However, prior work has utilized specific populations of study respondents.
+    These populations are not representative of the general population, a common target audience for data visualization and scientific communication work
+
+-   Our work focuses on the following:
+
+    -   Utilizing a survey panel as a mechanism to test perception in data visualizations
+
+    -   Testing whether prior results from convenience samples hold with a nationally representative sample
+
+    -   Studying variations in data visualization design and their impact on respondent behavior and accuracy of participants' responses.
+
+-   This paper presents a series of tests completed and the resulting findings.
+
+-   The remainder of the paper is organized as follows:
+
+    -   we first describe the stimulus design
+
+    -   then we describe the study population (and survey design?)
+
+    -   subsequently, we share analyses of resulting survey responses across a series of stimuli
+
+    -   finally, we discuss implications of this study and next steps.
+
+What do viewers see, when we show them a data chart?
+A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts.
+@clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons.
+Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate.
+@mackinlayAutomatingDesignGraphical1986 took this approach and expanded the tasks and their order to ordinal and nominal scales, as shown in @fig-perceptual-tasks.
 
 ```{r}
 #| label: fig-perceptual-tasks
@@ -173,15 +217,17 @@ Cleveland and McGill's study resulted in a ranking of perceptual tasks from most
 knitr::include_graphics("images/mackinlay-tasks.png")
 ```
 
-What we need to remember, is that Mackinlay's work is purely theoretical.  Cleveland and McGill's rankings based on a study. However, this study is a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses. 
-@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform. A total of XXX amazon turkers were involved. 
+What we need to remember, is that Mackinlay's work is purely theoretical.
+Cleveland and McGill's rankings based on a study.
+However, this study is a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
+@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform.
+A total of XXX amazon turkers were involved.
 
 <!-- Bias from crowd-sourcing? sample size?  -->
-Crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017 
 
+Crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017
 
-Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.  
-
+Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.
 
 ```{r}
 #| label: fig-aligned-unaligned
@@ -194,75 +240,90 @@ Here, we seek to -- first -- answer the question whether it is possible to use a
 #| out-width: 50%
 knitr::include_graphics("images/round5-modified.PNG")
 knitr::include_graphics("images/round3-modified.PNG")
+
 ```
 
+## Study design -- stimulus
+
 <!-- motivate the use of just noticeable differences -->
-Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed. This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered. Similarly, rather than asking the same (or similar) type of question with varied signals multiple hundred times, in a survey we can ask only a few questions. In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold. The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time. We are using results from studies on barcharts and pie charts [@luModelingJustNoticeable2022] to inform the differences in charts shown to survey panelists.
 
+Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed.
+This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered.
+Similarly, rather than asking the same (or similar) type of question with varied signals multiple hundred times, in a survey we can ask only a few questions.
+In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold.
+The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time.
+We are using results from studies on barcharts and pie charts [@luModelingJustNoticeable2022] to inform the differences in charts shown to survey panelists.
 
+-   How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
-- How do structural design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+-   How do aesthetic design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
-- How do aesthetic design choices in a data visualization impact viewers’ ability to identify the larger of two elements?  
+-   How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization?
 
-- How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization? 
+Structural design choices
 
+Mapping, Stacked bar, Vertical, Horizontal, Horizontal wide
 
+Facetted bar
 
+Only have a split sample for this
 
+Pie, Alignment
 
+We have this for all above mappings, but the setup is a little different for facetted bar
 
+Aesthetic design choices (structural choices seems stronger/there could be a lot to talk about there... should we skip aesthetic on this one?)
 
-Structural design choices 
+Colors
 
-Mapping, Stacked bar, Vertical, Horizontal, Horizontal wide 
+Use of gridlines
 
-Facetted bar 
+Outcomes/responses for modeling:
 
-Only have a split sample for this  
+Binary accuracy (correct/incorrect -- 'they are the same' is incorrect here)
 
-Pie, Alignment  
+Ordinal response (a/b/they are the same)
 
-We have this for all above mappings, but the setup is a little different for facetted bar 
+Zooming behavior (zoomed/did not zoom)
 
+Time spent on question (continuous, in seconds)
 
-Aesthetic design choices (structural choices seems stronger/there could be a lot to talk about there… should we skip aesthetic on this one?) 
+Certainty
 
-Colors 
+I've noted this below, but: how to model?
+Ordinal response?
+Binary (certain or very certain vs everybody else)?
 
-Use of gridlines 
+## Study design - survey population
 
-Outcomes/responses for modeling:  
-
-Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) 
-
-Ordinal response (a/b/they are the same) 
-
-Zooming behavior (zoomed/did not zoom) 
-
-Time spent on question (continuous, in seconds) 
-
-
-Certainty  
-
-I’ve noted this below, but: how to model? Ordinal response? Binary (certain or very certain vs everybody else)? 
+We utilize NORC's AmeriSpeak Omnibus survey, which utilizes a probability-based panel and surveys a sample of 1,000 nationally representative adults 18 and older.
+The advantage of using a probability-based approach is two-fold.
+First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
+Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
 
 ## Survey setup - Stimulus description
 
-\autoref{fig-tasks-12} shows the two stacked barcharts shown to participants in the survey. The marked tiles in each plot are 155 pixels apart. Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
-The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND. This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'. 
+\autoref{fig-tasks-12} shows the two stacked barcharts shown to participants in the survey.
+The marked tiles in each plot are 155 pixels apart.
+Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
+The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
+This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'.
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
 <!-- describe stimulus -->
-Both charts in \autoref{fig-tasks-12} show the same data with slight modifications to the order of the levels – the first and second level in each of the bars are reversed between the left and the right chart. Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
 
-1. A is bigger
-2. B is bigger
-3. They are the same
+Both charts in \autoref{fig-tasks-12} show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
+Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
 
-Answer 2 is the correct answer for both charts. Both charts are shown at the same size, i.e. in both cases the difference in size between the bars is exactly the same, the vertical distance between the bars is the exact same amount.
-This leaves the vertical positioning of the bars as the only difference between the charts. Any differences in observed accuracy can therefore be attributed to this difference in presentation.
+1.  A is bigger
+2.  B is bigger
+3.  They are the same
+
+Answer 2 is the correct answer for both charts.
+Both charts are shown at the same size, i.e. in both cases the difference in size between the bars is exactly the same, the vertical distance between the bars is the exact same amount.
+This leaves the vertical positioning of the bars as the only difference between the charts.
+Any differences in observed accuracy can therefore be attributed to this difference in presentation.
 
 ```{r}
 #| label: fig-tasks-12
@@ -276,44 +337,55 @@ knitr::include_graphics("images/vertical-ab.PNG")
 knitr::include_graphics("images/vertical-cd.PNG")
 ```
 
-
 <!-- |                                   |                                   | -->
+
 <!-- |-----------------------------------|-----------------------------------| -->
+
 <!-- | **Unaligned positions**           | **Aligned positions**             | -->
+
 <!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
 
 <!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
 
+DATA THAT MAY BE INCLUDED IN ANALYSIS:
 
+ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned
 
+ROUND 3: Horizontal and horizontal wide, aligned and unaligned
 
-DATA THAT MAY BE INCLUDED IN ANALYSIS:  
+ROUND 5: Horizontal wide gridlines (only dark grid split sample)
 
-ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned 
+ROUND 6: Facetted bar (split sample w/o forcing choice)
 
-ROUND 3: Horizontal and horizontal wide, aligned and unaligned 
+ROUND 7: Aligned vs unaligned pie (full sample)
 
-ROUND 5: Horizontal wide gridlines (only dark grid split sample) 
+# Results
 
-ROUND 6: Facetted bar (split sample w/o forcing choice) 
+How should we group results?
 
-ROUND 7: Aligned vs unaligned pie (full sample) 
+-   By stimulus/structural variation?
 
+-   By response (binary, ordinal, certainty, time spent, etc.)
 
-## Data Analysis and Results
+Results to discuss:
 
+-   Differences in accuracy between aligned and unaligned bar
 
-COMBINING SAMPLES AND WEIGHTING NOTES:  
+-   Differences in accuracy between framed, floating, and general pie
+
+-   Differences in timing and zooming behavior across all designs
+
+-   
+
+COMBINING SAMPLES AND WEIGHTING NOTES:
 
 We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].
 
-Question for Ed: If we compare a full sample to a split sample, do we still want to weight these ‘equally’? 
+Question for Ed: If we compare a full sample to a split sample, do we still want to weight these 'equally'?
 
-Analysis should be done using the ‘survey’ package and weights should be taken into account. 
-
+Analysis should be done using the 'survey' package and weights should be taken into account.
 
 All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
-
 
 ```{r lambdas}
 n1 <- nrow(round1_adj)
@@ -330,7 +402,6 @@ denom <- n1/d1 + n2/d2
 
 lambda <- n1/(d1*denom) 
 ```
-
 
 ```{r combine_rounds_1_and_2}
 round_12 <- round1_adj %>% 
@@ -355,10 +426,11 @@ abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
 marginal_results <- data.frame(abcd)
 ```
 
-
-The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. Rounds 1 and 2 are combined by adjusting the weights  with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis. 
-Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: < 2.2e-16). 
-
+The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey.
+Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.
+Figure \ref{fig-alignment}(a) shows that more than twice the number of responses is accurate, when the tiles are aligned along the same axis.
+Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
+The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16).
 
 ```{r accuracy,   warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
@@ -423,180 +495,190 @@ gg2 <- round_12 %>%
 gg1 + gg2
 ```
 
+ANALYSIS PLAN:
 
+Models below structured as:
 
-ANALYSIS PLAN:  
+Response
 
-Models below structured as: 
+Covariates to use in each model
 
-Response 
+STRUCTURAL VARIATION -- START HERE
 
-Covariates to use in each model 
+Binary accuracy across structural choices
 
-STRUCTURAL VARIATION – START HERE 
+Model 1:
 
-Binary accuracy across structural choices 
-
-Model 1: 
-
-Alignment only, just vertical stacked bar 
+Alignment only, just vertical stacked bar
 
 Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.
 
+Model 2:
 
-Model 2:  
+Alignment
 
-Alignment 
+Bar vs pie (comparable question for pie is A vs B)
 
-Bar vs pie (comparable question for pie is A vs B) 
+Model 3:
 
-Model 3:  
+Alignment
 
-Alignment 
+Vertical x horizontal x horizontal wide
 
-Vertical x horizontal x horizontal wide 
+Model 4:
 
-Model 4: 
+Alignment
 
-Alignment 
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
 
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+Visuals:
 
-Visuals:  
+\% yes across each different structural condition
 
-% yes across each different structural condition 
+Facet by aligned/unaligned?
 
-Facet by aligned/unaligned? 
+Model estimates + CIs
 
-Model estimates + CIs 
+Ordinal response
 
-Ordinal response 
+Model 1:
 
-Model 1: 
+Alignment only, just vertical stacked bar
 
-Alignment only, just vertical stacked bar 
+Model 2:
 
-Model 2:  
+Alignment
 
-Alignment 
+Bar vs pie (comparable question for pie is A vs B)
 
-Bar vs pie (comparable question for pie is A vs B) 
+Model 3:
 
-Model 3:  
+Alignment
 
-Alignment 
+Vertical x horizontal x horizontal wide
 
-Vertical x horizontal x horizontal wide 
+Model 4:
 
-Model 4: 
+Alignment
 
-Alignment 
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
 
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+Visuals:
 
-Visuals:  
+All responses across each different structural condition
 
-All responses across each different structural condition 
+Facet by aligned/unaligned?
 
-Facet by aligned/unaligned? 
+Model estimates + CIs
 
-Model estimates + CIs 
+Zooming behavior (zoomed/did not zoom)
 
-Zooming behavior (zoomed/did not zoom) 
+Model 1:
 
-Model 1:  
+Device type
 
-Device type 
+Alignment
 
-Alignment 
+Vertical x horizontal x horizontal wide
 
-Vertical x horizontal x horizontal wide 
+Visuals:
 
-Visuals:  
+\% zoomed by device + alignment (already have this chart)
 
-% zoomed by device + alignment (already have this chart) 
+Model estimates + CIs
 
-Model estimates + CIs 
+Time spent on question (in seconds)
 
-Time spent on question (in seconds) 
+Model 1:
 
-Model 1:  
+Device type
 
-Device type 
+Zoom
 
-Zoom 
+Alignment
 
-Alignment 
+Vertical x horizontal x horizontal wide
 
-Vertical x horizontal x horizontal wide 
+Model 2 (this may not be feasible for comparison depending on what level the 'TOTALTIME' is captured at):
 
-Model 2 (this may not be feasible for comparison depending on what level the ‘TOTALTIME’ is captured at):  
+Device type
 
-Device type 
+Zoom
 
-Zoom 
+Alignment
 
-Alignment 
+Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
 
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie) 
+Visuals:
 
-Visuals:  
+Distribution of time spent variable
 
-Distribution of time spent variable 
+Facet by device type, zoom, structural condition, alignment?
+Play around with it
 
-Facet by device type, zoom, structural condition, alignment? Play around with it  
+Average time spent by each of the conditions
 
-Average time spent by each of the conditions 
+Certainty?
 
-Certainty?  
+Same models as above, but I'm not sure how we want to do the response.
+Ordinal response?
+Binary (certain or very certain vs everybody else)?
 
-Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
+AESTHETIC VARIATION -- ONLY IF TIME
 
-AESTHETIC VARIATION – ONLY IF TIME 
+Binary accuracy (correct/incorrect -- 'they are the same' is incorrect here) across structural choices
 
-Binary accuracy (correct/incorrect – ‘they are the same’ is incorrect here) across structural choices 
+Model 1:
 
-Model 1: 
+Dark grid vs no grid (only have for horizontal wide)
 
-Dark grid vs no grid (only have for horizontal wide) 
+Response choice (ordinal response)
 
-Response choice (ordinal response) 
+Model 1:
 
-Model 1: 
+Dark grid vs no grid (only have for horizontal wide)
 
-Dark grid vs no grid (only have for horizontal wide) 
+Zooming behavior (zoomed/did not zoom)
 
-Zooming behavior (zoomed/did not zoom) 
+Model 1:
 
-Model 1:  
+Device type
 
-Device type 
+Dark grid vs no grid
 
-Dark grid vs no grid 
+Time spent on question (in seconds)
 
-Time spent on question (in seconds) 
+Model 1:
 
-Model 1:  
+Device type
 
-Device type 
+Zoom
 
-Zoom 
+Dark grid vs no grid
 
-Dark grid vs no grid 
+Certainty?
 
-Certainty?  
-
-Same models as above, but I’m not sure how we want to do the response. Ordinal response? Binary (certain or very certain vs everybody else)? 
-
- 
+Same models as above, but I'm not sure how we want to do the response.
+Ordinal response?
+Binary (certain or very certain vs everybody else)?
 
 # Conclusion
 
+Key findings to discuss:
 
+-   Design choices impact viewer behavior
 
-# Supplementary Material {-}
+-   Design choices impact viewer accuracy
 
-+ **Participant Data (Linear):** Link to csv file with the data. 
-+ **Data Analysis Code:** Link to an html document with annotated code chunks.
+-   Reproduced prior convenience sample results using a large, nationally-representative survey population
+
+-   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies
+
+-   
+
+# Supplementary Material {.unnumbered}
+
+-   **Participant Data (Linear):** Link to csv file with the data.
+-   **Data Analysis Code:** Link to an html document with annotated code chunks.
 
 # References
