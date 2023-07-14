@@ -127,6 +127,9 @@ round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
 # filter out all of the 'skipped on web':
 round3_adj <- round3 %>% mutate(
   weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB",
+  cd != "SKIPPED ON WEB"
 )
 ```
 
@@ -1003,14 +1006,37 @@ coef_time %>% mutate(
 ```
 ## Model 3: Aligned and unaligned comparisons between horizontal and vertical barcharts {#sec-model3}
 
-@tbl-designs shows the three designs that were considered here: We are using the **vertical** design as a baseline and have established that we get similar responses in different rounds of the survey. This design also produces stable results under slight modifications, such as the exact color scheme.
+We are mostly interested in a comparison between this vertical design and the **wide horizontal** design favored by many NORC designers (XXX can I say that this way?). This design *should* help two-fold with decision making, because 
+
+    a. the bars are overall wider, increasing the physical representation of the stimulus, 
+    b. the bars are closer together. 
+    
+Both of these factors have been shown [@hughesJustNoticeableDifferences2001; @luModelingJustNoticeable2022] to be beneficial for an accurate assessment of small differences between bars.
+
+In order to separate these two effects from the effect of horizontal vs vertical assessment of bars, we introduce the **horizontal** design as a transition, in which the bars are kept to the exact same size as in the vertical design. Similarly, the spacing of the bars is identical between these two designs.
+
+```{r round3-participants}
+# P_EXP is 1 or 2:
+# panelists in 1 see HZ1-AB.png and HZ1-CD.png (horizontal tall)
+# panelists in 2 see HZ2-AB.png and HZ2-CD.png (horizontal wide)
+n_tall <- round3_adj %>% filter(P_EXP == 1) %>% nrow()
+n_tall_eff <- round3_adj %>% filter(P_EXP == 1) %>% pull(weight) %>% neff()
+
+n_wide <- round3_adj %>% filter(P_EXP == 2) %>% nrow()
+n_wide_eff <- round3_adj %>% filter(P_EXP == 2) %>% pull(weight) %>% neff()
+```
+
+We use the results from rounds 1 and 2 to assess perceptual accuracy in the vertical stacked barchart (as shown in @fig-tasks-12). 
+@fig-designs shows the two designs shown to participants of Round 3. The survey was administered using a split design on the type of visualization, but all participants were asked to compare the size of two unaligned tiles (A and B) and two aligned tiles (C and D). Roughly half ($n_1 = $ `r n_tall` for an efficient sample size of `r n_tall_eff`) of the round 6 panelists were shown the horizontal tall barchart on the left, the other participants ($n_2 = $ `r n_wide`; efficient $n_2^{(eff)} = $ `r n_wide_eff`) saw the horizontal wide barchart.
 
 ```{r}
-#| label: tbl-designs
-#| tbl-cap: Design and stimulus of round 3
-#| tbl-subcap:
-#|   - Horizontal stacked bars
-#|   - Horizontal wide
+#| label: fig-designs
+#| fig-cap: Design and stimulus of round 3
+#| fig-subcap:
+#|   - Horizontal tall, stacked bars, unaligned
+#|   - Horizontal wide, stacked bars, unaligned
+#|   - Horizontal tall, stacked bars, aligned
+#|   - Horizontal wide, stacked bars, aligned
 #| layout-nrow: 2   
 
 knitr::include_graphics("images/round3/horizontal-ab.PNG")
@@ -1019,11 +1045,8 @@ knitr::include_graphics("images/round3/horizontal-cd.PNG")
 knitr::include_graphics("images/round3/hwide-cd.PNG")
 ```
 
-We are mostly interested in a comparison between this vertical design and the **wide horizontal** design favored by many NORC designers (XXX can I say that this way?). This design *should* help two-fold with decision making, because a. the bars are overall wider, increasing the physical representation of the stimulus, b. the bars are closer together. Both of these factors have been shown [@lu2022] to be beneficial for an accurate assessment of small differences between bars.
 
-In order to separate these two effects from the effect of horizontal vs vertical assessment of bars, we introduced the **horizontal** design as a transition, in which the bars are kept to the exact same size as in the vertical design. Similarly, the spacing of the bars is identical between these two designs.
-
-Interestingly, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a horizontal to a vertical design seems to be detrimental to an accurate perception in both situations. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars. A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @lu2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
+Interestingly, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a horizontal to a vertical design seems to be detrimental to an accurate perception in both situations. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars. A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 
