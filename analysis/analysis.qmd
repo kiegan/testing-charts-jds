@@ -1008,10 +1008,10 @@ coef_time %>% mutate(
 
 We are mostly interested in a comparison between this vertical design and the **wide horizontal** design favored by many NORC designers (XXX can I say that this way?). This design *should* help two-fold with decision making, because 
 
-    a. the bars are overall wider, increasing the physical representation of the stimulus, 
-    b. the bars are closer together. 
+  a. the bars are overall wider, increasing the physical representation of the stimulus, 
+  b. the bars are closer together. 
     
-Both of these factors have been shown [@hughesJustNoticeableDifferences2001; @luModelingJustNoticeable2022] to be beneficial for an accurate assessment of small differences between bars.
+Both of these factors have been shown [@luModelingJustNoticeable2022] to be beneficial for an accurate assessment of small differences between bars.
 
 In order to separate these two effects from the effect of horizontal vs vertical assessment of bars, we introduce the **horizontal** design as a transition, in which the bars are kept to the exact same size as in the vertical design. Similarly, the spacing of the bars is identical between these two designs.
 
@@ -1027,7 +1027,7 @@ n_wide_eff <- round3_adj %>% filter(P_EXP == 2) %>% pull(weight) %>% neff()
 ```
 
 We use the results from rounds 1 and 2 to assess perceptual accuracy in the vertical stacked barchart (as shown in @fig-tasks-12). 
-@fig-designs shows the two designs shown to participants of Round 3. The survey was administered using a split design on the type of visualization, but all participants were asked to compare the size of two unaligned tiles (A and B) and two aligned tiles (C and D). Roughly half ($n_1 = $ `r n_tall` for an efficient sample size of `r n_tall_eff`) of the round 6 panelists were shown the horizontal tall barchart on the left, the other participants ($n_2 = $ `r n_wide`; efficient $n_2^{(eff)} = $ `r n_wide_eff`) saw the horizontal wide barchart.
+@fig-designs shows the two designs shown to participants of Round 3. The survey was administered using a split design on the type of visualization, but all participants were asked to compare the size of two unaligned tiles (A and B) and two aligned tiles (C and D). Roughly half ($n_1 = $ `r n_tall` for an efficient sample size of `r round(n_tall_eff,1)`) of the round 6 panelists were shown the horizontal tall barchart on the left, the other participants ($n_2 =$   `r n_wide`; efficient $n_2^{(eff)} =$    `r round(n_wide_eff,1)`) saw the horizontal wide barchart.
 
 ```{r}
 #| label: fig-designs
@@ -1044,6 +1044,108 @@ knitr::include_graphics("images/round3/hwide-ab.PNG")
 knitr::include_graphics("images/round3/horizontal-cd.PNG")
 knitr::include_graphics("images/round3/hwide-cd.PNG")
 ```
+
+```{r combine-123}
+lambda_1_2 <- calculate_lambda(round1_adj$weight, round2_adj$weight)
+
+round_12 <- round1_adj %>% 
+            mutate(weight = lambda_1_2*weight/sum(weight),
+                   round = "Round 1") %>% 
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight) %>%
+    rbind(round2_adj %>% 
+            mutate(weight = (1-lambda_1_2)*weight/sum(weight),
+                   round = "Round 2") %>% 
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight))
+
+lambda_12_3 <- calculate_lambda(round_12$weight, round3_adj$weight)
+
+round_123 <- round_12 %>% 
+              mutate(weight = lambda_12_3*weight/sum(weight),
+                     task = "Vertical") %>% 
+  rbind(
+    round3_adj %>% 
+      mutate(
+        weight = (1-lambda_12_3)*weight/sum(weight),
+        round = "Round 3",
+        CorrectAB = ab == "B is bigger",
+        CorrectCD = cd == "D is bigger",
+        CorrectABCD = paste(CorrectAB, CorrectCD),
+        task = ifelse(P_EXP==1, "Horizontal", "Horizontal wide")
+       ) %>% 
+        dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, task, weight) 
+  )
+  
+round_123$weight <- neff(round_123$weight)/sum(round_123$weight)*round_123$weight 
+# does not affect the further analysis, but helps with the interpretation of results
+
+round_123_long <- round_123 %>% 
+  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+
+
+survey_123 <- 
+  survey::svydesign(
+  data = round_123_long, 
+  ids = ~CaseId, weights = ~weight)
+```
+
+
+We combine rounds 1, 2 and 3 as shown in @tbl-combine-123 to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes. 
+
+
+
+```{r tbl-combine-123}
+#| label: tbl-combine-123
+#| tbl-cap: Table of the number of effective responses by type of visualization and round
+
+lambdas <- round_123_long %>% group_by(round, task) %>% 
+  summarize(
+    lambda = calculate_lambda(
+      round_123_long$weight[round_123_long$task==task[1] & round_123_long$round==round[1]],
+      round_123_long$weight[!(round_123_long$task==task[1] & round_123_long$round==round[1])])
+  )
+
+dframe <- round_123_long %>% group_by(round, task) %>% 
+  summarize(
+    nominal = n(),
+    effective = round(neff(weight),1),
+    participants = length(unique(CaseId))
+  ) %>% left_join(
+    lambdas, by = c("round", "task")
+  )
+
+
+dframe %>% 
+  group_by(round) %>%
+  gt() %>%
+  tab_header("Number of (effective) responses by task") %>%
+  cols_label(
+    nominal = md("number of responses:<br>nominal"),
+    effective = md("number of responses:<br>effective"),
+    participants = md("number of participants"),
+    lambda = md("λ"),
+  ) %>%
+  fmt_number(
+    everything(), 
+    decimals = 0,
+    use_seps=TRUE
+  ) %>%
+  fmt_number(
+    columns = effective,
+    decimals = 1
+  ) %>%
+  fmt_number(
+    columns = c(lambda),
+    decimals = 4
+  ) %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    row_group.font.weight = "bold"
+  )
+```
+
 
 
 Interestingly, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a horizontal to a vertical design seems to be detrimental to an accurate perception in both situations. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars. A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
