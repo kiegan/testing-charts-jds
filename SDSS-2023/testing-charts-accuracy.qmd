@@ -403,11 +403,17 @@ ROUND 7: Aligned vs unaligned pie (full sample)
 
 # Results
 
+## Respondents
+
+Description of respondents -- \# of respondents in each round, broad overview of demo characteristics(?), raw sample size and effective sample size
+
 How should we group results?
 
 -   By stimulus/structural variation?
 
 -   By response (binary, ordinal, certainty, time spent, etc.)
+
+-   By accuracy vs by behavior (zooming, time spent, etc.)
 
 Results to discuss:
 
@@ -417,15 +423,9 @@ Results to discuss:
 
 -   Differences in timing and zooming behavior across all designs
 
--   
-
 COMBINING SAMPLES AND WEIGHTING NOTES:
 
 We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].
-
-Question for Ed: If we compare a full sample to a split sample, do we still want to weight these 'equally'?
-
-Analysis should be done using the 'survey' package and weights should be taken into account.
 
 All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
@@ -716,7 +716,7 @@ Key findings to discuss:
 
 -   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies
 
--   
+-   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts.
 
 # Supplementary Material {.unnumbered}
 
