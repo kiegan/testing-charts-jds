@@ -195,6 +195,14 @@ Outline for introduction:
 
 -   This paper presents a series of tests completed and the resulting findings.
 
+    -   We consider structural (and aesthetic?) variations on bar charts and pie charts
+
+    -   Our tests are centered around the following central research questions:
+
+        -   How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
+
+        -   How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization?
+
 -   The remainder of the paper is organized as follows:
 
     -   we first describe the stimulus design
@@ -244,6 +252,35 @@ knitr::include_graphics("images/round3-modified.PNG")
 ```
 
 ## Study design -- stimulus
+
+Outline for study design - stimulus
+
+-   Use of Just-Noticeable Difference
+
+    -   Differences between cognitive lab and survey
+
+    -   Understanding how design impacts the most difficult comparisons
+
+-   Stimuli within context of data viz
+
+    -   Title, legend, axes, etc.
+
+-   Structural variations
+
+    -   Alignment -- across all tests
+
+    -   Stacked bar chart -- vertical, horizontal, and horizontal wide
+
+        -   Vertical and horizontal bars are the same exact visual stimuli but rotated/presented differently
+
+    -   Facetted bar chart
+
+    -   Facetted pie chart -- 4 colors, one color framed, one color floating
+
+-   Results are organized as follows:
+
+    -   ....
+        Haven't decided yet.
 
 <!-- motivate the use of just noticeable differences -->
 
@@ -296,10 +333,15 @@ Binary (certain or very certain vs everybody else)?
 
 ## Study design - survey population
 
-We utilize NORC's AmeriSpeak Omnibus survey, which utilizes a probability-based panel and surveys a sample of 1,000 nationally representative adults 18 and older.
+Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
+Each test was conducted using the AmeriSpeak OMnibus survey, which runs biweekly and pulls a sample of around 1,000 U.S. adults and asks participants to answer questions on a variety of topics.
 The advantage of using a probability-based approach is two-fold.
 First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
 Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
+
+Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
+Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
 ## Survey setup - Stimulus description
 
