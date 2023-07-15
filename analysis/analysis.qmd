@@ -967,11 +967,12 @@ Note: we do not have certainty for round 7. We also do not have timing by indivi
 #| fig-cap: "Comparisons for aligned pie slices were on average the fastest. Comparisons in the facetted barcharts took the longest. The difference in average times are significant for aligned pies versus either of the other designs, but not different between barcharts and unaligned pie charts."
 response_67 %>%
   mutate(task = reorder(task, time_spent)) %>%
-  ggplot(aes(y = task, x = time_spent)) + 
+  ggplot(aes(y = task, x = time_spent, fill=task)) + 
   geom_boxplot() +
   scale_x_log10(breaks=c(1, 5, 10, 20, 30, 60, 120, 300, 600), labels = c("1 sec", "5 secs", "10", "20", "30", "1 min", "2", "5", "10 mins")) + 
   ylab("") + xlab("") + 
-  ggtitle("Time spent on comparing all six pairs by design") 
+  ggtitle("Time spent on comparing all six pairs by design") +
+  theme(legend.position = "none")
 ```
 
 ```{r model-time}
@@ -1172,6 +1173,19 @@ cross_compare3 <- glht(logit_123_correct3, mcp(task_chart="Tukey"))
 ci_confint$letters <- cld(cross_compare)$mcletters$Letters
 ci_confint3$letters <- cld(cross_compare3)$mcletters$Letters
 
+coefs_123 <- coefs_123 %>% left_join(
+  ci_confint %>%
+    mutate(
+      task_chart = paste0("task_chart",task_chart, sep="")
+    ) %>% dplyr::select(task_chart, letters), by=c("term"= "task_chart"))
+
+coefs_123_relaxed <- coefs_123_relaxed %>% left_join(
+  ci_confint3 %>% 
+    mutate(
+      task_chart = paste0("task_chart",task_chart, sep="")
+    ) %>% dplyr::select(task_chart, letters), by=c("term"= "task_chart"))
+
+
 ci_confint <- ci_confint %>% 
   separate_wider_delim(
     task_chart, delim = "-", names =c("task", "chart")
@@ -1263,9 +1277,63 @@ round_123_long %>%
 $$
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
 $$
-where  $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned),  and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. 
+where  $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned),  and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
 
+```{r}
+#| label: tbl-rounds-123
+#| tbl-cap: Log-odds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same **column** values are significantly different (at 5%) if they do not share the same letter.
 
+dframe <- rbind(
+  coefs_123 %>% mutate(level = c("correct | same or wrong")),
+  coefs_123_relaxed %>% mutate(level = c("correct or same | wrong"))
+) %>% mutate(
+  term = gsub("task_chart", "", term),
+) %>% separate(term, into=c("task", "chart"), sep="-")
+
+dframe %>% 
+  dplyr::select(level, task, chart, estimate, std.error, letters) %>%
+  mutate(
+    task = ifelse(task=="ab", "Unaligned", "Aligned")
+  ) %>%
+  group_by(task) %>%
+  mutate(
+    estimate = exp(estimate),
+    std.error = exp(std.error)
+  ) %>%
+  tidyr::pivot_wider(
+        id_cols = c(task, chart),
+        names_from = level,
+        values_from = c(estimate, std.error, letters)
+      ) %>%
+  gt() %>%
+  tab_header(title = "Log odds (SD) of accuracy by task and chart type") %>%
+  fmt_number(
+    everything(),
+    decimals=2
+  ) %>%
+  cols_merge(
+    columns = c("estimate_correct | same or wrong", "std.error_correct | same or wrong",
+                "letters_correct | same or wrong"),
+    pattern = "<<{1}>><< ({2})>><< {3}>>"
+  ) %>%
+  cols_merge(
+    columns = c("estimate_correct or same | wrong", 
+                "std.error_correct or same | wrong",
+                "letters_correct or same | wrong"),
+    pattern = "<<{1}>><< ({2})>><< {3}>>"
+  ) %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    row_group.font.weight = "bold"
+  ) %>%
+  cols_label(
+    .list = c(
+      "chart" = "",
+      "estimate_correct | same or wrong" = "correct | same or wrong",
+      "estimate_correct or same | wrong" = "correct or same | wrong"
+    )
+  )
+```
 
 Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: 
 The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.  
