@@ -1063,7 +1063,7 @@ lambda_12_3 <- calculate_lambda(round_12$weight, round3_adj$weight)
 
 round_123 <- round_12 %>% 
               mutate(weight = lambda_12_3*weight/sum(weight),
-                     task = "Vertical") %>% 
+                     chart = "Vertical") %>% 
   rbind(
     round3_adj %>% 
       mutate(
@@ -1072,18 +1072,24 @@ round_123 <- round_12 %>%
         CorrectAB = ab == "B is bigger",
         CorrectCD = cd == "D is bigger",
         CorrectABCD = paste(CorrectAB, CorrectCD),
-        task = ifelse(P_EXP==1, "Horizontal", "Horizontal wide")
+        chart = ifelse(P_EXP==1, "Horizontal", "Horizontal wide")
        ) %>% 
         dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
-                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, task, weight) 
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight) 
   )
   
 round_123$weight <- neff(round_123$weight)/sum(round_123$weight)*round_123$weight 
 # does not affect the further analysis, but helps with the interpretation of results
 
 round_123_long <- round_123 %>% 
-  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+  pivot_longer(ab:cd, names_to = "task", values_to = "Response") 
 
+round_123_long <- round_123_long %>% 
+  mutate(
+    correct = Response %in% c("B is bigger", "D is bigger"),
+    correct3 = correct | (Response == "They are the same"),
+    task_chart = factor(paste(task, chart, sep="-"))
+  )
 
 survey_123 <- 
   survey::svydesign(
@@ -1096,24 +1102,24 @@ We combine rounds 1, 2 and 3 as shown in @tbl-combine-123 to incorporate all rel
 
 
 
-```{r tbl-combine-123}
+```{r tbl-combine-123, warning = FALSE, message = FALSE}
 #| label: tbl-combine-123
 #| tbl-cap: Table of the number of effective responses by type of visualization and round
 
-lambdas <- round_123_long %>% group_by(round, task) %>% 
+lambdas <- round_123_long %>% group_by(round, chart) %>% 
   summarize(
     lambda = calculate_lambda(
-      round_123_long$weight[round_123_long$task==task[1] & round_123_long$round==round[1]],
-      round_123_long$weight[!(round_123_long$task==task[1] & round_123_long$round==round[1])])
+      round_123_long$weight[round_123_long$chart==chart[1] & round_123_long$round==round[1]],
+      round_123_long$weight[!(round_123_long$chart==chart[1] & round_123_long$round==round[1])])
   )
 
-dframe <- round_123_long %>% group_by(round, task) %>% 
+dframe <- round_123_long %>% group_by(round, chart) %>% 
   summarize(
     nominal = n(),
     effective = round(neff(weight),1),
     participants = length(unique(CaseId))
   ) %>% left_join(
-    lambdas, by = c("round", "task")
+    lambdas, by = c("round", "chart")
   )
 
 
@@ -1145,10 +1151,135 @@ dframe %>%
     row_group.font.weight = "bold"
   )
 ```
+```{r model-123, warning = FALSE, message = FALSE}
+
+logit_123_correct <- svyglm(correct~task_chart-1, family=quasibinomial(), design=survey_123)
+logit_123_correct3 <- svyglm(correct3~task_chart-1, family=quasibinomial(), design=survey_123)
 
 
+ci_confint <- svyby(~correct, by=~task_chart, design=survey_123, svyciprop)
+ci_confint3 <- svyby(~correct3, by=~task_chart, design=survey_123, svyciprop)
 
-Interestingly, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a horizontal to a vertical design seems to be detrimental to an accurate perception in both situations. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars. A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
+
+coefs_123 <- broom::tidy(logit_123_correct)
+coefs_123_relaxed <- broom::tidy(logit_123_correct3)
+
+# create all pairwise comparisons for tasks and questions.
+cross_compare <- glht(logit_123_correct, mcp(task_chart="Tukey"))
+cross_compare3 <- glht(logit_123_correct3, mcp(task_chart="Tukey"))
+
+# get letters for each confidence 
+ci_confint$letters <- cld(cross_compare)$mcletters$Letters
+ci_confint3$letters <- cld(cross_compare3)$mcletters$Letters
+
+ci_confint <- ci_confint %>% 
+  separate_wider_delim(
+    task_chart, delim = "-", names =c("task", "chart")
+    )  %>% mutate(
+  task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+)
+
+ci_confint3 <- ci_confint3 %>% 
+  separate_wider_delim(
+    task_chart, delim = "-", names =c("task", "chart")
+    ) %>% mutate(
+  task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+) 
+```
+
+
+```{r}
+#| label: fig-response-123
+#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = chart)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  facet_grid(.~task) + 
+  theme(legend.position="bottom") + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(chart) - 0.45,
+      ymin = correct - 1.96* `se.as.numeric(correct)`,
+      xmax = as.numeric(chart) + 0.45,
+      ymax = correct + 1.96* `se.as.numeric(correct)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = ci_confint
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(chart) - 0.45,
+      y = correct,
+      xend = as.numeric(chart) + 0.45,
+      yend = correct
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = ci_confint
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(chart) - 0.45,
+      ymin = correct3 - 1.96* `se.as.numeric(correct3)`,
+      xmax = as.numeric(chart) + 0.45,
+      ymax = correct3 + 1.96* `se.as.numeric(correct3)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = ci_confint3
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(chart) - 0.45,
+      y = correct3,
+      xend = as.numeric(chart) + 0.45,
+      yend = correct3
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = ci_confint3
+  ) +
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limits = c(-0.1, 1.1)) + 
+  geom_text(aes(label=letters), y = -0.05, data = ci_confint, colour = "steelblue") +
+  geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
+```
+
+
+### Accuracy in different barchart designs
+
+@fig-response-123 shows the results of a cell-means model with ordinal response $Y$, 
+
+$$
+\text{logit }P(Y_k \le y) = \mu_{ij(k)}
+$$
+where $Y_k$ is the $k$th participant's response with $Y_k \in \{1, 2, 3\}$, where 'correct' is encoded as 1, 'they are the same' is encoded as 2, and 'wrong' is encoded as 3; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned),  and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. 
+
+HH: the definition of this model isn't quite right yet - will fix it in the morning. 
+
+
+Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: 
+The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.  
+The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
+
+
+### Zooming
+
+A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
+
+
+### Certainty
+
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 

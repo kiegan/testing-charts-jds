@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-07-14">
+<meta name="dcterms.date" content="2023-07-15">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -79,7 +79,12 @@ div.csl-indent {
   <li><a href="#binary-and-ordinal-correctness-as-response" id="toc-binary-and-ordinal-correctness-as-response" class="nav-link" data-scroll-target="#binary-and-ordinal-correctness-as-response"><span class="header-section-number">3.1</span> Binary and Ordinal Correctness as Response</a></li>
   <li><a href="#how-much-time-did-participants-spend-on-each-task" id="toc-how-much-time-did-participants-spend-on-each-task" class="nav-link" data-scroll-target="#how-much-time-did-participants-spend-on-each-task"><span class="header-section-number">3.2</span> How much time did participants spend on each task?</a></li>
   </ul></li>
-  <li><a href="#sec-model3" id="toc-sec-model3" class="nav-link" data-scroll-target="#sec-model3"><span class="header-section-number">4</span> Model 3: Aligned and unaligned comparisons between horizontal and vertical barcharts</a></li>
+  <li><a href="#sec-model3" id="toc-sec-model3" class="nav-link" data-scroll-target="#sec-model3"><span class="header-section-number">4</span> Model 3: Aligned and unaligned comparisons between horizontal and vertical barcharts</a>
+  <ul class="collapse">
+  <li><a href="#accuracy-in-different-barchart-designs" id="toc-accuracy-in-different-barchart-designs" class="nav-link" data-scroll-target="#accuracy-in-different-barchart-designs"><span class="header-section-number">4.1</span> Accuracy in different barchart designs</a></li>
+  <li><a href="#zooming" id="toc-zooming" class="nav-link" data-scroll-target="#zooming"><span class="header-section-number">4.2</span> Zooming</a></li>
+  <li><a href="#certainty" id="toc-certainty" class="nav-link" data-scroll-target="#certainty"><span class="header-section-number">4.3</span> Certainty</a></li>
+  </ul></li>
   <li><a href="#sec-modelX" id="toc-sec-modelX" class="nav-link" data-scroll-target="#sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -100,7 +105,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 14, 2023</p>
+      <p class="date">July 15, 2023</p>
     </div>
   </div>
   
@@ -235,23 +240,23 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 <div class="cell-output-display">
 <div id="tbl-coefs-12" class="anchored">
 
-<div id="soaquzbdsp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#soaquzbdsp table {
+<div id="llaybokekl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#llaybokekl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#soaquzbdsp thead, #soaquzbdsp tbody, #soaquzbdsp tfoot, #soaquzbdsp tr, #soaquzbdsp td, #soaquzbdsp th {
+#llaybokekl thead, #llaybokekl tbody, #llaybokekl tfoot, #llaybokekl tr, #llaybokekl td, #llaybokekl th {
   border-style: none;
 }
 
-#soaquzbdsp p {
+#llaybokekl p {
   margin: 0;
   padding: 0;
 }
 
-#soaquzbdsp .gt_table {
+#llaybokekl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -277,12 +282,12 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-left-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_caption {
+#llaybokekl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#soaquzbdsp .gt_title {
+#llaybokekl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -294,7 +299,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-width: 0;
 }
 
-#soaquzbdsp .gt_subtitle {
+#llaybokekl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -306,7 +311,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-width: 0;
 }
 
-#soaquzbdsp .gt_heading {
+#llaybokekl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -318,13 +323,13 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_bottom_border {
+#llaybokekl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_col_headings {
+#llaybokekl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -339,7 +344,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_col_heading {
+#llaybokekl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -359,7 +364,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#soaquzbdsp .gt_column_spanner_outer {
+#llaybokekl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -371,15 +376,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 4px;
 }
 
-#soaquzbdsp .gt_column_spanner_outer:first-child {
+#llaybokekl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#soaquzbdsp .gt_column_spanner_outer:last-child {
+#llaybokekl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#soaquzbdsp .gt_column_spanner {
+#llaybokekl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -391,11 +396,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   width: 100%;
 }
 
-#soaquzbdsp .gt_spanner_row {
+#llaybokekl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#soaquzbdsp .gt_group_heading {
+#llaybokekl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -421,7 +426,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   text-align: left;
 }
 
-#soaquzbdsp .gt_empty_group_heading {
+#llaybokekl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -436,15 +441,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: middle;
 }
 
-#soaquzbdsp .gt_from_md > :first-child {
+#llaybokekl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#soaquzbdsp .gt_from_md > :last-child {
+#llaybokekl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#soaquzbdsp .gt_row {
+#llaybokekl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -463,7 +468,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#soaquzbdsp .gt_stub {
+#llaybokekl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -476,7 +481,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#soaquzbdsp .gt_stub_row_group {
+#llaybokekl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -490,15 +495,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: top;
 }
 
-#soaquzbdsp .gt_row_group_first td {
+#llaybokekl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#soaquzbdsp .gt_row_group_first th {
+#llaybokekl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#soaquzbdsp .gt_summary_row {
+#llaybokekl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -508,16 +513,16 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#soaquzbdsp .gt_first_summary_row {
+#llaybokekl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_first_summary_row.thick {
+#llaybokekl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#soaquzbdsp .gt_last_summary_row {
+#llaybokekl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -527,7 +532,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_grand_summary_row {
+#llaybokekl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -537,7 +542,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#soaquzbdsp .gt_first_grand_summary_row {
+#llaybokekl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -547,7 +552,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_last_grand_summary_row_top {
+#llaybokekl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -557,11 +562,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_striped {
+#llaybokekl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#soaquzbdsp .gt_table_body {
+#llaybokekl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -570,7 +575,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_footnotes {
+#llaybokekl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -584,7 +589,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_footnote {
+#llaybokekl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -593,7 +598,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#soaquzbdsp .gt_sourcenotes {
+#llaybokekl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -607,7 +612,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#soaquzbdsp .gt_sourcenote {
+#llaybokekl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -615,63 +620,63 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#soaquzbdsp .gt_left {
+#llaybokekl .gt_left {
   text-align: left;
 }
 
-#soaquzbdsp .gt_center {
+#llaybokekl .gt_center {
   text-align: center;
 }
 
-#soaquzbdsp .gt_right {
+#llaybokekl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#soaquzbdsp .gt_font_normal {
+#llaybokekl .gt_font_normal {
   font-weight: normal;
 }
 
-#soaquzbdsp .gt_font_bold {
+#llaybokekl .gt_font_bold {
   font-weight: bold;
 }
 
-#soaquzbdsp .gt_font_italic {
+#llaybokekl .gt_font_italic {
   font-style: italic;
 }
 
-#soaquzbdsp .gt_super {
+#llaybokekl .gt_super {
   font-size: 65%;
 }
 
-#soaquzbdsp .gt_footnote_marks {
+#llaybokekl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#soaquzbdsp .gt_asterisk {
+#llaybokekl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#soaquzbdsp .gt_indent_1 {
+#llaybokekl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#soaquzbdsp .gt_indent_2 {
+#llaybokekl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#soaquzbdsp .gt_indent_3 {
+#llaybokekl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#soaquzbdsp .gt_indent_4 {
+#llaybokekl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#soaquzbdsp .gt_indent_5 {
+#llaybokekl .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -801,23 +806,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<div id="rctfteeasj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rctfteeasj table {
+<div id="tngevlstlm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tngevlstlm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rctfteeasj thead, #rctfteeasj tbody, #rctfteeasj tfoot, #rctfteeasj tr, #rctfteeasj td, #rctfteeasj th {
+#tngevlstlm thead, #tngevlstlm tbody, #tngevlstlm tfoot, #tngevlstlm tr, #tngevlstlm td, #tngevlstlm th {
   border-style: none;
 }
 
-#rctfteeasj p {
+#tngevlstlm p {
   margin: 0;
   padding: 0;
 }
 
-#rctfteeasj .gt_table {
+#tngevlstlm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -843,12 +848,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_caption {
+#tngevlstlm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rctfteeasj .gt_title {
+#tngevlstlm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -860,7 +865,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#rctfteeasj .gt_subtitle {
+#tngevlstlm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -872,7 +877,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#rctfteeasj .gt_heading {
+#tngevlstlm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -884,13 +889,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_bottom_border {
+#tngevlstlm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_col_headings {
+#tngevlstlm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -905,7 +910,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_col_heading {
+#tngevlstlm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -925,7 +930,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#rctfteeasj .gt_column_spanner_outer {
+#tngevlstlm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -937,15 +942,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#rctfteeasj .gt_column_spanner_outer:first-child {
+#tngevlstlm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rctfteeasj .gt_column_spanner_outer:last-child {
+#tngevlstlm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rctfteeasj .gt_column_spanner {
+#tngevlstlm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -957,11 +962,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#rctfteeasj .gt_spanner_row {
+#tngevlstlm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rctfteeasj .gt_group_heading {
+#tngevlstlm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -987,7 +992,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#rctfteeasj .gt_empty_group_heading {
+#tngevlstlm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1002,15 +1007,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#rctfteeasj .gt_from_md > :first-child {
+#tngevlstlm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rctfteeasj .gt_from_md > :last-child {
+#tngevlstlm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rctfteeasj .gt_row {
+#tngevlstlm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1029,7 +1034,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#rctfteeasj .gt_stub {
+#tngevlstlm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1042,7 +1047,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#rctfteeasj .gt_stub_row_group {
+#tngevlstlm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1056,15 +1061,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#rctfteeasj .gt_row_group_first td {
+#tngevlstlm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rctfteeasj .gt_row_group_first th {
+#tngevlstlm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rctfteeasj .gt_summary_row {
+#tngevlstlm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1074,16 +1079,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#rctfteeasj .gt_first_summary_row {
+#tngevlstlm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_first_summary_row.thick {
+#tngevlstlm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rctfteeasj .gt_last_summary_row {
+#tngevlstlm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1093,7 +1098,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_grand_summary_row {
+#tngevlstlm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1103,7 +1108,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#rctfteeasj .gt_first_grand_summary_row {
+#tngevlstlm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1113,7 +1118,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_last_grand_summary_row_top {
+#tngevlstlm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1123,11 +1128,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_striped {
+#tngevlstlm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rctfteeasj .gt_table_body {
+#tngevlstlm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1136,7 +1141,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_footnotes {
+#tngevlstlm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1150,7 +1155,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_footnote {
+#tngevlstlm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1159,7 +1164,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#rctfteeasj .gt_sourcenotes {
+#tngevlstlm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1173,7 +1178,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#rctfteeasj .gt_sourcenote {
+#tngevlstlm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1181,63 +1186,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#rctfteeasj .gt_left {
+#tngevlstlm .gt_left {
   text-align: left;
 }
 
-#rctfteeasj .gt_center {
+#tngevlstlm .gt_center {
   text-align: center;
 }
 
-#rctfteeasj .gt_right {
+#tngevlstlm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rctfteeasj .gt_font_normal {
+#tngevlstlm .gt_font_normal {
   font-weight: normal;
 }
 
-#rctfteeasj .gt_font_bold {
+#tngevlstlm .gt_font_bold {
   font-weight: bold;
 }
 
-#rctfteeasj .gt_font_italic {
+#tngevlstlm .gt_font_italic {
   font-style: italic;
 }
 
-#rctfteeasj .gt_super {
+#tngevlstlm .gt_super {
   font-size: 65%;
 }
 
-#rctfteeasj .gt_footnote_marks {
+#tngevlstlm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rctfteeasj .gt_asterisk {
+#tngevlstlm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rctfteeasj .gt_indent_1 {
+#tngevlstlm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rctfteeasj .gt_indent_2 {
+#tngevlstlm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rctfteeasj .gt_indent_3 {
+#tngevlstlm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rctfteeasj .gt_indent_4 {
+#tngevlstlm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rctfteeasj .gt_indent_5 {
+#tngevlstlm .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1347,23 +1352,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell-output-display">
 <div id="tbl-combine-67" class="anchored">
 
-<div id="tfnsefnuwh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tfnsefnuwh table {
+<div id="usviayzwea" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#usviayzwea table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tfnsefnuwh thead, #tfnsefnuwh tbody, #tfnsefnuwh tfoot, #tfnsefnuwh tr, #tfnsefnuwh td, #tfnsefnuwh th {
+#usviayzwea thead, #usviayzwea tbody, #usviayzwea tfoot, #usviayzwea tr, #usviayzwea td, #usviayzwea th {
   border-style: none;
 }
 
-#tfnsefnuwh p {
+#usviayzwea p {
   margin: 0;
   padding: 0;
 }
 
-#tfnsefnuwh .gt_table {
+#usviayzwea .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1389,12 +1394,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_caption {
+#usviayzwea .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tfnsefnuwh .gt_title {
+#usviayzwea .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1406,7 +1411,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#tfnsefnuwh .gt_subtitle {
+#usviayzwea .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1418,7 +1423,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#tfnsefnuwh .gt_heading {
+#usviayzwea .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1430,13 +1435,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_bottom_border {
+#usviayzwea .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_col_headings {
+#usviayzwea .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1451,7 +1456,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_col_heading {
+#usviayzwea .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1471,7 +1476,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#tfnsefnuwh .gt_column_spanner_outer {
+#usviayzwea .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1483,15 +1488,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#tfnsefnuwh .gt_column_spanner_outer:first-child {
+#usviayzwea .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tfnsefnuwh .gt_column_spanner_outer:last-child {
+#usviayzwea .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tfnsefnuwh .gt_column_spanner {
+#usviayzwea .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1503,11 +1508,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#tfnsefnuwh .gt_spanner_row {
+#usviayzwea .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tfnsefnuwh .gt_group_heading {
+#usviayzwea .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1533,7 +1538,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#tfnsefnuwh .gt_empty_group_heading {
+#usviayzwea .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1548,15 +1553,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#tfnsefnuwh .gt_from_md > :first-child {
+#usviayzwea .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tfnsefnuwh .gt_from_md > :last-child {
+#usviayzwea .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tfnsefnuwh .gt_row {
+#usviayzwea .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1575,7 +1580,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#tfnsefnuwh .gt_stub {
+#usviayzwea .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1588,7 +1593,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#tfnsefnuwh .gt_stub_row_group {
+#usviayzwea .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1602,15 +1607,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#tfnsefnuwh .gt_row_group_first td {
+#usviayzwea .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tfnsefnuwh .gt_row_group_first th {
+#usviayzwea .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tfnsefnuwh .gt_summary_row {
+#usviayzwea .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1620,16 +1625,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#tfnsefnuwh .gt_first_summary_row {
+#usviayzwea .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_first_summary_row.thick {
+#usviayzwea .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tfnsefnuwh .gt_last_summary_row {
+#usviayzwea .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1639,7 +1644,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_grand_summary_row {
+#usviayzwea .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1649,7 +1654,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#tfnsefnuwh .gt_first_grand_summary_row {
+#usviayzwea .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1659,7 +1664,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_last_grand_summary_row_top {
+#usviayzwea .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1669,11 +1674,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_striped {
+#usviayzwea .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tfnsefnuwh .gt_table_body {
+#usviayzwea .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1682,7 +1687,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_footnotes {
+#usviayzwea .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1696,7 +1701,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_footnote {
+#usviayzwea .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1705,7 +1710,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#tfnsefnuwh .gt_sourcenotes {
+#usviayzwea .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1719,7 +1724,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#tfnsefnuwh .gt_sourcenote {
+#usviayzwea .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1727,63 +1732,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#tfnsefnuwh .gt_left {
+#usviayzwea .gt_left {
   text-align: left;
 }
 
-#tfnsefnuwh .gt_center {
+#usviayzwea .gt_center {
   text-align: center;
 }
 
-#tfnsefnuwh .gt_right {
+#usviayzwea .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tfnsefnuwh .gt_font_normal {
+#usviayzwea .gt_font_normal {
   font-weight: normal;
 }
 
-#tfnsefnuwh .gt_font_bold {
+#usviayzwea .gt_font_bold {
   font-weight: bold;
 }
 
-#tfnsefnuwh .gt_font_italic {
+#usviayzwea .gt_font_italic {
   font-style: italic;
 }
 
-#tfnsefnuwh .gt_super {
+#usviayzwea .gt_super {
   font-size: 65%;
 }
 
-#tfnsefnuwh .gt_footnote_marks {
+#usviayzwea .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tfnsefnuwh .gt_asterisk {
+#usviayzwea .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tfnsefnuwh .gt_indent_1 {
+#usviayzwea .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tfnsefnuwh .gt_indent_2 {
+#usviayzwea .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tfnsefnuwh .gt_indent_3 {
+#usviayzwea .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tfnsefnuwh .gt_indent_4 {
+#usviayzwea .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tfnsefnuwh .gt_indent_5 {
+#usviayzwea .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2409,76 +2414,10 @@ Un-</td>
 <p></p><figcaption class="figure-caption">Figure&nbsp;9: Design and stimulus of round 3</figcaption><p></p>
 </figure>
 </div>
-<p>We combine rounds 1, 2 and 3 as shown in <strong>?@tbl-combine-123</strong> to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes.</p>
-<div id="tbl-combine-123" class="cell tbl-parent quarto-layout-panel anchored" data-tbl-cap="Table of the number of effective responses by type of visualization and round">
-
-</div>
-<p>Interestingly, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a horizontal to a vertical design seems to be detrimental to an accurate perception in both situations. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars. A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by <span class="citation" data-cites="luModelingJustNoticeable2022">Lu et al. (<a href="#ref-luModelingJustNoticeable2022" role="doc-biblioref">2022</a>)</span> about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.</p>
-</section>
-<section id="sec-modelX" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</h2>
-<p>The survey setup and all stimuli are shown in <a href="#tbl-tasks-7">Table&nbsp;5</a>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
-<p>For each chart, panelists were asked to compare all marked tiles against each other.</p>
-<div id="tbl-tasks-7" class="anchored">
-<table class="table">
-<caption>Table&nbsp;5: Setup of questions and stimuli for Round 7.</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 40%">
-<col style="width: 40%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><strong>Everybody:</strong></td>
-<td><strong>Question 1:</strong> Facetted Pie, unaligned</td>
-<td><strong>Question 2:</strong> Facetted Pie, aligned</td>
-</tr>
-<tr class="even">
-<td></td>
-<td><img src="images/round7/unaligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, unaligned"></td>
-<td><img src="images/round7/aligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, aligned"></td>
-</tr>
-<tr class="odd">
-<td><strong>Split Sample</strong></td>
-<td>Effective sample size: 257.3</td>
-<td>Effective sample size: 267.7</td>
-</tr>
-<tr class="even">
-<td><strong>Question 3:</strong> unaligned</td>
-<td>Floating pie wedges</td>
-<td>Framed pie wedges</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><img src="images/round7/unaligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 3"></td>
-<td><img src="images/round7/unaligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 3"></td>
-</tr>
-<tr class="even">
-<td><strong>Question 4:</strong> aligned</td>
-<td><img src="images/round7/aligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 4"></td>
-<td><img src="images/round7/aligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 4"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same.</p>
+<p>We combine rounds 1, 2 and 3 as shown in <a href="#tbl-combine-123">Table&nbsp;5</a> to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p><a href="#fig-pies">Figure&nbsp;10</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;6</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
-Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
-<p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
-<p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="tbl-model7" class="anchored">
+<div id="tbl-combine-123" class="anchored">
 
 <div id="lldjrnaipr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#lldjrnaipr table {
@@ -2588,7 +2527,7 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
-  font-weight: normal;
+  font-weight: bold;
   text-transform: inherit;
   border-left-style: none;
   border-left-width: 1px;
@@ -2608,7 +2547,7 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
-  font-weight: normal;
+  font-weight: bold;
   text-transform: inherit;
   padding-top: 0;
   padding-bottom: 0;
@@ -2648,7 +2587,7 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
-  font-weight: initial;
+  font-weight: bold;
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
@@ -2671,7 +2610,7 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
-  font-weight: initial;
+  font-weight: bold;
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2920,7 +2859,593 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
   text-indent: 25px;
 }
 </style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;6:  <p>Estimates for the cell means model</p> </caption>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;5:  <p>Table of the number of effective responses by type of visualization
+and round</p> </caption>
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Number of (effective) responses by task</td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="chart">chart</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of responses:<br>nominal">number of responses:<br>nominal</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of responses:<br>effective">number of responses:<br>effective</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="number of participants">number of participants</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="λ">λ</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="Round 1">Round 1</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Round 1  chart" class="gt_row gt_left">Vertical</td>
+<td headers="Round 1  nominal" class="gt_row gt_right">1,866</td>
+<td headers="Round 1  effective" class="gt_row gt_right">1,042.4</td>
+<td headers="Round 1  participants" class="gt_row gt_right">933</td>
+<td headers="Round 1  lambda" class="gt_row gt_right">0.3427</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="Round 2">Round 2</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Round 2  chart" class="gt_row gt_left">Vertical</td>
+<td headers="Round 2  nominal" class="gt_row gt_right">1,906</td>
+<td headers="Round 2  effective" class="gt_row gt_right">971.7</td>
+<td headers="Round 2  participants" class="gt_row gt_right">953</td>
+<td headers="Round 2  lambda" class="gt_row gt_right">0.3195</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" scope="colgroup" id="Round 3">Round 3</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Round 3  chart" class="gt_row gt_left">Horizontal</td>
+<td headers="Round 3  nominal" class="gt_row gt_right">918</td>
+<td headers="Round 3  effective" class="gt_row gt_right">533.2</td>
+<td headers="Round 3  participants" class="gt_row gt_right">459</td>
+<td headers="Round 3  lambda" class="gt_row gt_right">0.1751</td></tr>
+    <tr><td headers="Round 3  chart" class="gt_row gt_left">Horizontal wide</td>
+<td headers="Round 3  nominal" class="gt_row gt_right">924</td>
+<td headers="Round 3  effective" class="gt_row gt_right">498.5</td>
+<td headers="Round 3  participants" class="gt_row gt_right">462</td>
+<td headers="Round 3  lambda" class="gt_row gt_right">0.1637</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-response-123" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-response-123-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;10: Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs. The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="accuracy-in-different-barchart-designs" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="accuracy-in-different-barchart-designs"><span class="header-section-number">4.1</span> Accuracy in different barchart designs</h3>
+<p><a href="#fig-response-123">Figure&nbsp;10</a> shows the results of a cell-means model with ordinal response <span class="math inline">\(Y\)</span>,</p>
+<p><span class="math display">\[
+\text{logit }P(Y_k \le y) = \mu_{ij(k)}
+\]</span> where <span class="math inline">\(Y_k\)</span> is the <span class="math inline">\(k\)</span>th participant’s response with <span class="math inline">\(Y_k \in \{1, 2, 3\}\)</span>, where ‘correct’ is encoded as 1, ‘they are the same’ is encoded as 2, and ‘wrong’ is encoded as 3; <span class="math inline">\(i \in \{1, 2\}\)</span> is the comparison type (1 = Aligned, 2 = Unaligned), and <span class="math inline">\(j \in \{1, 2, 3\}\)</span> is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.</p>
+<p>HH: the definition of this model isn’t quite right yet - will fix it in the morning.</p>
+<p>Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.<br>
+The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.</p>
+</section>
+<section id="zooming" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="zooming"><span class="header-section-number">4.2</span> Zooming</h3>
+<p>A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by <span class="citation" data-cites="luModelingJustNoticeable2022">Lu et al. (<a href="#ref-luModelingJustNoticeable2022" role="doc-biblioref">2022</a>)</span> about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.</p>
+</section>
+<section id="certainty" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="certainty"><span class="header-section-number">4.3</span> Certainty</h3>
+</section>
+</section>
+<section id="sec-modelX" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</h2>
+<p>The survey setup and all stimuli are shown in <a href="#tbl-tasks-7">Table&nbsp;6</a>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
+<p>For each chart, panelists were asked to compare all marked tiles against each other.</p>
+<div id="tbl-tasks-7" class="anchored">
+<table class="table">
+<caption>Table&nbsp;6: Setup of questions and stimuli for Round 7.</caption>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Everybody:</strong></td>
+<td><strong>Question 1:</strong> Facetted Pie, unaligned</td>
+<td><strong>Question 2:</strong> Facetted Pie, aligned</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><img src="images/round7/unaligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, unaligned"></td>
+<td><img src="images/round7/aligned%20pie%20-%20all.png" class="img-fluid" alt="Facetted pie charts, aligned"></td>
+</tr>
+<tr class="odd">
+<td><strong>Split Sample</strong></td>
+<td>Effective sample size: 257.3</td>
+<td>Effective sample size: 267.7</td>
+</tr>
+<tr class="even">
+<td><strong>Question 3:</strong> unaligned</td>
+<td>Floating pie wedges</td>
+<td>Framed pie wedges</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><img src="images/round7/unaligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 3"></td>
+<td><img src="images/round7/unaligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 3"></td>
+</tr>
+<tr class="even">
+<td><strong>Question 4:</strong> aligned</td>
+<td><img src="images/round7/aligned%20pie%20floating%20-%20sample%201.png" class="img-fluid" alt="Question 4"></td>
+<td><img src="images/round7/aligned%20pie%20framed%20-%20sample%202.png" class="img-fluid" alt="Question 4"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For a comparison of wedges marked X and Y, there were three possible options for the response: (1) X is bigger, (2) Y is bigger or (3) They are the same.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-pies">Figure&nbsp;11</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;7</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
+Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
+<p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
+<p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="tbl-model7" class="anchored">
+
+<div id="wizvkzicgh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wizvkzicgh table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wizvkzicgh thead, #wizvkzicgh tbody, #wizvkzicgh tfoot, #wizvkzicgh tr, #wizvkzicgh td, #wizvkzicgh th {
+  border-style: none;
+}
+
+#wizvkzicgh p {
+  margin: 0;
+  padding: 0;
+}
+
+#wizvkzicgh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wizvkzicgh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wizvkzicgh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wizvkzicgh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wizvkzicgh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wizvkzicgh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wizvkzicgh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wizvkzicgh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wizvkzicgh .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wizvkzicgh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wizvkzicgh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wizvkzicgh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wizvkzicgh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wizvkzicgh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wizvkzicgh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wizvkzicgh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wizvkzicgh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wizvkzicgh .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wizvkzicgh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wizvkzicgh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wizvkzicgh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wizvkzicgh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wizvkzicgh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wizvkzicgh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wizvkzicgh .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wizvkzicgh .gt_left {
+  text-align: left;
+}
+
+#wizvkzicgh .gt_center {
+  text-align: center;
+}
+
+#wizvkzicgh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wizvkzicgh .gt_font_normal {
+  font-weight: normal;
+}
+
+#wizvkzicgh .gt_font_bold {
+  font-weight: bold;
+}
+
+#wizvkzicgh .gt_font_italic {
+  font-style: italic;
+}
+
+#wizvkzicgh .gt_super {
+  font-size: 65%;
+}
+
+#wizvkzicgh .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wizvkzicgh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wizvkzicgh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wizvkzicgh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wizvkzicgh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wizvkzicgh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wizvkzicgh .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;7:  <p>Estimates for the cell means model</p> </caption>
   <thead>
     <tr class="gt_heading">
       <td colspan="5" class="gt_heading gt_title gt_font_normal" style="">Estimates for Model 2</td>
