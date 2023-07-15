@@ -1297,30 +1297,30 @@ dframe %>%
   ) %>%
   group_by(task) %>%
   mutate(
-    estimate = exp(estimate),
-    std.error = exp(std.error)
+    ci_low = exp(estimate-1.96*std.error),
+    ci_high = exp(estimate+1.96*std.error),
+    estimate = exp(estimate)
   ) %>%
   tidyr::pivot_wider(
         id_cols = c(task, chart),
         names_from = level,
-        values_from = c(estimate, std.error, letters)
+        values_from = c(estimate, ci_low, ci_high, letters)
       ) %>%
   gt() %>%
-  tab_header(title = "Log odds (SD) of accuracy by task and chart type") %>%
+  tab_header(title = "Log odds of accuracy by task and chart type") %>%
   fmt_number(
     everything(),
     decimals=2
   ) %>%
   cols_merge(
-    columns = c("estimate_correct | same or wrong", "std.error_correct | same or wrong",
-                "letters_correct | same or wrong"),
-    pattern = "<<{1}>><< ({2})>><< {3}>>"
+    columns = c("estimate_correct | same or wrong", "ci_low_correct | same or wrong",
+                "ci_high_correct | same or wrong", "letters_correct | same or wrong"),
+    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
   ) %>%
   cols_merge(
-    columns = c("estimate_correct or same | wrong", 
-                "std.error_correct or same | wrong",
-                "letters_correct or same | wrong"),
-    pattern = "<<{1}>><< ({2})>><< {3}>>"
+    columns = c("estimate_correct or same | wrong", "ci_low_correct or same | wrong",
+                "ci_high_correct or same | wrong", "letters_correct or same | wrong"),
+    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
   ) %>%
   tab_options(
     column_labels.font.weight = "bold",
