@@ -1089,8 +1089,13 @@ round_123_long <- round_123_long %>%
   mutate(
     correct = Response %in% c("B is bigger", "D is bigger"),
     correct3 = correct | (Response == "They are the same"),
-    task_chart = factor(paste(task, chart, sep="-"))
+    task_chart = factor(paste(task, chart, sep="-")),
+    zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
+    response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
   )
+
+
+
 
 survey_123 <- 
   survey::svydesign(
@@ -1152,6 +1157,8 @@ dframe %>%
     row_group.font.weight = "bold"
   )
 ```
+
+
 ```{r model-123, warning = FALSE, message = FALSE}
 
 logit_123_correct <- svyglm(correct~task_chart-1, family=quasibinomial(), design=survey_123)
@@ -1342,8 +1349,94 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 
 ### Zooming
 
-A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - and it can be shown that zooming into charts helps with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli). The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is higher than for the two horizontal designs.
+A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.  However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
 
+<!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
+
+```{r zoom-123}
+logit_zoom <- svyglm(I(zoom=="yes")~response3+task+chart, family=quasibinomial(), design=survey_123)
+
+coefs_zoom <- broom::tidy(logit_zoom)
+```
+
+```{r}
+#| label: fig-zoom-123
+#| fig-cap: "Zooming - not significant for accuracy or task, but changes by the type of chart."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+zt <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide")),
+    zoom = factor(zoom, levels=c("no", "yes"))
+  ) %>% 
+  ggplot(aes(x = response3)) + 
+  geom_bar(aes(fill = zoom, weight = weight), position="fill") +
+  facet_grid(.~task) + 
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) + 
+  scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
+  xlab("") + 
+  ggtitle("Zooming behavior by task")
+
+zd <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide")),
+    zoom = factor(zoom, levels=c("no", "yes"))
+  ) %>% 
+  ggplot(aes(x = response3)) + 
+  geom_bar(aes(fill = zoom, weight = weight), position="fill") +
+  facet_grid(.~chart) + 
+  scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
+  xlab("") + 
+  ggtitle("Zooming behavior by chart") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1))
+
+zt + zd + plot_layout(widths=c(5, 7.5), guides='collect') 
+  
+```
+
+Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$. We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$),  task ($\tau$), and design ($\delta$) of the chart:
+$$
+\text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
+$$
+
+```{r}
+#| label: tbl-zoom-123
+#| tbl-cap: Coefficients for logistic regression of zooming by task
+
+coefs_zoom %>%
+  mutate(
+    term = ifelse(term=="(Intercept)", "Intercept", term),
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+  ) %>%
+  gt() %>%
+  tab_header("Estimates for logistic regression on zooming behavior") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
+
+```
 
 ### Certainty
 
