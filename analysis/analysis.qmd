@@ -1467,6 +1467,7 @@ educ <- round_123_long %>%
     chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
   ) %>% 
   ggplot(aes(x = educ5)) + 
+  facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
   theme(legend.position="bottom",
         axis.text.x = element_text(angle=30, hjust=1)) + 
@@ -1480,6 +1481,7 @@ gender <- round_123_long %>%
     chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
   ) %>% 
   ggplot(aes(x = gender)) + 
+  facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
   theme(legend.position="bottom",
         axis.text.x = element_text(angle=30, hjust=1)) + 
@@ -1493,6 +1495,7 @@ income <- round_123_long %>%
     chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
   ) %>% 
   ggplot(aes(x = income4)) + 
+  facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
   theme(legend.position="bottom",
         axis.text.x = element_text(angle=30, hjust=1)) + 
@@ -1507,6 +1510,7 @@ race <- round_123_long %>%
     chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
   ) %>% 
   ggplot(aes(x = racethnicity)) + 
+  facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
   theme(legend.position="bottom",
         axis.text.x = element_text(angle=30, hjust=1)) + 
@@ -1521,7 +1525,8 @@ age <- round_123_long %>%
     chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
   ) %>% 
   ggplot(aes(x = age4)) + 
-  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+   facet_grid(.~task) + 
+ geom_bar(aes(fill = response3, weight = weight), position="fill") +
   theme(legend.position="bottom",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
@@ -1531,8 +1536,8 @@ gender + age +income + educ + plot_layout(nrow=1)
 ```
 
 ```{r demographics}
-logit_demo <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial())
-logit_demo3 <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial())
+logit_demo <- svyglm(correct~task:(gender+educ5+age4+income4), design=survey_123, family=quasibinomial())
+logit_demo3 <- svyglm(correct3~task:(gender+educ5+age4+income4), design=survey_123, family=quasibinomial())
 
 summary(logit_demo)
 summary(logit_demo3)
