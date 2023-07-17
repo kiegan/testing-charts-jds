@@ -39,8 +39,13 @@ preamble: >
   \usepackage{amsfonts,amsmath,amssymb,amsthm}
   \usepackage{booktabs}
   \usepackage{graphicx}
+  \usepackage{hyperref}
 format:
   html: default
+  pdf: 
+    documentclass: jds
+    include-in-header: authors.tex
+    keep-tex: true
 editor: 
   markdown: 
     wrap: sentence
@@ -51,14 +56,9 @@ editor:
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
   \setlength{\parindent}{0pt}
 ```
-\hh{hello?}
-
-\kr{Kiegan, this is your editing color :) - you can choose a different color above}
 
 <!-- fig-width: 6.5 -->
-
 <!-- fig-height: 4.5 -->
-
 <!-- template: template-jdsart.cls.tex -->
 
 ```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
@@ -335,12 +335,14 @@ Binary (certain or very certain vs everybody else)?
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
 The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
-Each test was conducted using the AmeriSpeak OMnibus survey, which runs biweekly and pulls a sample of around 1,000 U.S. adults and asks participants to answer questions on a variety of topics.
+Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S.adults to answer questions on a variety of topics.
 The advantage of using a probability-based approach is two-fold.
 First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
 Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
 
-Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
+\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?}
+
+Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests. 
 Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
 ## Survey setup - Stimulus description
@@ -369,7 +371,7 @@ Any differences in observed accuracy can therefore be attributed to this differe
 
 ```{r}
 #| label: fig-tasks-12
-#| fig-cap: "The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. In both instances, the tile on the right is (very slightly) larger."
+#| fig-cap: "Two stacked (vertical) barcharts. In each barchart, two tiles are marked. In both instances, the tile on the right is (very slightly) larger. "
 #| fig-subcap:
 #| - "**Unaligned bars**"
 #| - "**Aligned bars**"
@@ -377,6 +379,19 @@ Any differences in observed accuracy can therefore be attributed to this differe
 #| out-width: 100%
 knitr::include_graphics("images/vertical-ab.PNG")
 knitr::include_graphics("images/vertical-cd.PNG")
+```
+
+
+```{r}
+#| label: fig-tasks-3
+#| fig-cap: "Changes to to the vertical design are made in two steps. First, the original chart is rotated. The areas of all tiles are kept the same. In a second step, the aspect ratio of tiles is changed while keeping the areas of tiles the same."
+#| fig-subcap:
+#| - "**Tall horizontal bars**, unaligned"
+#| - "**Wide horizontal bars**, unaligned"
+#| layout-nrow: 1
+#| out-width: 100%
+knitr::include_graphics("images/round3/horizontal-ab.PNG")
+knitr::include_graphics("images/round3/hwide-ab.PNG")
 ```
 
 <!-- |                                   |                                   | -->
@@ -417,7 +432,7 @@ Paragraph on combining samples across rounds
 
 -   Pull from analysis doc
 
--   When combining responses from multiple rounds, we make weighting adjustments to ensure that each weights in each sample are properly calibrated to the population total across both rounds.
+-   When combining responses from multiple rounds, we make weighting adjustments to ensure that weights in each sample are properly calibrated,  to the population total across both rounds.
     **NEED ED REVIEW OF THIS LANGUAGE.** This adjustment is completed as follows: \[insert Heike text from analysis doc here\].
 
 Test 1
@@ -737,15 +752,26 @@ Binary (certain or very certain vs everybody else)?
 
 Key findings to discuss:
 
--   Design choices impact viewer behavior
-
--   Design choices impact viewer accuracy
-
--   Reproduced prior convenience sample results using a large, nationally-representative survey population
-
 -   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies
 
+-   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population: 
+
+    - Cleveland: position (aligned) versus unaligned
+    - unaligned tiles within stacked bar are a hybrid between framed bar and floats
+    - Talbot: pie charts - individual wedges vs piecharts
+
+-   Design choices impact viewer accuracy:
+
+    - new finding: pie charts accuracy in work better when framed (wedges)
+
+- Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked).
+
 -   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts.
+
+    - Design choices impact viewer behavior: zooming
+
+- (some) Demographics matter: age and gender does not seem to matter for perception
+  economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication 
 
 # Supplementary Material {.unnumbered}
 
