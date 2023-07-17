@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-07-16">
+<meta name="dcterms.date" content="2023-07-17">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -84,6 +84,7 @@ div.csl-indent {
   <li><a href="#accuracy-in-different-barchart-designs" id="toc-accuracy-in-different-barchart-designs" class="nav-link" data-scroll-target="#accuracy-in-different-barchart-designs"><span class="header-section-number">4.1</span> Accuracy in different barchart designs</a></li>
   <li><a href="#zooming" id="toc-zooming" class="nav-link" data-scroll-target="#zooming"><span class="header-section-number">4.2</span> Zooming</a></li>
   <li><a href="#certainty" id="toc-certainty" class="nav-link" data-scroll-target="#certainty"><span class="header-section-number">4.3</span> Certainty</a></li>
+  <li><a href="#accuracy-and-demographics" id="toc-accuracy-and-demographics" class="nav-link" data-scroll-target="#accuracy-and-demographics"><span class="header-section-number">4.4</span> Accuracy and Demographics</a></li>
   </ul></li>
   <li><a href="#sec-modelX" id="toc-sec-modelX" class="nav-link" data-scroll-target="#sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -105,7 +106,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 16, 2023</p>
+      <p class="date">July 17, 2023</p>
     </div>
   </div>
   
@@ -240,23 +241,23 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 <div class="cell-output-display">
 <div id="tbl-coefs-12" class="anchored">
 
-<div id="jnwmcxirxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jnwmcxirxg table {
+<div id="rbwfdnnkyu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rbwfdnnkyu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jnwmcxirxg thead, #jnwmcxirxg tbody, #jnwmcxirxg tfoot, #jnwmcxirxg tr, #jnwmcxirxg td, #jnwmcxirxg th {
+#rbwfdnnkyu thead, #rbwfdnnkyu tbody, #rbwfdnnkyu tfoot, #rbwfdnnkyu tr, #rbwfdnnkyu td, #rbwfdnnkyu th {
   border-style: none;
 }
 
-#jnwmcxirxg p {
+#rbwfdnnkyu p {
   margin: 0;
   padding: 0;
 }
 
-#jnwmcxirxg .gt_table {
+#rbwfdnnkyu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -282,12 +283,12 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-left-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_caption {
+#rbwfdnnkyu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jnwmcxirxg .gt_title {
+#rbwfdnnkyu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -299,7 +300,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-width: 0;
 }
 
-#jnwmcxirxg .gt_subtitle {
+#rbwfdnnkyu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -311,7 +312,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-width: 0;
 }
 
-#jnwmcxirxg .gt_heading {
+#rbwfdnnkyu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -323,13 +324,13 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_bottom_border {
+#rbwfdnnkyu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_col_headings {
+#rbwfdnnkyu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -344,7 +345,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_col_heading {
+#rbwfdnnkyu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -364,7 +365,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#jnwmcxirxg .gt_column_spanner_outer {
+#rbwfdnnkyu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -376,15 +377,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 4px;
 }
 
-#jnwmcxirxg .gt_column_spanner_outer:first-child {
+#rbwfdnnkyu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jnwmcxirxg .gt_column_spanner_outer:last-child {
+#rbwfdnnkyu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jnwmcxirxg .gt_column_spanner {
+#rbwfdnnkyu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -396,11 +397,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   width: 100%;
 }
 
-#jnwmcxirxg .gt_spanner_row {
+#rbwfdnnkyu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jnwmcxirxg .gt_group_heading {
+#rbwfdnnkyu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -426,7 +427,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   text-align: left;
 }
 
-#jnwmcxirxg .gt_empty_group_heading {
+#rbwfdnnkyu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -441,15 +442,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: middle;
 }
 
-#jnwmcxirxg .gt_from_md > :first-child {
+#rbwfdnnkyu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jnwmcxirxg .gt_from_md > :last-child {
+#rbwfdnnkyu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jnwmcxirxg .gt_row {
+#rbwfdnnkyu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -468,7 +469,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#jnwmcxirxg .gt_stub {
+#rbwfdnnkyu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -481,7 +482,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#jnwmcxirxg .gt_stub_row_group {
+#rbwfdnnkyu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -495,15 +496,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: top;
 }
 
-#jnwmcxirxg .gt_row_group_first td {
+#rbwfdnnkyu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jnwmcxirxg .gt_row_group_first th {
+#rbwfdnnkyu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jnwmcxirxg .gt_summary_row {
+#rbwfdnnkyu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -513,16 +514,16 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#jnwmcxirxg .gt_first_summary_row {
+#rbwfdnnkyu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_first_summary_row.thick {
+#rbwfdnnkyu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jnwmcxirxg .gt_last_summary_row {
+#rbwfdnnkyu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -532,7 +533,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_grand_summary_row {
+#rbwfdnnkyu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -542,7 +543,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#jnwmcxirxg .gt_first_grand_summary_row {
+#rbwfdnnkyu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -552,7 +553,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_last_grand_summary_row_top {
+#rbwfdnnkyu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -562,11 +563,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_striped {
+#rbwfdnnkyu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jnwmcxirxg .gt_table_body {
+#rbwfdnnkyu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -575,7 +576,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_footnotes {
+#rbwfdnnkyu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -589,7 +590,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_footnote {
+#rbwfdnnkyu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -598,7 +599,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#jnwmcxirxg .gt_sourcenotes {
+#rbwfdnnkyu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -612,7 +613,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#jnwmcxirxg .gt_sourcenote {
+#rbwfdnnkyu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -620,63 +621,63 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#jnwmcxirxg .gt_left {
+#rbwfdnnkyu .gt_left {
   text-align: left;
 }
 
-#jnwmcxirxg .gt_center {
+#rbwfdnnkyu .gt_center {
   text-align: center;
 }
 
-#jnwmcxirxg .gt_right {
+#rbwfdnnkyu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jnwmcxirxg .gt_font_normal {
+#rbwfdnnkyu .gt_font_normal {
   font-weight: normal;
 }
 
-#jnwmcxirxg .gt_font_bold {
+#rbwfdnnkyu .gt_font_bold {
   font-weight: bold;
 }
 
-#jnwmcxirxg .gt_font_italic {
+#rbwfdnnkyu .gt_font_italic {
   font-style: italic;
 }
 
-#jnwmcxirxg .gt_super {
+#rbwfdnnkyu .gt_super {
   font-size: 65%;
 }
 
-#jnwmcxirxg .gt_footnote_marks {
+#rbwfdnnkyu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jnwmcxirxg .gt_asterisk {
+#rbwfdnnkyu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jnwmcxirxg .gt_indent_1 {
+#rbwfdnnkyu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jnwmcxirxg .gt_indent_2 {
+#rbwfdnnkyu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jnwmcxirxg .gt_indent_3 {
+#rbwfdnnkyu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jnwmcxirxg .gt_indent_4 {
+#rbwfdnnkyu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jnwmcxirxg .gt_indent_5 {
+#rbwfdnnkyu .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -806,23 +807,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<div id="oazttluwvr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#oazttluwvr table {
+<div id="oqxzfmexuz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#oqxzfmexuz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#oazttluwvr thead, #oazttluwvr tbody, #oazttluwvr tfoot, #oazttluwvr tr, #oazttluwvr td, #oazttluwvr th {
+#oqxzfmexuz thead, #oqxzfmexuz tbody, #oqxzfmexuz tfoot, #oqxzfmexuz tr, #oqxzfmexuz td, #oqxzfmexuz th {
   border-style: none;
 }
 
-#oazttluwvr p {
+#oqxzfmexuz p {
   margin: 0;
   padding: 0;
 }
 
-#oazttluwvr .gt_table {
+#oqxzfmexuz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -848,12 +849,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_caption {
+#oqxzfmexuz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#oazttluwvr .gt_title {
+#oqxzfmexuz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -865,7 +866,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#oazttluwvr .gt_subtitle {
+#oqxzfmexuz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -877,7 +878,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#oazttluwvr .gt_heading {
+#oqxzfmexuz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -889,13 +890,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_bottom_border {
+#oqxzfmexuz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_col_headings {
+#oqxzfmexuz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -910,7 +911,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_col_heading {
+#oqxzfmexuz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -930,7 +931,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#oazttluwvr .gt_column_spanner_outer {
+#oqxzfmexuz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -942,15 +943,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#oazttluwvr .gt_column_spanner_outer:first-child {
+#oqxzfmexuz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oazttluwvr .gt_column_spanner_outer:last-child {
+#oqxzfmexuz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oazttluwvr .gt_column_spanner {
+#oqxzfmexuz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -962,11 +963,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#oazttluwvr .gt_spanner_row {
+#oqxzfmexuz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#oazttluwvr .gt_group_heading {
+#oqxzfmexuz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -992,7 +993,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#oazttluwvr .gt_empty_group_heading {
+#oqxzfmexuz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1007,15 +1008,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#oazttluwvr .gt_from_md > :first-child {
+#oqxzfmexuz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oazttluwvr .gt_from_md > :last-child {
+#oqxzfmexuz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oazttluwvr .gt_row {
+#oqxzfmexuz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1034,7 +1035,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#oazttluwvr .gt_stub {
+#oqxzfmexuz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1047,7 +1048,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#oazttluwvr .gt_stub_row_group {
+#oqxzfmexuz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1061,15 +1062,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#oazttluwvr .gt_row_group_first td {
+#oqxzfmexuz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#oazttluwvr .gt_row_group_first th {
+#oqxzfmexuz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#oazttluwvr .gt_summary_row {
+#oqxzfmexuz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1079,16 +1080,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#oazttluwvr .gt_first_summary_row {
+#oqxzfmexuz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_first_summary_row.thick {
+#oqxzfmexuz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#oazttluwvr .gt_last_summary_row {
+#oqxzfmexuz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1098,7 +1099,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_grand_summary_row {
+#oqxzfmexuz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1108,7 +1109,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#oazttluwvr .gt_first_grand_summary_row {
+#oqxzfmexuz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1118,7 +1119,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_last_grand_summary_row_top {
+#oqxzfmexuz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1128,11 +1129,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_striped {
+#oqxzfmexuz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oazttluwvr .gt_table_body {
+#oqxzfmexuz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1141,7 +1142,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_footnotes {
+#oqxzfmexuz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1155,7 +1156,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_footnote {
+#oqxzfmexuz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1164,7 +1165,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#oazttluwvr .gt_sourcenotes {
+#oqxzfmexuz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1178,7 +1179,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#oazttluwvr .gt_sourcenote {
+#oqxzfmexuz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1186,63 +1187,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#oazttluwvr .gt_left {
+#oqxzfmexuz .gt_left {
   text-align: left;
 }
 
-#oazttluwvr .gt_center {
+#oqxzfmexuz .gt_center {
   text-align: center;
 }
 
-#oazttluwvr .gt_right {
+#oqxzfmexuz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oazttluwvr .gt_font_normal {
+#oqxzfmexuz .gt_font_normal {
   font-weight: normal;
 }
 
-#oazttluwvr .gt_font_bold {
+#oqxzfmexuz .gt_font_bold {
   font-weight: bold;
 }
 
-#oazttluwvr .gt_font_italic {
+#oqxzfmexuz .gt_font_italic {
   font-style: italic;
 }
 
-#oazttluwvr .gt_super {
+#oqxzfmexuz .gt_super {
   font-size: 65%;
 }
 
-#oazttluwvr .gt_footnote_marks {
+#oqxzfmexuz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#oazttluwvr .gt_asterisk {
+#oqxzfmexuz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#oazttluwvr .gt_indent_1 {
+#oqxzfmexuz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#oazttluwvr .gt_indent_2 {
+#oqxzfmexuz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#oazttluwvr .gt_indent_3 {
+#oqxzfmexuz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#oazttluwvr .gt_indent_4 {
+#oqxzfmexuz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#oazttluwvr .gt_indent_5 {
+#oqxzfmexuz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1352,23 +1353,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell-output-display">
 <div id="tbl-combine-67" class="anchored">
 
-<div id="hznmaibypy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hznmaibypy table {
+<div id="msuhvcqpfl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#msuhvcqpfl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hznmaibypy thead, #hznmaibypy tbody, #hznmaibypy tfoot, #hznmaibypy tr, #hznmaibypy td, #hznmaibypy th {
+#msuhvcqpfl thead, #msuhvcqpfl tbody, #msuhvcqpfl tfoot, #msuhvcqpfl tr, #msuhvcqpfl td, #msuhvcqpfl th {
   border-style: none;
 }
 
-#hznmaibypy p {
+#msuhvcqpfl p {
   margin: 0;
   padding: 0;
 }
 
-#hznmaibypy .gt_table {
+#msuhvcqpfl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1394,12 +1395,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_caption {
+#msuhvcqpfl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hznmaibypy .gt_title {
+#msuhvcqpfl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1411,7 +1412,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#hznmaibypy .gt_subtitle {
+#msuhvcqpfl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1423,7 +1424,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#hznmaibypy .gt_heading {
+#msuhvcqpfl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1435,13 +1436,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_bottom_border {
+#msuhvcqpfl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_col_headings {
+#msuhvcqpfl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1456,7 +1457,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_col_heading {
+#msuhvcqpfl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1476,7 +1477,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#hznmaibypy .gt_column_spanner_outer {
+#msuhvcqpfl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1488,15 +1489,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#hznmaibypy .gt_column_spanner_outer:first-child {
+#msuhvcqpfl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hznmaibypy .gt_column_spanner_outer:last-child {
+#msuhvcqpfl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hznmaibypy .gt_column_spanner {
+#msuhvcqpfl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1508,11 +1509,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#hznmaibypy .gt_spanner_row {
+#msuhvcqpfl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hznmaibypy .gt_group_heading {
+#msuhvcqpfl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1538,7 +1539,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#hznmaibypy .gt_empty_group_heading {
+#msuhvcqpfl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1553,15 +1554,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#hznmaibypy .gt_from_md > :first-child {
+#msuhvcqpfl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hznmaibypy .gt_from_md > :last-child {
+#msuhvcqpfl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hznmaibypy .gt_row {
+#msuhvcqpfl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1580,7 +1581,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#hznmaibypy .gt_stub {
+#msuhvcqpfl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1593,7 +1594,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#hznmaibypy .gt_stub_row_group {
+#msuhvcqpfl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1607,15 +1608,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#hznmaibypy .gt_row_group_first td {
+#msuhvcqpfl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hznmaibypy .gt_row_group_first th {
+#msuhvcqpfl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hznmaibypy .gt_summary_row {
+#msuhvcqpfl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1625,16 +1626,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#hznmaibypy .gt_first_summary_row {
+#msuhvcqpfl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_first_summary_row.thick {
+#msuhvcqpfl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hznmaibypy .gt_last_summary_row {
+#msuhvcqpfl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1644,7 +1645,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_grand_summary_row {
+#msuhvcqpfl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1654,7 +1655,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#hznmaibypy .gt_first_grand_summary_row {
+#msuhvcqpfl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1664,7 +1665,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_last_grand_summary_row_top {
+#msuhvcqpfl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1674,11 +1675,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_striped {
+#msuhvcqpfl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hznmaibypy .gt_table_body {
+#msuhvcqpfl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1687,7 +1688,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_footnotes {
+#msuhvcqpfl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1701,7 +1702,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_footnote {
+#msuhvcqpfl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1710,7 +1711,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#hznmaibypy .gt_sourcenotes {
+#msuhvcqpfl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1724,7 +1725,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#hznmaibypy .gt_sourcenote {
+#msuhvcqpfl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1732,63 +1733,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#hznmaibypy .gt_left {
+#msuhvcqpfl .gt_left {
   text-align: left;
 }
 
-#hznmaibypy .gt_center {
+#msuhvcqpfl .gt_center {
   text-align: center;
 }
 
-#hznmaibypy .gt_right {
+#msuhvcqpfl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hznmaibypy .gt_font_normal {
+#msuhvcqpfl .gt_font_normal {
   font-weight: normal;
 }
 
-#hznmaibypy .gt_font_bold {
+#msuhvcqpfl .gt_font_bold {
   font-weight: bold;
 }
 
-#hznmaibypy .gt_font_italic {
+#msuhvcqpfl .gt_font_italic {
   font-style: italic;
 }
 
-#hznmaibypy .gt_super {
+#msuhvcqpfl .gt_super {
   font-size: 65%;
 }
 
-#hznmaibypy .gt_footnote_marks {
+#msuhvcqpfl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hznmaibypy .gt_asterisk {
+#msuhvcqpfl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hznmaibypy .gt_indent_1 {
+#msuhvcqpfl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hznmaibypy .gt_indent_2 {
+#msuhvcqpfl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hznmaibypy .gt_indent_3 {
+#msuhvcqpfl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hznmaibypy .gt_indent_4 {
+#msuhvcqpfl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hznmaibypy .gt_indent_5 {
+#msuhvcqpfl .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3888,7 +3889,7 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"><caption>Table&nbsp;7:  <p>Coefficients for logistic regression of zooming by task</p> </caption>
   <thead>
     <tr class="gt_heading">
-      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Estimates for Model X</td>
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Estimates for logistic regression on zooming behavior</td>
     </tr>
     
     <tr class="gt_col_headings">
@@ -3941,6 +3942,110 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 </section>
 <section id="certainty" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="certainty"><span class="header-section-number">4.3</span> Certainty</h3>
+</section>
+<section id="accuracy-and-demographics" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="accuracy-and-demographics"><span class="header-section-number">4.4</span> Accuracy and Demographics</h3>
+<p>Let <span class="math inline">\(Y_k\)</span> be the response of participant <span class="math inline">\(k\)</span>, on a scale from 1 = ‘wrong’, 2 = ‘they are the same’ to 3 = ‘correct’. <span class="math display">\[
+\text{ logit } P(y_k \le i) = \mu_i + \alpha
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-demographics" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-demographics-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;12: Accuracy across demographics. Gender and age are not significant factors. However, educational level and income do have – a small – effect. When income levels increase, the percentage of wrong answers decreases. With increasing levels in education, we see a small drop in correct answers, as well as a small drop in wrong answers, for a significant increase in ‘they are the same’.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+svyglm(formula = correct ~ gender + educ5 + age4 + income4, design = survey_123, 
+    family = quasibinomial())
+
+Survey design:
+survey::svydesign(data = round_123_long, ids = ~CaseId, weights = ~weight)
+
+Coefficients:
+                                                     Estimate Std. Error
+(Intercept)                                          -0.05740    0.19145
+genderFemale                                         -0.08626    0.07489
+educ5HS graduate or equivalent                       -0.21785    0.19107
+educ5Vocational/tech school/some college/ associates -0.23866    0.17938
+educ5Bachelor's degree                               -0.36928    0.18793
+educ5Post grad study/professional degree             -0.35564    0.19653
+age430-44                                            -0.05261    0.11538
+age445-59                                             0.02621    0.12841
+age460+                                              -0.01953    0.12252
+income4$30,000 to under $60,000                       0.08762    0.11561
+income4$60,000 to under $100,000                      0.04979    0.11752
+income4$100,000 or more                               0.09579    0.12164
+                                                     t value Pr(&gt;|t|)  
+(Intercept)                                           -0.300   0.7643  
+genderFemale                                          -1.152   0.2495  
+educ5HS graduate or equivalent                        -1.140   0.2544  
+educ5Vocational/tech school/some college/ associates  -1.330   0.1835  
+educ5Bachelor's degree                                -1.965   0.0495 *
+educ5Post grad study/professional degree              -1.810   0.0705 .
+age430-44                                             -0.456   0.6485  
+age445-59                                              0.204   0.8383  
+age460+                                               -0.159   0.8734  
+income4$30,000 to under $60,000                        0.758   0.4486  
+income4$60,000 to under $100,000                       0.424   0.6719  
+income4$100,000 or more                                0.787   0.4311  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasibinomial family taken to be 1.000133)
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+svyglm(formula = correct3 ~ gender + educ5 + age4 + income4, 
+    design = survey_123, family = quasibinomial())
+
+Survey design:
+survey::svydesign(data = round_123_long, ids = ~CaseId, weights = ~weight)
+
+Coefficients:
+                                                     Estimate Std. Error
+(Intercept)                                           1.70477    0.27016
+genderFemale                                          0.28182    0.12909
+educ5HS graduate or equivalent                       -0.11402    0.27326
+educ5Vocational/tech school/some college/ associates  0.01372    0.25915
+educ5Bachelor's degree                                0.43912    0.31986
+educ5Post grad study/professional degree              0.56955    0.32158
+age430-44                                            -0.08957    0.21374
+age445-59                                            -0.18856    0.21966
+age460+                                              -0.32832    0.21647
+income4$30,000 to under $60,000                       0.20531    0.16813
+income4$60,000 to under $100,000                      0.66664    0.19199
+income4$100,000 or more                               0.64674    0.21943
+                                                     t value Pr(&gt;|t|)    
+(Intercept)                                            6.310 3.34e-10 ***
+genderFemale                                           2.183 0.029121 *  
+educ5HS graduate or equivalent                        -0.417 0.676546    
+educ5Vocational/tech school/some college/ associates   0.053 0.957768    
+educ5Bachelor's degree                                 1.373 0.169946    
+educ5Post grad study/professional degree               1.771 0.076682 .  
+age430-44                                             -0.419 0.675201    
+age445-59                                             -0.858 0.390754    
+age460+                                               -1.517 0.129474    
+income4$30,000 to under $60,000                        1.221 0.222165    
+income4$60,000 to under $100,000                       3.472 0.000526 ***
+income4$100,000 or more                                2.947 0.003238 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasibinomial family taken to be 0.9991573)
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="sec-modelX" class="level2" data-number="5">
@@ -3995,12 +4100,12 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 <div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;12: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;13: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-pies">Figure&nbsp;12</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;9</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
+<p><a href="#fig-pies">Figure&nbsp;13</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;9</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
 Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
 <p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
 <p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>

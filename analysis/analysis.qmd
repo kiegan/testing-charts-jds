@@ -1053,12 +1053,14 @@ round_12 <- round1_adj %>%
             mutate(weight = lambda_1_2*weight/sum(weight),
                    round = "Round 1") %>% 
             dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
-                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight) %>%
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight,
+                   age4, gender, income4, racethnicity, educ5) %>%
     rbind(round2_adj %>% 
             mutate(weight = (1-lambda_1_2)*weight/sum(weight),
                    round = "Round 2") %>% 
             dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
-                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight))
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight,
+                   age4, gender, income4, racethnicity, educ5))
 
 lambda_12_3 <- calculate_lambda(round_12$weight, round3_adj$weight)
 
@@ -1076,7 +1078,8 @@ round_123 <- round_12 %>%
         chart = ifelse(P_EXP==1, "Horizontal", "Horizontal wide")
        ) %>% 
         dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
-                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight) 
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
+                   age4, gender, income4, racethnicity, educ5) 
   )
   
 round_123$weight <- neff(round_123$weight)/sum(round_123$weight)*round_123$weight 
@@ -1440,6 +1443,100 @@ coefs_zoom %>%
 
 ### Certainty
 
+
+### Accuracy and Demographics
+
+Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'. 
+$$
+\text{ logit } P(y_k \le i) = \mu_i + \alpha
+$$
+
+```{r}
+#| label: fig-demographics
+#| fig-cap: "Accuracy across demographics. Gender and age are not significant factors. However, educational level and income do have -- a small -- effect.  When income levels increase, the percentage of wrong answers decreases. 
+#| With increasing levels in education, we see a small drop in correct answers, as well as a small drop in wrong answers, for a significant increase in 'they are the same'."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 100%
+
+educ <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = educ5)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="bottom",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") 
+gender <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = gender)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="bottom",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") 
+income <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = income4)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="bottom",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") 
+
+race <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = racethnicity)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="bottom",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") 
+
+age <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = age4)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="bottom",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") 
+
+gender + age +income + educ + plot_layout(nrow=1)
+```
+
+```{r demographics}
+logit_demo <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial())
+logit_demo3 <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial())
+
+summary(logit_demo)
+summary(logit_demo3)
+```
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 
