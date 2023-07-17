@@ -56,9 +56,10 @@ editor:
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
   \setlength{\parindent}{0pt}
 ```
-
 <!-- fig-width: 6.5 -->
+
 <!-- fig-height: 4.5 -->
+
 <!-- template: template-jdsart.cls.tex -->
 
 ```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
@@ -193,6 +194,10 @@ Outline for introduction:
 
     -   Studying variations in data visualization design and their impact on respondent behavior and accuracy of participants' responses.
 
+    -   \kr{Include somewhere in here:} The advantage of using a probability-based approach is two-fold.
+        First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
+        Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
+
 -   This paper presents a series of tests completed and the resulting findings.
 
     -   We consider structural (and aesthetic?) variations on bar charts and pie charts
@@ -252,43 +257,40 @@ knitr::include_graphics("images/round3-modified.PNG")
 
 ## Study design -- stimulus
 
-Outline for study design - stimulus
+Each task is made up of two elements: a visual stimulus and a question about that image that the viewer is asked to respond to.
+In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
 
--   Use of Just-Noticeable Difference
+**What specifically is each task?** Each comparison between marked pairs is designed to be a difficult task, with the difference between the values represented in the two marked pieces being a just-noticeable difference.
+The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time.
+Prior results from studies on bar charts and pie charts [@luModelingJustNoticeable2022] inform the differences in charts shown to our survey panelists.
 
-    -   Differences between cognitive lab and survey
+**Why do we utilize just-noticeable differences?** We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
+Asking perception tasks in a survey differs from the controlled environment of a cognitive lab, where these kind of questions may usually be assessed.
+Rather than asking the same (or similar) type of question with varied signal strength multiple hundred times, we are limited to only a few questions at a time.
+With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
+Therefore, we focus on questions which vary the presented image, but ask viewers to compare the same values across those varied images.
 
-    -   Understanding how design impacts the most difficult comparisons
+**How do we vary the task?** We ask participants to determine which of two just-noticeably different marked pieces is larger within the data visualization image, and we vary the structural design of that data visualization image.
+We focus on three main sets of structural variation in the design.
+First, we vary the alignment of the pieces in question.
+Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline.
+Second, we vary the orientation of the chart -- a vertically oriented stacked bar chart, a horizontally oriented version of the same chart, and then a wider version of the horizontally oriented chart.
+\kr{We need to finalize what we end up showing in the results and then revisit this section...} Third, we consider a facetted bar chart and facetted pie chart.
+
+**How do we present the task?** The format of a survey guides the format and design of the questions asked and how they are presented to respondents.
+First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
+\kr{I'm not sure how important this second point is...} Second, participants should be given some context for the tasks they are being asked to complete; in a given round, our set of tasks appear as a group in the midst of other survey questions and topics, and without providing respondents some transition we risk a jarring shift and low respondent engagement in the task.
+Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
+
+**We vary the task by presenting viewers with different structural representations of the same data.**
 
 -   Stimuli within context of data viz
 
     -   Title, legend, axes, etc.
 
--   Structural variations
-
-    -   Alignment -- across all tests
-
-    -   Stacked bar chart -- vertical, horizontal, and horizontal wide
-
-        -   Vertical and horizontal bars are the same exact visual stimuli but rotated/presented differently
-
-    -   Facetted bar chart
-
-    -   Facetted pie chart -- 4 colors, one color framed, one color floating
-
 -   Results are organized as follows:
 
-    -   ....
-        Haven't decided yet.
-
-<!-- motivate the use of just noticeable differences -->
-
-Asking perceptual questions in a survey is different from the controlled environment of a cognitive lab, where these kind of questions would usually be addressed.
-This means, that instructions to participants have to be delivered in a very short and easily understandable, because questions arising from the task can not be answered.
-Similarly, rather than asking the same (or similar) type of question with varied signals multiple hundred times, in a survey we can ask only a few questions.
-In order to observe any effect, we need to ask questions that are perceptually hard, which means that we need to ask questions about stimuli that are close to our perceptual threshold.
-The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time.
-We are using results from studies on barcharts and pie charts [@luModelingJustNoticeable2022] to inform the differences in charts shown to survey panelists.
+    -   .... Haven't decided yet.
 
 -   How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
@@ -334,14 +336,11 @@ Binary (certain or very certain vs everybody else)?
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
 The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
-Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S.adults to answer questions on a variety of topics.
-The advantage of using a probability-based approach is two-fold.
-First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
-Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
+Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 
-\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?}
+\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
 
-Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests. 
+Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
 Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
 ## Survey setup - Stimulus description
@@ -380,7 +379,6 @@ knitr::include_graphics("images/vertical-ab.PNG")
 knitr::include_graphics("images/vertical-cd.PNG")
 ```
 
-
 ```{r}
 #| label: fig-tasks-3
 #| fig-cap: "Changes to to the vertical design are made in two steps. First, the original chart is rotated. The areas of all tiles are kept the same. In a second step, the aspect ratio of tiles is changed while keeping the areas of tiles the same."
@@ -409,11 +407,24 @@ ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned
 
 ROUND 3: Horizontal and horizontal wide, aligned and unaligned
 
-ROUND 5: Horizontal wide gridlines (only dark grid split sample)
-
 ROUND 6: Facetted bar (split sample w/o forcing choice)
 
 ROUND 7: Aligned vs unaligned pie (full sample)
+
+# Notes on Analysis
+
+I need a better name for this section...
+
+Paragraph on applying survey weights
+
+-   All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
+
+Paragraph on combining samples across rounds
+
+-   Pull from analysis doc
+
+-   When combining responses from multiple rounds, we make weighting adjustments to ensure that weights in each sample are properly calibrated to the population total across both rounds so each round is correctly represented in the resulting model [@omuircheartaighCombiningSamplesVs2002].
+    **NEED ED REVIEW OF THIS LANGUAGE.** This adjustment is completed as follows: \[insert Heike text from analysis doc here\].
 
 # Results
 
@@ -427,28 +438,27 @@ Description of respondents
 
 -   raw sample size and effective sample size
 
-Paragraph on combining samples across rounds
-
--   Pull from analysis doc
-
--   When combining responses from multiple rounds, we make weighting adjustments to ensure that weights in each sample are properly calibrated,  to the population total across both rounds.
-    **NEED ED REVIEW OF THIS LANGUAGE.** This adjustment is completed as follows: \[insert Heike text from analysis doc here\].
-
 Test 1
 
 -   Alignment in stacked bars
 
     -   Accuracy and responses
 
-    -   
+    -   Differences in accuracy across demographic groups
 
 Test 2
 
 -   Structure of stacked bars
+    -   Accuracy and responses
+
+    -   
 
 Test 3
 
 -   Facetted bars and pies
+    -   Accuracy and responses
+
+    -   Timing of responses
 
 How should we group results?
 
@@ -465,12 +475,6 @@ Results to discuss:
 -   Differences in accuracy between framed, floating, and general pie
 
 -   Differences in timing and zooming behavior across all designs
-
-COMBINING SAMPLES AND WEIGHTING NOTES:
-
-We can combine responses across samples into one combined dataset, but we need to adjust weights accordingly so that each sample is weighted equally in the model [@omuircheartaighCombiningSamplesVs2002].
-
-All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
 ```{r lambdas}
 n1 <- nrow(round1_adj)
@@ -753,24 +757,23 @@ Key findings to discuss:
 
 -   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies
 
--   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population: 
+-   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population:
 
-    - Cleveland: position (aligned) versus unaligned
-    - unaligned tiles within stacked bar are a hybrid between framed bar and floats
-    - Talbot: pie charts - individual wedges vs piecharts
+    -   Cleveland: position (aligned) versus unaligned
+    -   unaligned tiles within stacked bar are a hybrid between framed bar and floats
+    -   Talbot: pie charts - individual wedges vs piecharts
 
 -   Design choices impact viewer accuracy:
 
-    - new finding: pie charts accuracy in work better when framed (wedges)
+    -   new finding: pie charts accuracy in work better when framed (wedges)
 
-- Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked).
+-   Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked).
 
 -   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts.
 
-    - Design choices impact viewer behavior: zooming
+    -   Design choices impact viewer behavior: zooming
 
-- (some) Demographics matter: age and gender does not seem to matter for perception
-  economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication 
+-   (some) Demographics matter: age and gender does not seem to matter for perception economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication
 
 # Supplementary Material {.unnumbered}
 
