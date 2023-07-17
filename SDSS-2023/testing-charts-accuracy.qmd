@@ -405,7 +405,36 @@ ROUND 7: Aligned vs unaligned pie (full sample)
 
 ## Respondents
 
-Description of respondents -- \# of respondents in each round, broad overview of demo characteristics(?), raw sample size and effective sample size
+Description of respondents
+
+-   \# of respondents in each round
+
+-   broad overview of demo characteristics(?)
+
+-   raw sample size and effective sample size
+
+Paragraph on combining samples across rounds
+
+-   Pull from analysis doc
+
+-   When combining responses from multiple rounds, we make weighting adjustments to ensure that each weights in each sample are properly calibrated to the population total across both rounds.
+    **NEED ED REVIEW OF THIS LANGUAGE.** This adjustment is completed as follows: \[insert Heike text from analysis doc here\].
+
+Test 1
+
+-   Alignment in stacked bars
+
+    -   Accuracy and responses
+
+    -   
+
+Test 2
+
+-   Structure of stacked bars
+
+Test 3
+
+-   Facetted bars and pies
 
 How should we group results?
 
