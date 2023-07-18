@@ -1606,7 +1606,7 @@ age_cd <- round_123_long %>%
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
 
 age_ab <- round_123_long %>% 
-  filter(task=="cd") %>%
+  filter(task=="ab") %>%
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
@@ -1622,17 +1622,18 @@ age_ab <- round_123_long %>%
   xlab("") +
     ggtitle("\nby age") +
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
-gender_cd + age_cd +income_cd + educ_cd + plot_layout(nrow=1, guides = "collect")
+gender_cd + age_cd  + educ_cd +income_cd + plot_layout(nrow=1, guides = "collect")
 
-gender_ab + age_ab +income_ab + educ_ab + plot_layout(nrow=1, guides = "collect")
+gender_ab + age_ab  + educ_ab +income_ab + plot_layout(nrow=1, guides = "collect")
 ```
 
 ```{r demographics-model}
-logit_demo_task_cd_correct <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
-logit_demo_task_cd_correct_same <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
 
-logit_demo_task_ab_correct <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
-logit_demo_task_ab_correct_same <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+logit_demo_task_cd_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+logit_demo_task_ab_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+logit_demo_task_ab_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
 
 coefs_cd_correct <- broom::tidy(logit_demo_task_cd_correct)
 coefs_cd_correct_same <- broom::tidy(logit_demo_task_cd_correct_same)
