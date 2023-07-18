@@ -165,64 +165,47 @@ survey2 <- survey::svydesign(
 
 \kr{Should the abstract match -- or be close to -- our SDSS short abstract?}
 
-Outline for introduction:
+What do viewers see when we show them a data chart?
+A data chart -- at its core -- maps quantitative values to graphical elements representing their relative values.
+Modern data visualizations are much more than a simple, objective mapping of values to a plane; they contain contextual and design elements, and are often structured to support the viewer in understanding a particular view of a set of data or specific pattern underlying the values.
+The design of a data visualization impacts a viewer's ability to achieve that understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparison of values across groups or time points.
+More broadly, the design of a data visualization can change how viewers interact with the chart.
 
--   What do viewers see when we show them a data chart?
+A crucial step in the process of interacting with and understanding a chart is the viewer's employment of comparisons of the parts within.
+@clevelandGraphicalPerceptionTheory1984 observed as such, and in their seminal study defined the better visual among a pair as the one that allows viewers to make more accurate comparisons.
+Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales, as shown in @fig-perceptual-tasks.
 
--   Visuals allow us to make comparisons between values
+Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
+@heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform.
+A total of XXX Amazon Mechanical Turkers were involved.
+Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole.
+These study populations are thus not representative of the general population, a common target audience for data visualization and scientific communication work.
+Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
+\kr{I don't know if the prior statement is going too far? Maybe we can rephrase.}
 
--   Design of a data visualization impacts viewer ability to make those comparisons
+<!-- Bias from crowd-sourcing? sample size?  -->
 
-    -   And more broadly, impacts how viewers interact with a chart
+\kr{The mackinlay thing feels like maybe we are overemphasizing the ranking done by cleveland/mcgill and then mackinlay - I think we could emphasize less if we want}
 
--   There is prior work studying this topic
+Our work -- as that of Cleveland and McGill and Heer and Bostock -- centers around studying data visualization design choices and their impact on viewer behavior and accuracy of viewers' responses.
+We seek to answer whether it is possible to reproduce some of their findings in the context of a survey with a large, nationally-representative set of respondents, and within that context we focus on the following research questions:
 
-    -   Cleveland and McGill laid the foundations
+1.  How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
-    -   Mackinlay expanded to theoretical scales
+2.  How is viewer interaction with the task impacted by structural design choices in a data visualization?
 
-    -   Heer/Bostock expanded to larger study population
+We employ a probability-based survey panel and run a series of perception tests with nationally-representative samples of respondents from that panel.
+The advantage of using a probability-based approach is two-fold.
+First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
+Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication, and this allows us to test whether prior results from convenience samples hold with a nationally representative sample.
+\kr{Do we want a stronger statement about this here?}
 
--   However, prior work has utilized specific populations of study respondents.
-    These populations are not representative of the general population, a common target audience for data visualization and scientific communication work
-
--   Our work focuses on the following:
-
-    -   Utilizing a survey panel as a mechanism to test perception in data visualizations
-
-    -   Testing whether prior results from convenience samples hold with a nationally representative sample
-
-    -   Studying variations in data visualization design and their impact on respondent behavior and accuracy of participants' responses.
-
-    -   \kr{Include somewhere in here:} The advantage of using a probability-based approach is two-fold.
-        First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
-        Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication.
-
--   This paper presents a series of tests completed and the resulting findings.
-
-    -   We consider structural (and aesthetic?) variations on bar charts and pie charts
-
-    -   Our tests are centered around the following central research questions:
-
-        -   How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
-
-        -   How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization?
-
--   The remainder of the paper is organized as follows:
-
-    -   we first describe the stimulus design
-
-    -   then we describe the study population (and survey design?)
-
-    -   subsequently, we share analyses of resulting survey responses across a series of stimuli
-
-    -   finally, we discuss implications of this study and next steps.
-
-What do viewers see, when we show them a data chart?
-A crucial step in the process of 'understanding' a chart, is that a visual allows us to make comparisons between its parts.
-@clevelandGraphicalPerceptionTheory1984 defined for the purpose of their seminal study the better visual as the one that allows viewers to make more accurate comparisons.
-Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate.
-@mackinlayAutomatingDesignGraphical1986 took this approach and expanded the tasks and their order to ordinal and nominal scales, as shown in @fig-perceptual-tasks.
+We present viewers with structural variations on bar charts and pie charts and ask them to answer questions comparing the size of elements within those charts.
+In this work, we present the series of tests we completed and the resulting findings.
+The remainder of the paper is organized as follows: first, we describe the design of the visual stimulus used in our perception tests.
+We then describe the population of study respondents and obtained survey sample.
+Subsequently, we share our analyses of the resulting survey responses across each of our tests, including analyses on accuracy of responses and response behavior.
+Finally, we discuss implications of this work and next steps.
 
 ```{r}
 #| label: fig-perceptual-tasks
@@ -230,17 +213,7 @@ Based on mappings of quantitative variables to different graphical elements, Cle
 knitr::include_graphics("images/mackinlay-tasks.png")
 ```
 
-What we need to remember, is that Mackinlay's work is purely theoretical.
-Cleveland and McGill's rankings based on a study.
-However, this study is a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
-@heerCrowdsourcingGraphicalPerception2010 have reproduced Cleveland and McGill's rankings using a crowd sourcing platform.
-A total of XXX amazon turkers were involved.
-
-<!-- Bias from crowd-sourcing? sample size?  -->
-
-Crowd workers are known to be biased towards male, young and relatively higher education: @borgoCrowdsourcingInformationVisualization2017
-
-Here, we seek to -- first -- answer the question whether it is possible to use a survey to reproduce (some of) the rankings.
+\kr{The figure below is still a bit of an orphan, but I think we can revisit the intro ad study setup after we get more of the results in the paper}
 
 ```{r}
 #| label: fig-aligned-unaligned
@@ -266,7 +239,7 @@ Prior results from studies on bar charts and pie charts [@luModelingJustNoticeab
 
 **Why do we utilize just-noticeable differences?** We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
 Asking perception tasks in a survey differs from the controlled environment of a cognitive lab, where these kind of questions may usually be assessed.
-Rather than asking the same (or similar) type of question with varied signal strength multiple hundred times, we are limited to only a few questions at a time.
+Rather than asking the same (or similar) type of question with varied signal strength dozens or hundreds of times, we are limited to only a few questions at a time.
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
 Therefore, we focus on questions which vary the presented image, but ask viewers to compare the same values across those varied images.
 
@@ -282,70 +255,11 @@ First, participant instructions must be delivered in a very short and easily und
 \kr{I'm not sure how important this second point is...} Second, participants should be given some context for the tasks they are being asked to complete; in a given round, our set of tasks appear as a group in the midst of other survey questions and topics, and without providing respondents some transition we risk a jarring shift and low respondent engagement in the task.
 Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
 
-**We vary the task by presenting viewers with different structural representations of the same data.**
+\kr{Somewhere here we should also talk about how we measure viewer behavior/interaction with the chart: certainty, time spent, zooming, devices, etc. }
 
--   Stimuli within context of data viz
+### Test 1: Alignment in stacked bar charts
 
-    -   Title, legend, axes, etc.
-
--   Results are organized as follows:
-
-    -   .... Haven't decided yet.
-
--   How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
-
--   How do aesthetic design choices in a data visualization impact viewers' ability to identify the larger of two elements?
-
--   How is viewer behavior (zooming, time spent on question, certainty of response) impacted by structural and aesthetic design choices in a data visualization?
-
-Structural design choices
-
-Mapping, Stacked bar, Vertical, Horizontal, Horizontal wide
-
-Facetted bar
-
-Only have a split sample for this
-
-Pie, Alignment
-
-We have this for all above mappings, but the setup is a little different for facetted bar
-
-Aesthetic design choices (structural choices seems stronger/there could be a lot to talk about there... should we skip aesthetic on this one?)
-
-Colors
-
-Use of gridlines
-
-Outcomes/responses for modeling:
-
-Binary accuracy (correct/incorrect -- 'they are the same' is incorrect here)
-
-Ordinal response (a/b/they are the same)
-
-Zooming behavior (zoomed/did not zoom)
-
-Time spent on question (continuous, in seconds)
-
-Certainty
-
-I've noted this below, but: how to model?
-Ordinal response?
-Binary (certain or very certain vs everybody else)?
-
-## Study design - survey population
-
-Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
-Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
-
-\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
-
-Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
-Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
-
-## Survey setup - Stimulus description
-
-\autoref{fig-tasks-12} shows the two stacked barcharts shown to participants in the survey.
+\autoref{fig-tasks-12} shows the two stacked bar charts shown to participants in the first test.
 The marked tiles in each plot are 155 pixels apart.
 Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
 The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
@@ -379,6 +293,20 @@ knitr::include_graphics("images/vertical-ab.PNG")
 knitr::include_graphics("images/vertical-cd.PNG")
 ```
 
+<!-- |                                   |                                   | -->
+
+<!-- |-----------------------------------|-----------------------------------| -->
+
+<!-- | **Unaligned positions**           | **Aligned positions**             | -->
+
+<!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
+
+<!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
+
+### Test 2: Orientation of stacked bar charts
+
+Let's talk about the stacked bar flippy setup here
+
 ```{r}
 #| label: fig-tasks-3
 #| fig-cap: "Changes to to the vertical design are made in two steps. First, the original chart is rotated. The areas of all tiles are kept the same. In a second step, the aspect ratio of tiles is changed while keeping the areas of tiles the same."
@@ -391,25 +319,20 @@ knitr::include_graphics("images/round3/horizontal-ab.PNG")
 knitr::include_graphics("images/round3/hwide-ab.PNG")
 ```
 
-<!-- |                                   |                                   | -->
+### Test 3: Alignment and orientation in pie charts
 
-<!-- |-----------------------------------|-----------------------------------| -->
+Let's talk about the pies here
 
-<!-- | **Unaligned positions**           | **Aligned positions**             | -->
+## Study design - survey population
 
-<!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
+Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
+Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 
-<!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
+\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
 
-DATA THAT MAY BE INCLUDED IN ANALYSIS:
-
-ROUNDS 1-2: Color variations on vertical stacked bar, aligned and unaligned
-
-ROUND 3: Horizontal and horizontal wide, aligned and unaligned
-
-ROUND 6: Facetted bar (split sample w/o forcing choice)
-
-ROUND 7: Aligned vs unaligned pie (full sample)
+Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
+Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
 # Notes on Analysis
 
@@ -438,7 +361,7 @@ Description of respondents
 
 -   raw sample size and effective sample size
 
-Test 1
+### Test 1
 
 -   Alignment in stacked bars
 
@@ -446,27 +369,19 @@ Test 1
 
     -   Differences in accuracy across demographic groups
 
-Test 2
+### Test 2
 
--   Structure of stacked bars
+-   Structure of stacked bars -- vertical, horizontal, horizontal wide
     -   Accuracy and responses
 
     -   
 
-Test 3
+### Test 3
 
 -   Facetted bars and pies
     -   Accuracy and responses
 
     -   Timing of responses
-
-How should we group results?
-
--   By stimulus/structural variation?
-
--   By response (binary, ordinal, certainty, time spent, etc.)
-
--   By accuracy vs by behavior (zooming, time spent, etc.)
 
 Results to discuss:
 
