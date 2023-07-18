@@ -1645,7 +1645,7 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 ```{r demographics-table}
  coefs_clean <- function(dframe) {
   dframe %>% mutate(
-    variable = c("Intercept", "Gender", rep("Education", 4), rep("Age", 3), rep("Income", 3)),
+    variable = c("Intercept", "Gender", rep("Age", 3), rep("Education", 4), rep("Income", 3)),
     term = ifelse(term=="(Intercept)", "", term),
     term = gsub("gender", "", term),
     term = gsub("educ5", "", term),
