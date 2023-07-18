@@ -1453,13 +1453,35 @@ $$
 
 ```{r}
 #| label: fig-demographics
-#| fig-cap: "Accuracy across demographics. Gender and age are not significant factors. However, educational level and income do have -- a small -- effect.  When income levels increase, the percentage of wrong answers decreases. 
-#| With increasing levels in education, we see a small drop in correct answers, as well as a small drop in wrong answers, for a significant increase in 'they are the same'."
-#| fig-height: 4.25
+#| fig-cap: "Panelist's demographics matter, particularly, when the task difficulty increases. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have - a small - effect. When income levels increase, the percentage of wrong answers (orange) decreases, while the percentage of correct answers (blue) increases slightly (significant at below 0.05). The more difficult task of comparing unaligned tiles, demographics are more significant.  XXX With increasing levels in education, we see a small drop in correct answers, as well as a small drop in wrong answers, for a significant increase in 'they are the same'."
+#| fig-subcap: 
+#|   - Comparisons of aligned tiles
+#|   - Comparisons of unaligned tiles
+#| fig-height: 5
 #| fig-width: 7
+#| layout-nrow: 2
 #| out-width: 100%
 
-educ <- round_123_long %>% 
+educ_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = educ5)) + 
+  facet_grid(~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby education") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+educ_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
@@ -1469,11 +1491,15 @@ educ <- round_123_long %>%
   ggplot(aes(x = educ5)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="bottom",
+  theme(legend.position="none",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
-  xlab("") 
-gender <- round_123_long %>% 
+  xlab("") +
+    ggtitle("\nby education") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+gender_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
@@ -1483,11 +1509,33 @@ gender <- round_123_long %>%
   ggplot(aes(x = gender)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="bottom",
+  theme(legend.position="none",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
-  xlab("") 
-income <- round_123_long %>% 
+  xlab("") +
+  ggtitle("Accuracy\nby gender") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+gender_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = gender)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+  ggtitle("Accuracy\nby gender") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+income_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
@@ -1497,10 +1545,30 @@ income <- round_123_long %>%
   ggplot(aes(x = income4)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="bottom",
+  theme(legend.position="none",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
-  xlab("") 
+  xlab("") +
+    ggtitle("\nby income") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+income_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = income4)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby income") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
 
 race <- round_123_long %>% 
   mutate(
@@ -1512,12 +1580,15 @@ race <- round_123_long %>%
   ggplot(aes(x = racethnicity)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="bottom",
+  theme(legend.position="none",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
-  xlab("") 
+  xlab("") +
+    ggtitle("Accuracy by race, ethnicity and task") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
 
-age <- round_123_long %>% 
+age_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
@@ -1527,20 +1598,159 @@ age <- round_123_long %>%
   ggplot(aes(x = age4)) + 
    facet_grid(.~task) + 
  geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="bottom",
+  theme(legend.position="none",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
-  xlab("") 
+  xlab("") +
+    ggtitle("\nby age") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
 
-gender + age +income + educ + plot_layout(nrow=1)
+age_ab <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = age4)) + 
+   facet_grid(.~task) + 
+ geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby age") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+gender_cd + age_cd +income_cd + educ_cd + plot_layout(nrow=1, guides = "collect")
+
+gender_ab + age_ab +income_ab + educ_ab + plot_layout(nrow=1, guides = "collect")
 ```
 
-```{r demographics}
-logit_demo <- svyglm(correct~task:(gender+educ5+age4+income4), design=survey_123, family=quasibinomial())
-logit_demo3 <- svyglm(correct3~task:(gender+educ5+age4+income4), design=survey_123, family=quasibinomial())
+```{r demographics-model}
+logit_demo_task_cd_correct <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+logit_demo_task_cd_correct_same <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
 
-summary(logit_demo)
-summary(logit_demo3)
+logit_demo_task_ab_correct <- svyglm(correct~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+logit_demo_task_ab_correct_same <- svyglm(correct3~gender+educ5+age4+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+coefs_cd_correct <- broom::tidy(logit_demo_task_cd_correct)
+coefs_cd_correct_same <- broom::tidy(logit_demo_task_cd_correct_same)
+
+coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
+coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
+```
+
+```{r demographics-table}
+ coefs_clean <- function(dframe) {
+  dframe %>% mutate(
+    variable = c("Intercept", "Gender", rep("Education", 4), rep("Age", 3), rep("Income", 3)),
+    term = ifelse(term=="(Intercept)", "", term),
+    term = gsub("gender", "", term),
+    term = gsub("educ5", "", term),
+    term = gsub("age4", "", term),
+    term = gsub("income4", "", term),
+    ci_low = exp(estimate-1.96*std.error),
+    ci_high = exp(estimate+1.96*std.error),
+    estimate = exp(estimate)
+  )
+}
+
+coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>%
+ rbind(
+  coefs_clean(coefs_ab_correct) %>% mutate(task = "Unaligned", correct="correct")
+ ) %>%
+ rbind(
+  coefs_clean(coefs_cd_correct_same) %>% mutate(task = "Aligned", correct="not wrong")
+ ) %>%
+ rbind(
+  coefs_clean(coefs_ab_correct_same) %>% mutate(task = "Unaligned", correct="not wrong")
+ ) %>%
+ dplyr::select(-std.error, -statistic) %>%
+ mutate(
+  p.value = ifelse (p.value <  0.001, "***",
+      ifelse (p.value <  0.01, "**",
+             ifelse (p.value < 0.05, "*",
+                    ifelse (p.value < 0.1, ".", ""))))
+ ) %>%
+ group_by(variable) %>%
+ pivot_wider(
+    id_cols = c(term, variable),
+    names_from = c(task, correct),
+    values_from = c(estimate, ci_low, ci_high, p.value),
+  ) %>% 
+ gt() %>%
+  tab_header(title = "Log odds of accuracy by task and demographics of respondents") %>%
+ tab_options(
+   column_labels.font.weight = "bold",
+   row_group.font.weight = "bold"
+ ) %>%
+  fmt_number(
+    decimals=2
+  ) %>%
+  cols_width(
+    contains("p.value") ~ px(20)
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Aligned_correct"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Aligned_not"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_move_to_end(contains("_Aligned_")) %>%
+  tab_spanner(
+    label = "correct | same or wrong",
+    columns = contains("_Aligned_correct")
+  )  %>%
+  tab_spanner(
+    label = "correct or same | wrong",
+    columns = contains("_Aligned_not")
+  ) %>%
+  tab_spanner(
+    label = "Aligned tiles",
+    columns = contains("_Aligned_"),
+    spanners = c("correct | same or wrong", "correct or same | wrong")
+  ) %>%
+  cols_move_to_end(contains("_Unaligned_")) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Unaligned_correct"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Unaligned_not"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  tab_spanner(
+    label = "correct | same or wrong ",
+    columns = contains("_Unaligned_correct")
+  )  %>%
+  tab_spanner(
+    label = "correct or same | wrong ",
+    columns = contains("_Unaligned_not")
+  ) %>%
+  tab_spanner(
+    label = "Unaligned tiles",
+    columns = contains("_Unaligned")
+  ) %>%
+   cols_label(
+    .list = c(
+      "estimate_Aligned_correct" = "Est.",
+      "ci_low_Aligned_correct" = "          [95% CI]",
+      "p.value_Aligned_correct" = " ",
+      "estimate_Aligned_not wrong" = "Est.",
+      "ci_low_Aligned_not wrong" = "          [95% CI]",
+      "p.value_Aligned_not wrong" = " ",
+      "estimate_Unaligned_correct" = "Est.",
+      "ci_low_Unaligned_correct" = "          [95% CI]",
+      "p.value_Unaligned_correct" = " ",
+      "estimate_Unaligned_not wrong" = "Est.",
+      "ci_low_Unaligned_not wrong" = "          [95% CI]",
+      "p.value_Unaligned_not wrong" = " "
+    )
+  ) 
+
 ```
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
