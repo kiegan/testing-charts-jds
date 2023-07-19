@@ -250,6 +250,22 @@ Viewers are presented with two marked pieces in a chart that do not share a comm
 Second, we vary the orientation of the chart -- a vertically oriented stacked bar chart, a horizontally oriented version of the same chart, and then a wider version of the horizontally oriented chart.
 \kr{We need to finalize what we end up showing in the results and then revisit this section...} Third, we consider a facetted bar chart and facetted pie chart.
 
+\hh{Not sure where should put this, parking it here for right now:}
+\hh{expectations - start}
+What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications:
+both 'aligned' and 'unaligned' bars (in tests 1 and 2) or wedges (in test 3) share the same axis. Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment. Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.   
+We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column (or the same pie) mitigating some of this difficulty. @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill. 
+
+```{r}
+#| label: fig-tasks-explain
+#| fig-cap: Comparisons made in charts in the Cleveland and McGill ranking
+
+cat("still working on the chart")
+```
+
+\hh{expectations - end}
+
+
 **How do we present the task?** The format of a survey guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
 \kr{I'm not sure how important this second point is...} Second, participants should be given some context for the tasks they are being asked to complete; in a given round, our set of tasks appear as a group in the midst of other survey questions and topics, and without providing respondents some transition we risk a jarring shift and low respondent engagement in the task.
@@ -302,6 +318,8 @@ knitr::include_graphics("images/vertical-cd.PNG")
 <!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
 
 <!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
+
+
 
 ### Test 2: Orientation of stacked bar charts
 
