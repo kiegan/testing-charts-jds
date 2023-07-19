@@ -277,9 +277,9 @@ Participants were asked to compare the relative sizes of the tiles marked A and 
 3.  They are the same
 
 Answer 2 is the correct answer for both charts.
-Both charts are shown at the same size, i.e. in both cases the difference in size between the bars is exactly the same, the vertical distance between the bars is the exact same amount.
+Both charts are shown at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
 This leaves the vertical positioning of the bars as the only difference between the charts.
-Any differences in observed accuracy can therefore be attributed to this difference in presentation.
+Any differences in observed responses can therefore be attributed to this difference in presentation.
 
 ```{r}
 #| label: fig-tasks-12
@@ -305,7 +305,18 @@ knitr::include_graphics("images/vertical-cd.PNG")
 
 ### Test 2: Orientation of stacked bar charts
 
-Let's talk about the stacked bar flippy setup here
+In \autoref{fig-tasks-3} we see two structural variations on the stacked bar chart seen in Test 1: first, the Task 1 chart sized equally but rotated 90 degrees with bar lengths shown horizontally.
+Second, the horizontal chart with a smaller aspect ratio so the bars appear thinner and longer.
+Note that the wide version of the horizontal bars increases the pixel difference between the two marked pieces relative to the standard versions of the horizontal and vertical bars.
+
+This test utilized a split sample approach, where 50% of participants in the sample were shown the tall horizontal bar chart and 50% were shown the wide horizontal chart.
+Participants were asked to complete the same task as in Test 1; selecting the correct response among:
+
+1.  A is bigger
+2.  B is bigger
+3.  They are the same
+
+Again, answer 2 is the correct answer.
 
 ```{r}
 #| label: fig-tasks-3
@@ -323,7 +334,7 @@ knitr::include_graphics("images/round3/hwide-ab.PNG")
 
 Let's talk about the pies here
 
-## Study design - survey population
+## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
 The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
@@ -334,24 +345,34 @@ Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly
 Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
 Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
-# Notes on Analysis
+## Study design -- survey weighting
 
-I need a better name for this section...
+Paragraph on how survey weights are derived?
+-- **Question for Ed -- is this something AmeriSpeak can provide boilerplate language for?**
 
-Paragraph on applying survey weights
+All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
--   All calculations in this paper are done in R [@RLanguage] using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
+When combining responses that were gathered during distinct rounds of the Omnibus survey, we make weighting adjustments to ensure that weights in each sample are properly calibrated to the population total across both rounds in the resulting model. We *combine* (rather than cumulate) surveys $S_1$ and $S_2$, as described in @omuircheartaighCombiningSamplesVs2002, by 
+multiplying weights in $S_1$ and $S_2$ by $\lambda$ and $1 - \lambda$ respectively.
+$$
+\lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
+$$
+where $n_1$ and $n_2$ are the nominal sample sizes and $d_1$ and $d_2$ are the design effects for the estimators. 
+Here, $d_1$ and $d_2$ are estimated as 
+$$
+d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
+$$
+where $CV$ is the coefficient of variation of the weights within each sample, and is estimated as in @kishSurveySampling1965 : 
 
-Paragraph on combining samples across rounds
+$$ 
+CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
+$$
 
--   Pull from analysis doc
-
--   When combining responses from multiple rounds, we make weighting adjustments to ensure that weights in each sample are properly calibrated to the population total across both rounds so each round is correctly represented in the resulting model [@omuircheartaighCombiningSamplesVs2002].
-    **NEED ED REVIEW OF THIS LANGUAGE.** This adjustment is completed as follows: \[insert Heike text from analysis doc here\].
+Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex. We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
 
 # Results
 
-## Respondents
+### Respondents
 
 Description of respondents
 
@@ -359,37 +380,31 @@ Description of respondents
 
 -   broad overview of demo characteristics(?)
 
--   raw sample size and effective sample size
+-   raw sample size and effective sample size that we are analyzing **in each test**
 
 ### Test 1
 
 -   Alignment in stacked bars
 
-    -   Accuracy and responses
+    -   Binary accuracy in responses
 
-    -   Differences in accuracy across demographic groups
+        -   Figure: binary correctness and binary ggpcp diagram
+        -   Table:(?) T-test results
+        -   Table: results of cell means model on certainty
 
-### Test 2
+    -   Ordinal accuracy in responses
 
--   Structure of stacked bars -- vertical, horizontal, horizontal wide
-    -   Accuracy and responses
+        -   Figure: ordinal correctness and ordinal ggpcp diagram
 
-    -   
+        -   Table: Fitted model for ordinal response and alignment
 
-### Test 3
+    -   Ordinal accuracy in responses by demographics
 
--   Facetted bars and pies
-    -   Accuracy and responses
+        -   Figure: ordinal correctness by demographics, split by aligned and unaligned
 
-    -   Timing of responses
+        -   Table: Fitted model for ordinal response and alignment by demos
 
-Results to discuss:
-
--   Differences in accuracy between aligned and unaligned bar
-
--   Differences in accuracy between framed, floating, and general pie
-
--   Differences in timing and zooming behavior across all designs
+            -   Maybe this table should go in the appendix?
 
 ```{r lambdas}
 n1 <- nrow(round1_adj)
@@ -437,7 +452,7 @@ Because each participant was shown both versions of the chart, we can use a pair
 The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16).
 
 ```{r accuracy,   warning=FALSE}
-#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses, where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses is accurate. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
 #| out-width: 80%
 #| fig-height: 5 
@@ -499,172 +514,27 @@ gg2 <- round_12 %>%
 gg1 + gg2
 ```
 
-ANALYSIS PLAN:
+### Test 2
 
-Models below structured as:
+-   Structure of stacked bars -- vertical, horizontal, horizontal wide
+    -   Accuracy and responses
 
-Response
+    -   
 
-Covariates to use in each model
+### Test 3
 
-STRUCTURAL VARIATION -- START HERE
+-   Facetted bars and pies
+    -   Accuracy and responses
 
-Binary accuracy across structural choices
+    -   Timing of responses
 
-Model 1:
+Results to discuss:
 
-Alignment only, just vertical stacked bar
+-   Differences in accuracy between aligned and unaligned bar
 
-Using the AmeriSpeak survey tool, a total of 1902 participants were exposed to two barcharts each, as shown in \autoref{tbl-tasks-12}.
+-   Differences in accuracy between framed, floating, and general pie
 
-Model 2:
-
-Alignment
-
-Bar vs pie (comparable question for pie is A vs B)
-
-Model 3:
-
-Alignment
-
-Vertical x horizontal x horizontal wide
-
-Model 4:
-
-Alignment
-
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
-
-Visuals:
-
-\% yes across each different structural condition
-
-Facet by aligned/unaligned?
-
-Model estimates + CIs
-
-Ordinal response
-
-Model 1:
-
-Alignment only, just vertical stacked bar
-
-Model 2:
-
-Alignment
-
-Bar vs pie (comparable question for pie is A vs B)
-
-Model 3:
-
-Alignment
-
-Vertical x horizontal x horizontal wide
-
-Model 4:
-
-Alignment
-
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
-
-Visuals:
-
-All responses across each different structural condition
-
-Facet by aligned/unaligned?
-
-Model estimates + CIs
-
-Zooming behavior (zoomed/did not zoom)
-
-Model 1:
-
-Device type
-
-Alignment
-
-Vertical x horizontal x horizontal wide
-
-Visuals:
-
-\% zoomed by device + alignment (already have this chart)
-
-Model estimates + CIs
-
-Time spent on question (in seconds)
-
-Model 1:
-
-Device type
-
-Zoom
-
-Alignment
-
-Vertical x horizontal x horizontal wide
-
-Model 2 (this may not be feasible for comparison depending on what level the 'TOTALTIME' is captured at):
-
-Device type
-
-Zoom
-
-Alignment
-
-Every structure (vertical bar, horizontal bar, horizontal wide bar, facet bar, pie)
-
-Visuals:
-
-Distribution of time spent variable
-
-Facet by device type, zoom, structural condition, alignment?
-Play around with it
-
-Average time spent by each of the conditions
-
-Certainty?
-
-Same models as above, but I'm not sure how we want to do the response.
-Ordinal response?
-Binary (certain or very certain vs everybody else)?
-
-AESTHETIC VARIATION -- ONLY IF TIME
-
-Binary accuracy (correct/incorrect -- 'they are the same' is incorrect here) across structural choices
-
-Model 1:
-
-Dark grid vs no grid (only have for horizontal wide)
-
-Response choice (ordinal response)
-
-Model 1:
-
-Dark grid vs no grid (only have for horizontal wide)
-
-Zooming behavior (zoomed/did not zoom)
-
-Model 1:
-
-Device type
-
-Dark grid vs no grid
-
-Time spent on question (in seconds)
-
-Model 1:
-
-Device type
-
-Zoom
-
-Dark grid vs no grid
-
-Certainty?
-
-Same models as above, but I'm not sure how we want to do the response.
-Ordinal response?
-Binary (certain or very certain vs everybody else)?
+-   Differences in timing and zooming behavior across all designs
 
 # Conclusion
 
