@@ -344,7 +344,7 @@ Let's talk about the pies here
 ## Study design - survey population
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022** @dennis2019technical. \hh{I don't think I've got the right citation}
 Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 
 \hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
