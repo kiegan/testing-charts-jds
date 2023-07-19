@@ -41,11 +41,11 @@ preamble: >
   \usepackage{graphicx}
   \usepackage{hyperref}
 format:
-  html: default
   pdf: 
     documentclass: jds
     include-in-header: authors.tex
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -258,9 +258,9 @@ We would expect that comparing unaligned tiles is a harder task (with correspond
 
 ```{r}
 #| label: fig-tasks-explain
-#| fig-cap: Comparisons made in charts in the Cleveland and McGill ranking
+#| fig-cap: Comparisons made in charts across tasks 1 through 3 within the Cleveland and McGill ranking 
 
-cat("still working on the chart")
+include_graphics("images/sketch-tasks.png")
 ```
 
 \hh{expectations - end}
@@ -355,7 +355,7 @@ Let's talk about the pies here
 ## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022**.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022** @dennis2019technical. \hh{I don't think I've got the right citation}
 Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 
 \hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}

@@ -1948,4 +1948,8 @@ coefs_7 %>%
 ```
 
 
+How do our findings relate to @cejaTruthSquareAspect2021 ?
+
+Science communication review of visuals: @desnoyersTaxonomyVisualsScience2023
+
 ## References{-}
