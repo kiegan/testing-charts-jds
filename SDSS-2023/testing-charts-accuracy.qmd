@@ -42,10 +42,10 @@ preamble: >
   \usepackage{hyperref}
 documentclass: jds
 format:
+  html: default
   pdf: 
     include-in-header: authors.tex
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -324,14 +324,14 @@ Respondents were also asked to rate their certainty in their response to each qu
 
 ```{r}
 #| label: fig-tasks
-#| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart is piece A or C. "
+#| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. "
 #| fig-subcap:
-#| - "**Vertical stacked bar, unaligned**"
-#| - "**Horizontal stacked bar, unaligned**"
-#| - "**Wide horizontal stacked bar, unaligned**"
-#| - "**Vertical stacked bar, aligned**"
-#| - "**Horizontal stacked bar, aligned**"
-#| - "**Wide horizontal stacked bar, aligned**"
+#| - "Vertical stacked bar, unaligned"
+#| - "Horizontal stacked bar, unaligned"
+#| - "Wide horizontal stacked bar, unaligned"
+#| - "Vertical stacked bar, aligned"
+#| - "Horizontal stacked bar, aligned"
+#| - "Wide horizontal stacked bar, aligned"
 #| layout-nrow: 2
 #| out-width: 100%
 knitr::include_graphics("images/vertical-ab.PNG")
