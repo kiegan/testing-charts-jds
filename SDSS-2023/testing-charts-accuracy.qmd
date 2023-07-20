@@ -41,11 +41,11 @@ preamble: >
   \usepackage{graphicx}
   \usepackage{hyperref}
 format:
+  html: default
   pdf: 
     documentclass: jds
     include-in-header: authors.tex
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -105,6 +105,7 @@ library(broom)
 library(latex2exp)
 library(gt) # grammar of tables
 library(here)
+library(multcomp)
 
 # Kish's Effective Sample Size
 neff <- function(weight) {
@@ -136,7 +137,6 @@ vs_repo_local <- here::here("data") # link to data folder
 ```{r data}
 # other github repo. 
 round1 <- readRDS(file.path(vs_repo_local, "round1.rds"))
-round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
 
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
@@ -144,20 +144,53 @@ round1_adj <- round1 %>%
                    CorrectABCD = paste(CorrectAB, CorrectCD),
                    one = 1)
 
+round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
+
 round2_adj <- round2 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
             mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
                    CorrectABCD = paste(CorrectAB, CorrectCD),
                    one = 1)
 
-survey1 <- survey::svydesign(
-  data = round1_adj, 
-  ids = ~CaseId, weights = ~weight)
+round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
 
-survey2 <- survey::svydesign(
-  data = round2_adj,
-  ids = ~CaseId, weights = ~weight)
+# filter out all of the 'skipped on web':
+round3_adj <- round3 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB",
+  cd != "SKIPPED ON WEB"
+)
+
+round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
+
+round6_adj <- round6 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(RND_01 == 0) # same type of questions as round 7
+
+round7 <- readRDS(file.path(vs_repo_local, "round7.rds"))
+
+# filter out all of the 'skipped on web':
+round7_adj <- round7 %>% mutate(
+  weight = WEIGHT_NOLA
+)
 ```
+
+
+```{r data-rnd3}
+round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
+
+# filter out all of the 'skipped on web':
+round3_adj <- round3 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB",
+  cd != "SKIPPED ON WEB"
+)
+```
+
+
+
 
 ## Introduction
 
@@ -397,6 +430,22 @@ $$
 
 Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex. We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
 
+The data for this paper were collected in several rounds as part of the NORC Omnibus. 
+
+\hh{we might be able to include the lambda values for combining the tables here as well}
+
+| Name    | Date  | # Participants | effective sample size | Sum of weights $\sum_i w_i$ |
+|---------|-------|--------:|----------:|----------:|
+| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
+| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
+| Round 3 | Jun 2022 |  `r nrow(round3_adj)`  |    `r round(neff(round3_adj$weight),1)`       | `r round(sum(round3_adj$weight),1)`       |
+| Round 6 | Sep 2022 |  `r nrow(round6_adj)` [Split]  |    `r round(neff(round6_adj$weight),1)`       | `r round(sum(round6_adj$weight),1)`       |
+| Round 7 | Oct 2022 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
+|         |       |         |           |           |   
+
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
+
+
 # Results
 
 ### Respondents
@@ -433,29 +482,16 @@ Description of respondents
 
             -   Maybe this table should go in the appendix?
 
-```{r lambdas}
-n1 <- nrow(round1_adj)
-n2 <- nrow(round2_adj)
-neff1 <- svytotal(~one, survey1, deff=TRUE)
-neff2 <- svytotal(~one, survey2, deff=TRUE)
-#abcd1 <- svytotal(~CorrectABCD, survey1, deff=TRUE)
-#abcd2 <- svytotal(~CorrectABCD, survey2, deff=TRUE)
-
-d1 <- 1 + cv(neff1)^2
-d2 <- 1 + cv(neff2)^2
-
-denom <- n1/d1 + n2/d2
-
-lambda <- n1/(d1*denom) 
-```
 
 ```{r combine_rounds_1_and_2}
+
+lambda <- calculate_lambda(round1_adj$weight, round2_adj$weight)
 round_12 <- round1_adj %>% 
             mutate(weight = lambda[1]*weight) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
     rbind(round2_adj %>% 
             mutate(weight = (1-lambda[1])*weight) %>% 
-            select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
 round_12_long <- round_12 %>% 
   pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
 
@@ -541,12 +577,677 @@ gg2 <- round_12 %>%
 gg1 + gg2
 ```
 
+
+
+
 ### Test 2
 
 -   Structure of stacked bars -- vertical, horizontal, horizontal wide
     -   Accuracy and responses
 
-    -   
+
+```{r combine-123}
+lambda_1_2 <- calculate_lambda(round1_adj$weight, round2_adj$weight)
+
+round_12 <- round1_adj %>% 
+            mutate(weight = lambda_1_2*weight/sum(weight),
+                   round = "Round 1") %>% 
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight,
+                   age4, gender, income4, racethnicity, educ5) %>%
+    rbind(round2_adj %>% 
+            mutate(weight = (1-lambda_1_2)*weight/sum(weight),
+                   round = "Round 2") %>% 
+            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, 
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, weight,
+                   age4, gender, income4, racethnicity, educ5))
+
+lambda_12_3 <- calculate_lambda(round_12$weight, round3_adj$weight)
+
+round_123 <- round_12 %>% 
+              mutate(weight = lambda_12_3*weight/sum(weight),
+                     chart = "Vertical") %>% 
+  rbind(
+    round3_adj %>% 
+      mutate(
+        weight = (1-lambda_12_3)*weight/sum(weight),
+        round = "Round 3",
+        CorrectAB = ab == "B is bigger",
+        CorrectCD = cd == "D is bigger",
+        CorrectABCD = paste(CorrectAB, CorrectCD),
+        chart = ifelse(P_EXP==1, "Horizontal", "Horizontal wide")
+       ) %>% 
+        dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
+                   age4, gender, income4, racethnicity, educ5) 
+  )
+  
+round_123$weight <- neff(round_123$weight)/sum(round_123$weight)*round_123$weight 
+# does not affect the further analysis, but helps with the interpretation of results
+
+round_123_long <- round_123 %>% 
+  pivot_longer(ab:cd, names_to = "task", values_to = "Response") 
+
+round_123_long <- round_123_long %>% 
+  mutate(
+    correct = Response %in% c("B is bigger", "D is bigger"),
+    correct3 = correct | (Response == "They are the same"),
+    task_chart = factor(paste(task, chart, sep="-")),
+    zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
+    response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
+  )
+
+
+
+
+survey_123 <- 
+  survey::svydesign(
+  data = round_123_long, 
+  ids = ~CaseId, weights = ~weight)
+```
+
+
+We combine rounds 1, 2 and 3 as shown in Table above to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes. 
+
+
+```{r model-123, warning = FALSE, message = FALSE}
+
+logit_123_correct <- svyglm(correct~task_chart-1, family=quasibinomial(), design=survey_123)
+logit_123_correct3 <- svyglm(correct3~task_chart-1, family=quasibinomial(), design=survey_123)
+
+
+ci_confint <- svyby(~correct, by=~task_chart, design=survey_123, svyciprop)
+ci_confint3 <- svyby(~correct3, by=~task_chart, design=survey_123, svyciprop)
+
+
+coefs_123 <- broom::tidy(logit_123_correct)
+coefs_123_relaxed <- broom::tidy(logit_123_correct3)
+
+# create all pairwise comparisons for tasks and questions.
+cross_compare <- glht(logit_123_correct, mcp(task_chart="Tukey"))
+cross_compare3 <- glht(logit_123_correct3, mcp(task_chart="Tukey"))
+
+# get letters for each confidence 
+ci_confint$letters <- cld(cross_compare)$mcletters$Letters
+ci_confint3$letters <- cld(cross_compare3)$mcletters$Letters
+
+coefs_123 <- coefs_123 %>% left_join(
+  ci_confint %>%
+    mutate(
+      task_chart = paste0("task_chart",task_chart, sep="")
+    ) %>% dplyr::select(task_chart, letters), by=c("term"= "task_chart"))
+
+coefs_123_relaxed <- coefs_123_relaxed %>% left_join(
+  ci_confint3 %>% 
+    mutate(
+      task_chart = paste0("task_chart",task_chart, sep="")
+    ) %>% dplyr::select(task_chart, letters), by=c("term"= "task_chart"))
+
+
+ci_confint <- ci_confint %>% 
+  separate_wider_delim(
+    task_chart, delim = "-", names =c("task", "chart")
+    )  %>% mutate(
+  task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+)
+
+ci_confint3 <- ci_confint3 %>% 
+  separate_wider_delim(
+    task_chart, delim = "-", names =c("task", "chart")
+    ) %>% mutate(
+  task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+) 
+```
+
+
+```{r}
+#| label: fig-response-123
+#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = chart)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  facet_grid(.~task) + 
+  theme(legend.position="bottom") + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(chart) - 0.45,
+      ymin = correct - 1.96* `se.as.numeric(correct)`,
+      xmax = as.numeric(chart) + 0.45,
+      ymax = correct + 1.96* `se.as.numeric(correct)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = ci_confint
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(chart) - 0.45,
+      y = correct,
+      xend = as.numeric(chart) + 0.45,
+      yend = correct
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = ci_confint
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(chart) - 0.45,
+      ymin = correct3 - 1.96* `se.as.numeric(correct3)`,
+      xmax = as.numeric(chart) + 0.45,
+      ymax = correct3 + 1.96* `se.as.numeric(correct3)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = ci_confint3
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(chart) - 0.45,
+      y = correct3,
+      xend = as.numeric(chart) + 0.45,
+      yend = correct3
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = ci_confint3
+  ) +
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limits = c(-0.1, 1.1)) + 
+  geom_text(aes(label=letters), y = -0.05, data = ci_confint, colour = "steelblue") +
+  geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
+```
+
+
+@fig-response-123 shows the results of a cell-means model with ordinal response $Y_k$, where $Y_k$ is the $k$th participant's response, $Y_k \in \{1, 2, 3\}$, where 'correct' is encoded as 1, 'they are the same' is encoded as 2, and 'wrong' is encoded as 3:
+
+$$
+\text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
+$$
+where  $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned),  and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
+
+```{r}
+#| label: tbl-rounds-123
+#| tbl-cap: Log-odds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same **column** values are significantly different (at 5%) if they do not share the same letter.
+
+dframe <- rbind(
+  coefs_123 %>% mutate(level = c("correct | same or wrong")),
+  coefs_123_relaxed %>% mutate(level = c("correct or same | wrong"))
+) %>% mutate(
+  term = gsub("task_chart", "", term),
+) %>% separate(term, into=c("task", "chart"), sep="-")
+
+dframe %>% 
+  dplyr::select(level, task, chart, estimate, std.error, letters) %>%
+  mutate(
+    task = ifelse(task=="ab", "Unaligned", "Aligned")
+  ) %>%
+  group_by(task) %>%
+  mutate(
+    ci_low = exp(estimate-1.96*std.error),
+    ci_high = exp(estimate+1.96*std.error),
+    estimate = exp(estimate)
+  ) %>%
+  tidyr::pivot_wider(
+        id_cols = c(task, chart),
+        names_from = level,
+        values_from = c(estimate, ci_low, ci_high, letters)
+      ) %>%
+  gt() %>%
+  tab_header(title = "Log odds of accuracy by task and chart type") %>%
+  fmt_number(
+    everything(),
+    decimals=2
+  ) %>%
+  cols_merge(
+    columns = c("estimate_correct | same or wrong", "ci_low_correct | same or wrong",
+                "ci_high_correct | same or wrong", "letters_correct | same or wrong"),
+    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
+  ) %>%
+  cols_merge(
+    columns = c("estimate_correct or same | wrong", "ci_low_correct or same | wrong",
+                "ci_high_correct or same | wrong", "letters_correct or same | wrong"),
+    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
+  ) %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    row_group.font.weight = "bold"
+  ) %>%
+  cols_label(
+    .list = c(
+      "chart" = "",
+      "estimate_correct | same or wrong" = "correct | same or wrong",
+      "estimate_correct or same | wrong" = "correct or same | wrong"
+    )
+  )
+```
+
+Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: 
+The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.  
+The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
+
+
+#### Viewers react differently to the charts
+
+A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.  However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
+
+<!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
+
+```{r zoom-123}
+logit_zoom <- svyglm(I(zoom=="yes")~response3+task+chart, family=quasibinomial(), design=survey_123)
+
+coefs_zoom <- broom::tidy(logit_zoom)
+```
+
+```{r}
+#| label: fig-zoom-123
+#| fig-cap: "Zooming - not significant for accuracy or task, but changes by the type of chart."
+#| fig-height: 4.25
+#| fig-width: 7
+#| out-width: 80%
+
+zt <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide")),
+    zoom = factor(zoom, levels=c("no", "yes"))
+  ) %>% 
+  ggplot(aes(x = response3)) + 
+  geom_bar(aes(fill = zoom, weight = weight), position="fill") +
+  facet_grid(.~task) + 
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) + 
+  scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
+  xlab("") + 
+  ggtitle("Zooming behavior by task")
+
+zd <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide")),
+    zoom = factor(zoom, levels=c("no", "yes"))
+  ) %>% 
+  ggplot(aes(x = response3)) + 
+  geom_bar(aes(fill = zoom, weight = weight), position="fill") +
+  facet_grid(.~chart) + 
+  scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
+  xlab("") + 
+  ggtitle("Zooming behavior by chart") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1))
+
+zt + zd + plot_layout(widths=c(5, 7.5), guides='collect') 
+  
+```
+
+Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$. We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$),  task ($\tau$), and design ($\delta$) of the chart:
+$$
+\text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
+$$
+
+
+I'll pretty up @tbl-zoom-123 if we are going to keep it. 
+
+
+```{r}
+#| label: tbl-zoom-123
+#| tbl-cap: Coefficients for logistic regression of zooming by task
+
+coefs_zoom %>%
+  mutate(
+    term = ifelse(term=="(Intercept)", "Intercept", term),
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+  ) %>%
+  gt() %>%
+  tab_header("Estimates for logistic regression on zooming behavior") %>%
+  cols_label(
+    std.error = "SE",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, std.error),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = statistic,
+    decimals = 1
+  ) %>%
+  cols_align(
+    columns = p.value,
+    align = "right"
+  )
+
+```
+
+
+#### Demographics matter    
+
+
+Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'. We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
+$$
+\text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
+$$
+
+```{r}
+#| label: fig-demographics
+#| fig-cap: "Panelist's demographics matter, particularly, when the task difficulty increases. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have - a small - effect. When income levels increase, the percentage of wrong answers (orange) decreases, while the percentage of correct answers (blue) increases slightly (significant at below 0.05). The more difficult task of comparing unaligned tiles, demographics are more significant.  XXX With increasing levels in education, we see a small drop in correct answers, as well as a small drop in wrong answers, for a significant increase in 'they are the same'."
+#| fig-subcap: 
+#|   - Comparisons of aligned tiles
+#|   - Comparisons of unaligned tiles
+#| fig-height: 5
+#| fig-width: 7
+#| layout-nrow: 2
+#| out-width: 100%
+
+educ_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = educ5)) + 
+  facet_grid(~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby education") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+educ_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = educ5)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby education") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+gender_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = gender)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+  ggtitle("Accuracy\nby gender") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+gender_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = gender)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+  ggtitle("Accuracy\nby gender") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+income_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = income4)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby income") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+income_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = income4)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby income") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+race <- round_123_long %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = racethnicity)) + 
+  facet_grid(.~task) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("Accuracy by race, ethnicity and task") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+age_cd <- round_123_long %>% 
+  filter(task=="cd") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = age4)) + 
+   facet_grid(.~task) + 
+ geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby age") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+
+age_ab <- round_123_long %>% 
+  filter(task=="ab") %>%
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
+    task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+  ) %>% 
+  ggplot(aes(x = age4)) + 
+   facet_grid(.~task) + 
+ geom_bar(aes(fill = response3, weight = weight), position="fill") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle=30, hjust=1)) + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+    ggtitle("\nby age") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+gender_cd + age_cd  + educ_cd +income_cd + plot_layout(nrow=1, guides = "collect")
+
+gender_ab + age_ab  + educ_ab +income_ab + plot_layout(nrow=1, guides = "collect")
+```
+
+```{r demographics-model}
+logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+logit_demo_task_cd_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+logit_demo_task_ab_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+logit_demo_task_ab_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+coefs_cd_correct <- broom::tidy(logit_demo_task_cd_correct)
+coefs_cd_correct_same <- broom::tidy(logit_demo_task_cd_correct_same)
+
+coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
+coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
+```
+
+
+@tbl-demographics doesn't survive the formatting to pdf very well - \hh{need to shorten the row names or put into multiple lines}
+
+```{r demographics-table}
+#| label: tbl-demographics
+#| tbl-cap: Demographics matter for perception, particularly when the tasks get harder.
+ coefs_clean <- function(dframe) {
+  dframe %>% mutate(
+    variable = c("Intercept", "Gender", rep("Age", 3), rep("Education", 4), rep("Income", 3)),
+    term = ifelse(term=="(Intercept)", "", term),
+    term = gsub("gender", "", term),
+    term = gsub("educ5", "", term),
+    term = gsub("age4", "", term),
+    term = gsub("income4", "", term),
+    ci_low = exp(estimate-1.96*std.error),
+    ci_high = exp(estimate+1.96*std.error),
+    estimate = exp(estimate)
+  )
+}
+
+coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>%
+ rbind(
+  coefs_clean(coefs_ab_correct) %>% mutate(task = "Unaligned", correct="correct")
+ ) %>%
+ rbind(
+  coefs_clean(coefs_cd_correct_same) %>% mutate(task = "Aligned", correct="not wrong")
+ ) %>%
+ rbind(
+  coefs_clean(coefs_ab_correct_same) %>% mutate(task = "Unaligned", correct="not wrong")
+ ) %>%
+ dplyr::select(-std.error, -statistic) %>%
+ mutate(
+  p.value = ifelse (p.value <  0.001, "***",
+      ifelse (p.value <  0.01, "**",
+             ifelse (p.value < 0.05, "*",
+                    ifelse (p.value < 0.1, ".", ""))))
+ ) %>%
+ group_by(variable) %>%
+ pivot_wider(
+    id_cols = c(term, variable),
+    names_from = c(task, correct),
+    values_from = c(estimate, ci_low, ci_high, p.value),
+  ) %>% 
+ gt() %>%
+  tab_header(title = "Log odds of accuracy by task and demographics of respondents") %>%
+ tab_options(
+   column_labels.font.weight = "bold",
+   row_group.font.weight = "bold"
+ ) %>%
+  fmt_number(
+    decimals=2
+  ) %>%
+  cols_width(
+    1~px(50),
+    contains("p.value") ~ px(20)
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Aligned_correct"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Aligned_not"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_move_to_end(contains("_Aligned_")) %>%
+  tab_spanner(
+    label = "correct | same or wrong",
+    columns = contains("_Aligned_correct")
+  )  %>%
+  tab_spanner(
+    label = "correct or same | wrong",
+    columns = contains("_Aligned_not")
+  ) %>%
+  tab_spanner(
+    label = "Aligned tiles",
+    columns = contains("_Aligned_"),
+    spanners = c("correct | same or wrong", "correct or same | wrong")
+  ) %>%
+  cols_move_to_end(contains("_Unaligned_")) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Unaligned_correct"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  cols_merge(
+    columns = contains("ci") & contains("_Unaligned_not"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  tab_spanner(
+    label = "correct | same or wrong ",
+    columns = contains("_Unaligned_correct")
+  )  %>%
+  tab_spanner(
+    label = "correct or same | wrong ",
+    columns = contains("_Unaligned_not")
+  ) %>%
+  tab_spanner(
+    label = "Unaligned tiles",
+    columns = contains("_Unaligned")
+  ) %>%
+   cols_label(
+    .list = c(
+      "estimate_Aligned_correct" = "Est.",
+      "ci_low_Aligned_correct" = "          [95% CI]",
+      "p.value_Aligned_correct" = " ",
+      "estimate_Aligned_not wrong" = "Est.",
+      "ci_low_Aligned_not wrong" = "          [95% CI]",
+      "p.value_Aligned_not wrong" = " ",
+      "estimate_Unaligned_correct" = "Est.",
+      "ci_low_Unaligned_correct" = "          [95% CI]",
+      "p.value_Unaligned_correct" = " ",
+      "estimate_Unaligned_not wrong" = "Est.",
+      "ci_low_Unaligned_not wrong" = "          [95% CI]",
+      "p.value_Unaligned_not wrong" = " "
+    )
+  ) 
+
+```
 
 ### Test 3
 
