@@ -41,10 +41,21 @@ preamble: >
   \usepackage{graphicx}
   \usepackage{hyperref}
   \usepackage{setspace}
+  \usepackage{lscape}
 documentclass: jds
 format:
   pdf: 
-    include-in-header: authors.tex
+    includes:
+      in_header: 'gt_packages.sty'
+    include-in-header: 
+      text: |
+        \usepackage{lscape}
+        \author[1]{Kiegan Rice\thanks{Corresponding author. Email: rice-kiegan@norc.org}}
+        \author[2]{Heike Hofmann\footnote{Email: hofmann@iastate.edu}}
+        \author[1]{Nola du Toit\footnote{Email: dutoit-nola@norc.org}} 
+        \author[1]{Edward Mulrow\footnote{Email: mulrow-edward@norc.org}}
+        \affil[1]{NORC at the University of Chicago}
+        \affil[2]{Department of Statistics, Iowa State University}
     keep-tex: true
   html: default
 editor: 
@@ -53,8 +64,12 @@ editor:
 ---
 
 ```{=latex}
-  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}}
+  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} % take out 
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
+
+  \newcommand{\blandscape}{\begin{landscape}}
+  \newcommand{\elandscape}{\end{landscape}}
+
   \setlength{\parindent}{0pt}
   \singlespacing
 ```
@@ -1139,9 +1154,13 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 
 @tbl-demographics doesn't survive the formatting to pdf very well - \hh{need to shorten the row names or put into multiple lines}
 
+
+\blandscape
+
 ```{r demographics-table}
 #| label: tbl-demographics
 #| tbl-cap: Demographics matter for perception, particularly when the tasks get harder.
+
  coefs_clean <- function(dframe) {
   dframe %>% mutate(
     variable = c("Intercept", "Gender", rep("Age", 3), rep("Education", 4), rep("Income", 3)),
@@ -1181,16 +1200,23 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
   ) %>% 
  gt() %>%
   tab_header(title = "Log odds of accuracy by task and demographics of respondents") %>%
+  tab_footnote("Signif. codes:  0 `***' 0.001 `**' 0.01 `*' 0.05 `.' 0.1 ` ' 1") %>%
  tab_options(
    column_labels.font.weight = "bold",
-   row_group.font.weight = "bold"
+   row_group.font.weight = "bold",
+   data_row.padding.horizontal = px(5),
+   page.orientation = "landscape"
  ) %>%
   fmt_number(
     decimals=2
   ) %>%
   cols_width(
     1~px(50),
-    contains("p.value") ~ px(20)
+    contains("p.value") ~ px(10)
+  ) %>%
+  cols_align(
+    align = "left",
+    columns = contains("p.value")
   ) %>%
   cols_merge(
     columns = contains("ci") & contains("_Aligned_correct"),
@@ -1253,6 +1279,8 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
   ) 
 
 ```
+
+\elandscape
 
 Results to discuss:
 
