@@ -260,7 +260,7 @@ knitr::include_graphics("images/mackinlay-tasks.png")
 
 ## Study design -- stimulus
 
-Each task is made up of two elements: a visual stimulus and a question about that image that the viewer is asked to respond to.
+Each task is made up of two elements: a visual stimulus and a question about that stimulus that the viewer is asked to respond to.
 In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
 
 **What specifically is each task?** Each comparison between marked pairs is designed to be a difficult task, with the difference between the values represented in the two marked pieces being a just-noticeable difference.
@@ -284,7 +284,7 @@ Finally, we change the aspect ratio of the chart and present a wider version of 
 \hh{Not sure where should put this, parking it here for right now:}
 \hh{expectations - start}
 ```
-What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications: both 'aligned' and 'unaligned' bars (in tests 1 and 2) or wedges (in test 3) share the same axis.
+What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications: both 'aligned' and 'unaligned' bars share the same axis.
 Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment.
 Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.\
 
@@ -464,16 +464,20 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
 
-Description of respondents
 
--   \# of respondents in each round
 
--   broad overview of demo characteristics(?)
+All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. Across the distinct stimuli, we model the resulting accuracy of responses, metrics on viewer interaction with the chart, and differences across demographic groups. 
 
--   raw sample size and effective sample size that we are analyzing **in each test**
+\kr{Insert figure here of demographic breakdown across tasks or rounds?}
+
 
 ### Accuracy of responses  
 
+We first investigate respondent accuracy in selecting the correct response. As participants were able to select the option 'They are the same', there are several ways to model accuracy and response. The argument could be made that for the purposes of practical interpretation, 'they are the same' is a correct choice, as the options are visually very similar and not substantially different values within the context of the data shown in the chart. However, we are interested in understanding whether viewers *can* perceive the difference and correctly identify which piece is larger. We consider multiple ways of modeling response to investigate participant response patterns. First, we define a measure of binary 'correctness', for which all answers that are not the correct option (B, D is bigger) are 'incorrect', including the selection of 'they are the same'. 
+
+\autoref{accuracy}(a) displays all responses along the binary correctness measure, separated by whether the stimulus was an aligned task or unaligned task. We can see that levels of accuracy for all responses are significantly higher for the 'easier' (aligned) task, with about twice as many respondents correctly selecting the larger of the two marked elements. 
+
+\kr{Can we update the figure and t-test with combined data across all tasks/all rounds 1-3?}
 
 ```{r combine_rounds_1_and_2}
 
@@ -500,11 +504,11 @@ abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
 marginal_results <- data.frame(abcd)
 ```
 
-<!-- The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. -->
-<!-- Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. -->
-<!-- Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis. -->
-<!-- Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. -->
-<!-- The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). -->
+\kr{ Can we update this to include the values for ROund 3 as well?}
+Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.
+Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis.
+Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
+The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16).
 
 
 
@@ -635,8 +639,9 @@ gg2 <- round_12 %>%
 gg1 + gg2
 ```
 
+Next, we consider an ordinal model to investigate response behavior across all three options -- 'A (C) is bigger', 'B (D) is bigger', and 'they are the same', and consider these response patterns across each of the stimuli. 
 
-We combine rounds 1, 2 and 3 as shown in Table above to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes.
+
 
 ```{r model-123, warning = FALSE, message = FALSE}
 
@@ -758,7 +763,9 @@ round_123_long %>%
 
 $$
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
-$$ where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
+$$
+
+where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
 The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
 
 ```{r}
@@ -817,16 +824,12 @@ dframe %>%
   )
 ```
 
-Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.\
-
-The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.
-
-
-
+The same pattern in accuracy holds across each of the three structural variations; the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.
 
 
 
 ### Respondent behavior  
+
 
 A contributing factor to this outcome might be the way that participants interact with the different designs.
 Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
