@@ -41,11 +41,11 @@ preamble: >
   \usepackage{graphicx}
   \usepackage{hyperref}
 format:
+  html: default
   pdf: 
     documentclass: jds
     include-in-header: authors.tex
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -136,7 +136,6 @@ vs_repo_local <- here::here("data") # link to data folder
 ```{r data}
 # other github repo. 
 round1 <- readRDS(file.path(vs_repo_local, "round1.rds"))
-round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
 
 round1_adj <- round1 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
@@ -144,20 +143,53 @@ round1_adj <- round1 %>%
                    CorrectABCD = paste(CorrectAB, CorrectCD),
                    one = 1)
 
+round2 <- readRDS(file.path(vs_repo_local, "round2.rds"))
+
 round2_adj <- round2 %>% 
             filter(ab != "SKIPPED ON WEB", cd != "SKIPPED ON WEB") %>%
             mutate(CorrectAB = ab=="B is bigger", CorrectCD = cd=="D is bigger",
                    CorrectABCD = paste(CorrectAB, CorrectCD),
                    one = 1)
 
-survey1 <- survey::svydesign(
-  data = round1_adj, 
-  ids = ~CaseId, weights = ~weight)
+round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
 
-survey2 <- survey::svydesign(
-  data = round2_adj,
-  ids = ~CaseId, weights = ~weight)
+# filter out all of the 'skipped on web':
+round3_adj <- round3 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB",
+  cd != "SKIPPED ON WEB"
+)
+
+round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
+
+round6_adj <- round6 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(RND_01 == 0) # same type of questions as round 7
+
+round7 <- readRDS(file.path(vs_repo_local, "round7.rds"))
+
+# filter out all of the 'skipped on web':
+round7_adj <- round7 %>% mutate(
+  weight = WEIGHT_NOLA
+)
 ```
+
+
+```{r data-rnd3}
+round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
+
+# filter out all of the 'skipped on web':
+round3_adj <- round3 %>% mutate(
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB",
+  cd != "SKIPPED ON WEB"
+)
+```
+
+
+
 
 ## Introduction
 
@@ -388,6 +420,20 @@ $$
 
 Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex. We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
 
+The data for this paper were collected in several rounds as part of the NORC Omnibus. 
+
+| Name    | Date  | # Participants | effective sample size | Sum of weights $\sum_i w_i$ |
+|---------|-------|--------:|----------:|----------:|
+| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
+| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
+| Round 3 | Jun 2022 |  `r nrow(round3_adj)`  |    `r round(neff(round3_adj$weight),1)`       | `r round(sum(round3_adj$weight),1)`       |
+| Round 6 | Sep 2022 |  `r nrow(round6_adj)` [Split]  |    `r round(neff(round6_adj$weight),1)`       | `r round(sum(round6_adj$weight),1)`       |
+| Round 7 | Oct 2022 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
+|         |       |         |           |           |   
+
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
+
+
 # Results
 
 ### Respondents
@@ -424,23 +470,10 @@ Description of respondents
 
             -   Maybe this table should go in the appendix?
 
-```{r lambdas}
-n1 <- nrow(round1_adj)
-n2 <- nrow(round2_adj)
-neff1 <- svytotal(~one, survey1, deff=TRUE)
-neff2 <- svytotal(~one, survey2, deff=TRUE)
-#abcd1 <- svytotal(~CorrectABCD, survey1, deff=TRUE)
-#abcd2 <- svytotal(~CorrectABCD, survey2, deff=TRUE)
-
-d1 <- 1 + cv(neff1)^2
-d2 <- 1 + cv(neff2)^2
-
-denom <- n1/d1 + n2/d2
-
-lambda <- n1/(d1*denom) 
-```
 
 ```{r combine_rounds_1_and_2}
+
+lambda <- calculate_lambda(round1_adj$weight, round2_adj$weight)
 round_12 <- round1_adj %>% 
             mutate(weight = lambda[1]*weight) %>% 
             select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
