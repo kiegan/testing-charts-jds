@@ -40,12 +40,13 @@ preamble: >
   \usepackage{booktabs}
   \usepackage{graphicx}
   \usepackage{hyperref}
+  \usepackage{setspace}
 documentclass: jds
 format:
-  html: default
   pdf: 
     include-in-header: authors.tex
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -55,6 +56,7 @@ editor:
   \newcommand{\hh}[1]{{\textcolor{orange}{#1}}}
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
   \setlength{\parindent}{0pt}
+  \singlespacing
 ```
 <!-- fig-width: 6.5 -->
 
