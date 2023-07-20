@@ -1,37 +1,6 @@
 ---
 title: "Testing Charts: viewers' perceptual accuracy in surveys"
 short-title: Testing charts in surveys # running title
-author:
-  - first: Kiegan                 # first name
-    first-init: K.              # initial of first name
-    last: Rice                  # last name
-    marker: 1               # identifier for the affiliation
-    footnote-id: 1              # optional identifier for the footnote
-    email: foo@bar.com          # optional email address
-  - first: Heike
-    first-init: H.
-    last: Hofmann
-    marker: 2
-  - first: Nola
-    first-init: N.
-    last: duToit
-    marker: 1
-  - first: Edward
-    first-init: E.
-    last: Mulrow
-    marker: 1
-footnote:
-  - content: Corresponding author
-    type: corresp               # set type for the corresponding author
-    id: 1
-affiliation:
-  - institution: NORC at the University of Chicago
-    country: United States
-    marker: 1
-  - institution: Iowa State University
-    department: Statistics
-    country: United States
-    marker: 2
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication, and decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'list, keywords, here, 3-6, are, fine'
@@ -64,10 +33,13 @@ editor:
 ---
 
 ```{=latex}
-  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} % take out 
-  \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}
+  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
+  \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
 
-  \newcommand{\blandscape}{\begin{landscape}}
+% take out everything above later
+% keep everything below
+
+  \newcommand{\blandscape}{\begin{landscape}} 
   \newcommand{\elandscape}{\end{landscape}}
 
   \setlength{\parindent}{0pt}
@@ -92,6 +64,7 @@ knitr::opts_chunk$set(echo = F,
                       eval = T, 
                       fig.path="./figures/", # figures are created on the fly, images are pictures like the stimuli
                       fig.env="figure*", 
+                      fig.pos = "hbt", # preference of figure placement: here, bottom, top 
                  #     fig.align = "center",
                       out.width = "\\textwidth",
                 #      fig.height = 5,
@@ -564,8 +537,8 @@ Distributions of demographic characteristics across each survey round are shown 
 ```{r}
 #| label: fig-rounds-demographics
 #| fig-cap: "Demographics of respondents"
-#| fig-height: 7
-#| fig-width: 10
+#| fig-height: 6
+#| fig-width: 12
 
 round_123 <- round_123 %>% group_by(chart) %>% 
   mutate(
@@ -1001,7 +974,7 @@ $$
 $$
 The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
 
-\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}
+<!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
 
 ```{r}
 #| label: fig-demographics
@@ -1010,7 +983,7 @@ The resulting model estimates and confidence intervals are shown in \autoref{tbl
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
 #| fig-height: 4
-#| fig-width: 7
+#| fig-width: 10
 #| layout-nrow: 2
 #| out-width: 100%
 
