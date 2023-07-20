@@ -464,7 +464,7 @@ Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sam
 The images utilized in the third task again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey.
 \hh{The length of bars is increased to fit the new dimensions. The height of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area the same as before}
 <!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. -->
-\kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}
+\kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }
 
 
 
@@ -476,7 +476,7 @@ The current panel size is 54,001 panel members aged 13 and over residing in over
 
 <!--\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}-->
 
-\hh{The Omnibus sample is not longitudinal in nature, i.e.\ we do not have any information about whether the same panelists were included in multiple rounds. While there is a (small) chance that panelists are included in multiple rounds of our data, there was at least a one month gap between viewing each visual stimulus, and for the purposes of the analysis we will consider data from these viewings as independent.  }
+The Omnibus sample is not longitudinal in nature, i.e.\ we do not have any information about whether the same panelists were included in multiple rounds. While there is a (small) chance that panelists are included in multiple rounds of our data, there was at least a one month gap between viewing each visual stimulus, and for the purposes of the analysis we will consider data from these viewings as independent.
 
 <!-- Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
 Each of the tests was run at least a month apart, so if respondents did participate in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
@@ -531,7 +531,6 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 <!-- : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds} -->
 
-\kr{We need to be careful about not making it seem like the rounds are the same as the tasks, since we have 3 rounds and 3 tasks. We describe it, but I feel like this table kind of muddies the waters. Could we instead do a table of respondents by task?} \hh{does this comment still stand after the re-organization? ... I would suggest to move it up to the survey methods and add the lambdas} \kr{I think moving it here helps, I did also add another table below. Let me know what you think.}\hh{I like it!}
 
 
 | Name    | Date       |      \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | $\lambda_i$ |
@@ -550,7 +549,7 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 ### Respondents
 
-A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}. All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. The resulting sample sizes corresponding to each task are shown in \autoref{tbl-tasks}. \kr{Is this table useful? I want to be clear about the difference between tasks and rounds and make sure it's clear what our resulting sizes are..}\hh{yes!}
+A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}. All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. The resulting sample sizes corresponding to each task are shown in \autoref{tbl-tasks}. 
 
 | Name    | Description    |      \# Participants |                effective sample size |
 |---------------|---------------|--------------:|--------------:|
