@@ -176,7 +176,6 @@ round7_adj <- round7 %>% mutate(
 )
 ```
 
-
 ```{r data-rnd3}
 round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
 
@@ -188,9 +187,6 @@ round3_adj <- round3 %>% mutate(
   cd != "SKIPPED ON WEB"
 )
 ```
-
-
-
 
 ## Introduction
 
@@ -280,13 +276,19 @@ Therefore, we focus on questions which vary the presented image, but ask viewers
 We focus on three main sets of structural variation in the design.
 First, we vary the alignment of the pieces in question.
 Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline.
-Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer marked pieces.
+Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces.
+Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
 
+```{=tex}
 \hh{Not sure where should put this, parking it here for right now:}
 \hh{expectations - start}
-What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications:
-both 'aligned' and 'unaligned' bars (in tests 1 and 2) or wedges (in test 3) share the same axis. Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment. Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.   
-We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column (or the same pie) mitigating some of this difficulty. @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill. 
+```
+What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications: both 'aligned' and 'unaligned' bars (in tests 1 and 2) or wedges (in test 3) share the same axis.
+Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment.
+Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.\
+
+We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column (or the same pie) mitigating some of this difficulty.
+@fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill.
 
 ```{r}
 #| label: fig-tasks-explain
@@ -297,17 +299,33 @@ include_graphics("images/sketch-tasks.png")
 
 \hh{expectations - end}
 
-
 **How do we present the task?** The format of a survey guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
-\kr{I'm not sure how important this second point is...} Second, participants should be given some context for the tasks they are being asked to complete; in a given round, our set of tasks appear as a group in the midst of other survey questions and topics, and without providing respondents some transition we risk a jarring shift and low respondent engagement in the task.
-Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey. 
+Second, we want to utilize content within the data visualization image which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the presented task.
+For this reason, we utilize data on living arrangements of older U.S. adults -- a topic which most U.S. adults will have some familiarity with, but is not inherently polarizing.
+Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
 
 \kr{Somewhere here we should also talk about how we measure viewer behavior/interaction with the chart: certainty, time spent, zooming, devices, etc. }
 
-### Task 1: Alignment in stacked bar charts
+When viewing each chart, participants were asked to compare the relative sizes of marked elements within the chart:
 
-\autoref{fig-tasks-12} shows the two stacked bar charts shown to participants in the first test.
+"There are many charts used in the news media to portray data visually. Looking at the chart below, which of the marked dark blue pieces is bigger, A or B? Just your best guess is fine.
+
+-   A is bigger
+
+-   B is bigger
+
+-   They are the same"
+
+When presented with the aligned version of each chart, pieces were marked with a C and D and the question text is updated accordingly.
+In all scenarios, the second option (B \[D\] is bigger) is the correct response.
+
+The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
+Respondents were also asked to rate their certainty in their response to each question on a five-point scale.
+
+### Task 1: Vertical stacked bar
+
+\autoref{fig-tasks-12} shows the two stacked bar charts shown to participants in the first task.
 The marked tiles in each plot are 155 pixels apart.
 Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
 The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
@@ -317,88 +335,62 @@ This difference should lead to a relatively high accuracy rate for participants 
 
 <!-- describe stimulus -->
 
-Both charts in \autoref{fig-tasks-12} show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
-Participants were asked to compare the relative sizes of the tiles marked A and B (C and D, respectively) and select the correct response out of the possible choices:
-
-1.  A is bigger
-2.  B is bigger
-3.  They are the same
-
-Answer 2 is the correct answer for both charts.
+Both charts in the left column of \autoref{fig-tasks} show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
 Both charts are shown at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
 This leaves the vertical positioning of the bars as the only difference between the charts.
 Any differences in observed responses can therefore be attributed to this difference in presentation.
 
+Task 1 was presented to viewers across two distinct rounds, with four color scheme variations each presented to 50% of respondents in each round.
+There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to compare structural differences.
+\kr{Should we put the color variations and a test for significance in accuracy/a visual in the appendix/supplementary materials? }
+
 ```{r}
-#| label: fig-tasks-12
-#| fig-cap: "Two stacked (vertical) barcharts. In each barchart, two tiles are marked. In both instances, the tile on the right is (very slightly) larger. "
+#| label: fig-tasks
+#| fig-cap: "Each of the stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart is piece A or C. "
 #| fig-subcap:
-#| - "**Unaligned bars**"
-#| - "**Aligned bars**"
-#| layout-nrow: 1
+#| - "**Vertical stacked bar, unaligned comparison**"
+#| - "**Horizontal stacked bar, unaligned comparison**"
+#| - "**Wide horizontal stacked bar, unaligned comparison**"
+#| - "**Vertical stacked bar, aligned comparison**"
+#| - "**Horizontal stacked bar, aligned comparison**"
+#| - "**Wide horizontal stacked bar, aligned comparison**"
+#| layout-nrow: 2
 #| out-width: 100%
 knitr::include_graphics("images/vertical-ab.PNG")
+knitr::include_graphics("images/round3/horizontal-ab.PNG")
+knitr::include_graphics("images/round3/hwide-ab.PNG")
 knitr::include_graphics("images/vertical-cd.PNG")
+knitr::include_graphics("images/round3/horizontal-cd.PNG")
+knitr::include_graphics("images/round3/hwide-cd.PNG")
 ```
 
-<!-- |                                   |                                   | -->
+### Task 2: Horizontal stacked bar
 
-<!-- |-----------------------------------|-----------------------------------| -->
+The visual mappings in the second task, shown in \autoref{fig-tasks-3a}, are identical to the first task, but the axes of the chart are rotated so that the stacked bar is represented in a horizontal format.
+This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
+Once again Tasks 2 and 3 were asked within the same survey round and the full sample was randomly split among respondents, with 50% of viewers seeing the Task 2 stimuli and 50% of viewers seeing the Task 3 stimuli.
 
-<!-- | **Unaligned positions**           | **Aligned positions**             | -->
+### Task 3: Wide horizontal stacked bar
 
-<!-- | ![Unaligned positions marked A and B](../SDSS-2023/images/vertical-ab.PNG) | ![Aligned positions marked C and D](../SDSS-2023/images/vertical-cd.PNG) | -->
-
-<!-- : The two stacked barcharts every participant got to see. In each barchart, the two marked tiles are to be compared for their size. in both instances, the tile on the right is (very slightly) larger. {#tbl-tasks-12 tbl-colwidths="\[50,50\]"} -->
-
-
+The images utilized in the third task again represent the same data, and the overall image has dimensions which are identical to the images in the first two tasks.
+However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and decrease the relative thickness \kr{wording?} of each bar.
 
 ### Task 2: Orientation of stacked bar charts
 
-Story here: not a huge difference, but we mainly see a difference in how people react. horizontal/vertical/horizontal. Even if there's not hugely significant differences by design, we can see differences in behavior. 
+Story here: not a huge difference, but we mainly see a difference in how people react.
+horizontal/vertical/horizontal.
+Even if there's not hugely significant differences by design, we can see differences in behavior.
 
-Combine Tasks 1 and 2 and just present overall, aligned/unaligned by the 3 different orientations? Doesn't matter whether we have a vertical or horizontal position, 
+Combine Tasks 1 and 2 and just present overall, aligned/unaligned by the 3 different orientations?
+Doesn't matter whether we have a vertical or horizontal position,
 
-We can reproduce
-We can rank
-We can rank better because we have a bigger sample size
-WE can find changes in viewer behavior
-Demographics matter to accuracy and choices 
-
-In \autoref{fig-tasks-3} we see two structural variations on the stacked bar chart seen in Task 1: first, the Task 1 chart sized equally but rotated 90 degrees with bar lengths shown horizontally.
-Second, the horizontal chart with a smaller aspect ratio so the bars appear thinner and longer.
-Note that the wide version of the horizontal bars increases the pixel difference between the two marked pieces relative to the standard versions of the horizontal and vertical bars.
-
-This test utilized a split sample approach, where 50% of participants in the sample were shown the tall horizontal bar chart and 50% were shown the wide horizontal chart.
-Participants were asked to complete the same task as in Test 1; selecting the correct response among:
-
-1.  A is bigger
-2.  B is bigger
-3.  They are the same
-
-Again, answer 2 is the correct answer.
-
-```{r}
-#| label: fig-tasks-3
-#| fig-cap: "Changes to to the vertical design are made in two steps. First, the original chart is rotated. The areas of all tiles are kept the same. In a second step, the aspect ratio of tiles is changed while keeping the areas of tiles the same."
-#| fig-subcap:
-#| - "**Tall horizontal bars**, unaligned"
-#| - "**Wide horizontal bars**, unaligned"
-#| layout-nrow: 1
-#| out-width: 100%
-knitr::include_graphics("images/round3/horizontal-ab.PNG")
-knitr::include_graphics("images/round3/hwide-ab.PNG")
-```
-
-### Task 3: Alignment and orientation in pie charts
-
-Let's talk about the pies here
+We can reproduce We can rank We can rank better because we have a bigger sample size WE can find changes in viewer behavior Demographics matter to accuracy and choices
 
 ## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households **CITE DENNIS 2022** @dennis2019technical. \hh{I don't think I've got the right citation}
-Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households @dennis2019technical.
+\hh{I don't think I've got the right citation} Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 
 \hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
 
@@ -412,43 +404,59 @@ Paragraph on how survey weights are derived?
 
 All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
-When combining responses that were gathered during distinct rounds of the Omnibus survey, we make weighting adjustments to ensure that weights in each sample are properly calibrated to the population total across both rounds in the resulting model. We *combine* (rather than cumulate) surveys $S_1$ and $S_2$, as described in @omuircheartaighCombiningSamplesVs2002, by 
-multiplying weights in $S_1$ and $S_2$ by $\lambda$ and $1 - \lambda$ respectively.
+When combining responses that were gathered during distinct rounds of the Omnibus survey, we make a weighting adjustment to ensure that weights in each sample are properly calibrated to the population total across all rounds in the resulting model.
+
+\kr{Do we need to update this description to just say how we did it for combining across all the rounds represented?}
+
+We *combine* (rather than cumulate) surveys $S_1$ and $S_2$, as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_1$ and $S_2$ by $\lambda$ and $1 - \lambda$ respectively.
 $$
 \lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
-$$
-where $n_1$ and $n_2$ are the nominal sample sizes and $d_1$ and $d_2$ are the design effects for the estimators. 
-Here, $d_1$ and $d_2$ are estimated as 
-$$
+$$ where $n_1$ and $n_2$ are the nominal sample sizes and $d_1$ and $d_2$ are the design effects for the estimators.
+Here, $d_1$ and $d_2$ are estimated as $$
 d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2
-$$
-where $CV$ is the coefficient of variation of the weights within each sample, and is estimated as in @kishSurveySampling1965 : 
+$$ where $CV$ is the coefficient of variation of the weights within each sample, and is estimated as in @kishSurveySampling1965 :
 
 $$ 
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 $$
 
-Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex. We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
+Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex.
+We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
 
-The data for this paper were collected in several rounds as part of the NORC Omnibus. 
+The data for this paper were collected in several rounds as part of the NORC Omnibus.
 
 \hh{we might be able to include the lambda values for combining the tables here as well}
 
-| Name    | Date  | # Participants | effective sample size | Sum of weights $\sum_i w_i$ |
-|---------|-------|--------:|----------:|----------:|
-| Round 1 | April 2022 |  `r nrow(round1_adj)`    |    `r round(neff(round1_adj$weight),1)`       | `r round(sum(round1_adj$weight),1)`       |
-| Round 2 | May 2022 |  `r nrow(round2_adj)`   |    `r round(neff(round2_adj$weight),1)`       | `r round(sum(round2_adj$weight),1)`       |
-| Round 3 | Jun 2022 |  `r nrow(round3_adj)`  |    `r round(neff(round3_adj$weight),1)`       | `r round(sum(round3_adj$weight),1)`       |
-| Round 6 | Sep 2022 |  `r nrow(round6_adj)` [Split]  |    `r round(neff(round6_adj$weight),1)`       | `r round(sum(round6_adj$weight),1)`       |
-| Round 7 | Oct 2022 |  `r nrow(round7_adj)`   |    `r round(neff(round7_adj$weight),1)`       | `r round(sum(round7_adj$weight),1)`       |
-|         |       |         |           |           |   
+<!-- | Name    | Date       |                \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | -->
 
-: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
+<!-- |---------------|---------------|--------------:|--------------:|--------------:| -->
 
+<!-- | Round 1 | April 2022 |           `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` | -->
+
+<!-- | Round 2 | May 2022   |           `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` | -->
+
+<!-- | Round 3 | Jun 2022   |           `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` | -->
+
+<!-- | Round 6 | Sep 2022   | `r nrow(round6_adj)` \[Split\] | `r round(neff(round6_adj$weight),1)` | `r round(sum(round6_adj$weight),1)` | -->
+
+<!-- | Round 7 | Oct 2022   |           `r nrow(round7_adj)` | `r round(neff(round7_adj$weight),1)` | `r round(sum(round7_adj$weight),1)` | -->
+
+<!-- |         |            |                                |                                      |                                     | -->
+
+<!-- : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds} -->
 
 # Results
 
 ### Respondents
+
+| Name    | Date       |      \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ |
+|---------------|---------------|--------------:|--------------:|--------------:|
+| Round 1 | April 2022 | `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` |
+| Round 2 | May 2022   | `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` |
+| Round 3 | Jun 2022   | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` |
+|         |            |                      |                                      |                                     |
+
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds}
 
 Description of respondents
 
@@ -458,46 +466,23 @@ Description of respondents
 
 -   raw sample size and effective sample size that we are analyzing **in each test**
 
-### Test 1
-
--   Alignment in stacked bars
-
-    -   Binary accuracy in responses
-
-        -   Figure: binary correctness and binary ggpcp diagram
-        -   Table:(?) T-test results
-        -   Table: results of cell means model on certainty
-
-    -   Ordinal accuracy in responses
-
-        -   Figure: ordinal correctness and ordinal ggpcp diagram
-
-        -   Table: Fitted model for ordinal response and alignment
-
-    -   Ordinal accuracy in responses by demographics
-
-        -   Figure: ordinal correctness by demographics, split by aligned and unaligned
-
-        -   Table: Fitted model for ordinal response and alignment by demos
-
-            -   Maybe this table should go in the appendix?
-
+### Accuracy of responses  
 
 ```{r combine_rounds_1_and_2}
 
 lambda <- calculate_lambda(round1_adj$weight, round2_adj$weight)
-round_12 <- round1_adj %>% 
-            mutate(weight = lambda[1]*weight) %>% 
+round_12 <- round1_adj %>%
+            mutate(weight = lambda[1]*weight) %>%
             dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
-    rbind(round2_adj %>% 
-            mutate(weight = (1-lambda[1])*weight) %>% 
+    rbind(round2_adj %>%
+            mutate(weight = (1-lambda[1])*weight) %>%
             dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
-round_12_long <- round_12 %>% 
-  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response") 
+round_12_long <- round_12 %>%
+  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response")
 
-survey_12 <- 
+survey_12 <-
   survey::svydesign(
-  data = round_12_long, 
+  data = round_12_long,
   ids = ~CaseId, weights = ~weight)
 ```
 
@@ -507,84 +492,6 @@ abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
 
 marginal_results <- data.frame(abcd)
 ```
-
-The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey.
-Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.
-Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis.
-Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. 
-The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16).
-
-```{r accuracy,   warning=FALSE}
-#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
-#| label: fig-alignment
-#| out-width: 80%
-#| fig-height: 5 
-#| fig-width: 10
-
-gg1 <- round_12_long %>%
-  mutate(
-    Response = ifelse(Response, "Correct", "Not correct"),
-    Response = factor(Response, levels=c("Not correct", "Correct")),
-    Question = ifelse(Question=="CorrectAB",
-                      "Unaligned: A or B?", "Aligned: C or D?")
-  ) %>%
-#  filter(Response == "Correct") %>%
-  ggplot(aes(x = Question, fill = Response, weight = weight)) +
-  geom_bar() +
-  ylab("Number of (effective) Respondents") +
-  xlab("") +
-  scale_fill_manual(values=c("grey", "forestgreen")) +
-  scale_y_continuous(
-      sec.axis = sec_axis(~./sum(round_12$weight)*100,
-                          name="Percent responses")
-  ) +
-  theme(legend.position = "bottom") +
-  ggtitle("(a) Accuracy of survey responses")  +
-  geom_rect(
-    aes(
-      x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
-      xmin = 2:1 - 0.45,
-      ymin = ResponseTRUE - 1.96* se.ResponseTRUE,
-      xmax = 2:1 + 0.45,
-      ymax = ResponseTRUE + 1.96* se.ResponseTRUE,
-      weight = 1),
-    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
-    data = marginal_results
-  )
-
-gg2 <- round_12 %>%
-  mutate(
-    `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"), 
-    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
-    ) %>%
-  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
-  pcp_scale() %>%
-  pcp_arrange() %>%
-  ggplot(aes_pcp()) + 
-    geom_pcp_axes() + 
-    geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
-    geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) + 
-    geom_pcp_labels(colour = "black") +
-  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25), 
-                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
-                     sec.axis = sec_axis(~.*100,
-                          name="Percent responses")) +
-  xlab("") + 
-  scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) +
-  ggtitle("(b) Combinations of responses") +
-  theme(legend.position = "none")
-
-gg1 + gg2
-```
-
-
-
-
-### Test 2
-
--   Structure of stacked bars -- vertical, horizontal, horizontal wide
-    -   Accuracy and responses
-
 
 ```{r combine-123}
 lambda_1_2 <- calculate_lambda(round1_adj$weight, round2_adj$weight)
@@ -646,9 +553,7 @@ survey_123 <-
   ids = ~CaseId, weights = ~weight)
 ```
 
-
-We combine rounds 1, 2 and 3 as shown in Table above to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes. 
-
+We combine rounds 1, 2 and 3 as shown in Table above to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes.
 
 ```{r model-123, warning = FALSE, message = FALSE}
 
@@ -700,7 +605,6 @@ ci_confint3 <- ci_confint3 %>%
   chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
 ) 
 ```
-
 
 ```{r}
 #| label: fig-response-123
@@ -767,13 +671,12 @@ round_123_long %>%
   geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
 ```
 
-
 @fig-response-123 shows the results of a cell-means model with ordinal response $Y_k$, where $Y_k$ is the $k$th participant's response, $Y_k \in \{1, 2, 3\}$, where 'correct' is encoded as 1, 'they are the same' is encoded as 2, and 'wrong' is encoded as 3:
 
 $$
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
-$$
-where  $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned),  and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
+$$ where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
+The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
 
 ```{r}
 #| label: tbl-rounds-123
@@ -831,14 +734,88 @@ dframe %>%
   )
 ```
 
-Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: 
-The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.  
-The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
+Interestingly, while we should, theoretically, see an improvement in accuracy when shifting from the vertical to the horizontal wide design, the resulting effects on the accuracy of the responses are not completely straightforward: The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.\
+
+The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.
 
 
-#### Viewers react differently to the charts
 
-A contributing factor to this outcome might be the way that participants interact with the different designs. Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.  However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
+
+
+<!-- The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. -->
+<!-- Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. -->
+<!-- Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis. -->
+<!-- Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. -->
+<!-- The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). -->
+
+<!-- ```{r accuracy,   warning=FALSE} -->
+<!-- #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles." -->
+<!-- #| label: fig-alignment -->
+<!-- #| out-width: 80% -->
+<!-- #| fig-height: 5  -->
+<!-- #| fig-width: 10 -->
+
+<!-- gg1 <- round_12_long %>% -->
+<!--   mutate( -->
+<!--     Response = ifelse(Response, "Correct", "Not correct"), -->
+<!--     Response = factor(Response, levels=c("Not correct", "Correct")), -->
+<!--     Question = ifelse(Question=="CorrectAB", -->
+<!--                       "Unaligned: A or B?", "Aligned: C or D?") -->
+<!--   ) %>% -->
+<!-- #  filter(Response == "Correct") %>% -->
+<!--   ggplot(aes(x = Question, fill = Response, weight = weight)) + -->
+<!--   geom_bar() + -->
+<!--   ylab("Number of (effective) Respondents") + -->
+<!--   xlab("") + -->
+<!--   scale_fill_manual(values=c("grey", "forestgreen")) + -->
+<!--   scale_y_continuous( -->
+<!--       sec.axis = sec_axis(~./sum(round_12$weight)*100, -->
+<!--                           name="Percent responses") -->
+<!--   ) + -->
+<!--   theme(legend.position = "bottom") + -->
+<!--   ggtitle("(a) Accuracy of survey responses")  + -->
+<!--   geom_rect( -->
+<!--     aes( -->
+<!--       x = rev(c("Aligned: C or D?", "Unaligned: A or B?")), -->
+<!--       xmin = 2:1 - 0.45, -->
+<!--       ymin = ResponseTRUE - 1.96* se.ResponseTRUE, -->
+<!--       xmax = 2:1 + 0.45, -->
+<!--       ymax = ResponseTRUE + 1.96* se.ResponseTRUE, -->
+<!--       weight = 1), -->
+<!--     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25, -->
+<!--     data = marginal_results -->
+<!--   ) -->
+
+<!-- gg2 <- round_12 %>% -->
+<!--   mutate( -->
+<!--     `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"),  -->
+<!--     `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct") -->
+<!--     ) %>% -->
+<!--   pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>% -->
+<!--   pcp_scale() %>% -->
+<!--   pcp_arrange() %>% -->
+<!--   ggplot(aes_pcp()) +  -->
+<!--     geom_pcp_axes() +  -->
+<!--     geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+ -->
+<!--     geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) +  -->
+<!--     geom_pcp_labels(colour = "black") + -->
+<!--   scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25),  -->
+<!--                      labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0), -->
+<!--                      sec.axis = sec_axis(~.*100, -->
+<!--                           name="Percent responses")) + -->
+<!--   xlab("") +  -->
+<!--   scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) + -->
+<!--   ggtitle("(b) Combinations of responses") + -->
+<!--   theme(legend.position = "none") -->
+
+<!-- gg1 + gg2 -->
+<!-- ``` -->
+
+### Respondent behavior  
+
+A contributing factor to this outcome might be the way that participants interact with the different designs.
+Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
+However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
 
 <!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
 
@@ -891,14 +868,12 @@ zt + zd + plot_layout(widths=c(5, 7.5), guides='collect')
   
 ```
 
-Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$. We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$),  task ($\tau$), and design ($\delta$) of the chart:
-$$
+Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$.
+We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$), task ($\tau$), and design ($\delta$) of the chart: $$
 \text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
 $$
 
-
-I'll pretty up @tbl-zoom-123 if we are going to keep it. 
-
+I'll pretty up @tbl-zoom-123 if we are going to keep it.
 
 ```{r}
 #| label: tbl-zoom-123
@@ -931,11 +906,10 @@ coefs_zoom %>%
 
 ```
 
+### Differences across demographic groups
 
-#### Demographics matter    
-
-
-Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'. We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
+Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'.
+We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
 $$
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 $$
@@ -1131,7 +1105,6 @@ coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
 coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 ```
 
-
 @tbl-demographics doesn't survive the formatting to pdf very well - \hh{need to shorten the row names or put into multiple lines}
 
 ```{r demographics-table}
@@ -1249,20 +1222,15 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
 
 ```
 
-### Test 3
-
--   Facetted bars and pies
-    -   Accuracy and responses
-
-    -   Timing of responses
-
 Results to discuss:
 
 -   Differences in accuracy between aligned and unaligned bar
 
--   Differences in accuracy between framed, floating, and general pie
+-   Differences across structures
 
 -   Differences in timing and zooming behavior across all designs
+
+-   Demographic differences and their interaction with alignment
 
 # Conclusion
 
