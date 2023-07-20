@@ -40,12 +40,12 @@ preamble: >
   \usepackage{booktabs}
   \usepackage{graphicx}
   \usepackage{hyperref}
+documentclass: jds
 format:
-  html: default
   pdf: 
-    documentclass: jdsart
     include-in-header: authors.tex
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
