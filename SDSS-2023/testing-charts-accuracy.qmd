@@ -228,10 +228,9 @@ We seek to answer whether it is possible to reproduce some of their findings in 
 We employ a probability-based survey panel and run a series of perception tests with nationally-representative samples of respondents from that panel.
 The advantage of using a probability-based approach is two-fold.
 First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
-Second, the sample is representative of the general adult public in the U.S., which is an important target audience for scientific communication, and this allows us to test whether prior results from convenience samples hold with a nationally representative sample.
-\kr{Do we want a stronger statement about this here?}
+Second, the sample is representative of the general adult public in the U.S., and this allows us to test whether prior results from convenience samples hold with a nationally representative sample and whether there are differences in those results across demographic subgroups.
 
-We present viewers with structural variations on bar charts and pie charts and ask them to answer questions comparing the size of elements within those charts.
+We present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
 In this work, we present the series of tests we completed and the resulting findings.
 The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in our perception tests.
 We then describe the population of study respondents and obtained survey sample.
@@ -244,20 +243,20 @@ Finally, we discuss implications of this work and next steps.
 knitr::include_graphics("images/mackinlay-tasks.png")
 ```
 
-\kr{The figure below is still a bit of an orphan, but I think we can revisit the intro ad study setup after we get more of the results in the paper}
+<!-- \kr{The figure below is still a bit of an orphan, but I think we can revisit the intro ad study setup after we get more of the results in the paper} -->
 
-```{r}
-#| label: fig-aligned-unaligned
-#| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. When participants are asked to compare the size of these tiles in barcharts, the predominant response for the unaligned pair on the left is 'they are of the same size'. In contrast, more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right."
-#| fig-subcap:
-#| - "**Unaligned bars**"
-#| - "**Aligned bars**"
-#| layout-nrow: 1
-#| fig-align: "center"
-#| out-width: 50%
-knitr::include_graphics("images/round5-modified.PNG")
-knitr::include_graphics("images/round3-modified.PNG")
-```
+<!-- ```{r} -->
+<!-- #| label: fig-aligned-unaligned -->
+<!-- #| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. When participants are asked to compare the size of these tiles in barcharts, the predominant response for the unaligned pair on the left is 'they are of the same size'. In contrast, more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right." -->
+<!-- #| fig-subcap: -->
+<!-- #| - "**Unaligned bars**" -->
+<!-- #| - "**Aligned bars**" -->
+<!-- #| layout-nrow: 1 -->
+<!-- #| fig-align: "center" -->
+<!-- #| out-width: 50% -->
+<!-- knitr::include_graphics("images/round5-modified.PNG") -->
+<!-- knitr::include_graphics("images/round3-modified.PNG") -->
+<!-- ``` -->
 
 ## Study design -- stimulus
 
@@ -301,13 +300,11 @@ include_graphics("images/sketch-tasks.png")
 
 \hh{expectations - end}
 
-**How do we present the task?** The format of a survey guides the format and design of the questions asked and how they are presented to respondents.
+**How do we present the task?** Our use of a survey format guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
 Second, we want to utilize content within the data visualization image which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the presented task.
 For this reason, we utilize data on living arrangements of older U.S. adults -- a topic which most U.S. adults will have some familiarity with, but is not inherently polarizing.
 Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
-
-\kr{Somewhere here we should also talk about how we measure viewer behavior/interaction with the chart: certainty, time spent, zooming, devices, etc. }
 
 When viewing each chart, participants were asked to compare the relative sizes of marked elements within the chart:
 
@@ -325,37 +322,16 @@ In all scenarios, the second option (B \[D\] is bigger) is the correct response.
 The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
 Respondents were also asked to rate their certainty in their response to each question on a five-point scale.
 
-### Task 1: Vertical stacked bar
-
-\autoref{fig-tasks-12} shows the two stacked bar charts shown to participants in the first task.
-The marked tiles in each plot are 155 pixels apart.
-Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
-The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
-This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'.
-
-<!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
-
-<!-- describe stimulus -->
-
-Both charts in the left column of \autoref{fig-tasks} show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
-Both charts are shown at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
-This leaves the vertical positioning of the bars as the only difference between the charts.
-Any differences in observed responses can therefore be attributed to this difference in presentation.
-
-Task 1 was presented to viewers across two distinct rounds, with four color scheme variations each presented to 50% of respondents in each round.
-There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to compare structural differences.
-\kr{Should we put the color variations and a test for significance in accuracy/a visual in the appendix/supplementary materials? }
-
 ```{r}
 #| label: fig-tasks
-#| fig-cap: "Each of the stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart is piece A or C. "
+#| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart is piece A or C. "
 #| fig-subcap:
-#| - "**Vertical stacked bar, unaligned comparison**"
-#| - "**Horizontal stacked bar, unaligned comparison**"
-#| - "**Wide horizontal stacked bar, unaligned comparison**"
-#| - "**Vertical stacked bar, aligned comparison**"
-#| - "**Horizontal stacked bar, aligned comparison**"
-#| - "**Wide horizontal stacked bar, aligned comparison**"
+#| - "**Vertical stacked bar, unaligned**"
+#| - "**Horizontal stacked bar, unaligned**"
+#| - "**Wide horizontal stacked bar, unaligned**"
+#| - "**Vertical stacked bar, aligned**"
+#| - "**Horizontal stacked bar, aligned**"
+#| - "**Wide horizontal stacked bar, aligned**"
 #| layout-nrow: 2
 #| out-width: 100%
 knitr::include_graphics("images/vertical-ab.PNG")
@@ -366,27 +342,39 @@ knitr::include_graphics("images/round3/horizontal-cd.PNG")
 knitr::include_graphics("images/round3/hwide-cd.PNG")
 ```
 
+
+### Task 1: Vertical stacked bar
+
+\autoref{fig-tasks}(a,d) shows the two stacked bar charts shown to participants in the first task.
+The marked tiles in each plot are 155 pixels apart.
+Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
+The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
+This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'.
+
+<!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
+
+<!-- describe stimulus -->
+
+Both charts show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
+Both charts are shown at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
+This leaves the vertical positioning of the bars as the only difference between the charts.
+Any differences in observed responses can therefore be attributed to this difference in presentation.
+
+Task 1 was presented to viewers in one of two rounds (Rounds 1-2), with four color scheme variations each presented to 50% of respondents in each round.
+There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to compare structural differences.
+\kr{Should we put the color variations and a test for significance in accuracy/a visual in the appendix/supplementary materials? }
+
+
 ### Task 2: Horizontal stacked bar
 
 The visual mappings in the second task, shown in \autoref{fig-tasks-3a}, are identical to the first task, but the axes of the chart are rotated so that the stacked bar is represented in a horizontal format.
 This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
-Once again Tasks 2 and 3 were asked within the same survey round and the full sample was randomly split among respondents, with 50% of viewers seeing the Task 2 stimuli and 50% of viewers seeing the Task 3 stimuli.
+Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sample was randomly split among respondents, with 50% of participants seeing the Task 2 stimuli and 50% of participants seeing the Task 3 stimuli.
 
 ### Task 3: Wide horizontal stacked bar
 
 The images utilized in the third task again represent the same data, and the overall image has dimensions which are identical to the images in the first two tasks.
-However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and decrease the relative thickness \kr{wording?} of each bar.
-
-### Task 2: Orientation of stacked bar charts
-
-Story here: not a huge difference, but we mainly see a difference in how people react.
-horizontal/vertical/horizontal.
-Even if there's not hugely significant differences by design, we can see differences in behavior.
-
-Combine Tasks 1 and 2 and just present overall, aligned/unaligned by the 3 different orientations?
-Doesn't matter whether we have a vertical or horizontal position,
-
-We can reproduce We can rank We can rank better because we have a bigger sample size WE can find changes in viewer behavior Demographics matter to accuracy and choices
+However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and decrease the relative thickness \kr{wording?} of each bar. 
 
 ## Study design -- participants
 
@@ -449,7 +437,23 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 # Results
 
+There are differences by alignment
+There are not huge differences across structures
+However, we see a difference in how people react across different structures (zooming behavior, certainty? time?)
+
+- We can reproduce prior findings with nat rep sample 
+- We can rank 
+- We can rank better because we have a bigger sample size 
+- We can find changes in viewer behavior 
+- Demographics matter to accuracy and choices
+
+
 ### Respondents
+
+A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}.
+
+\kr{We need to be careful about not making it seem like the rounds are the same as the tasks, since we have 3 rounds and 3 tasks. We describe it, but I feel like this table kind of muddies the waters. Could we instead do a table of respondents by task?}
+
 
 | Name    | Date       |      \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ |
 |---------------|---------------|--------------:|--------------:|--------------:|
@@ -469,6 +473,7 @@ Description of respondents
 -   raw sample size and effective sample size that we are analyzing **in each test**
 
 ### Accuracy of responses  
+
 
 ```{r combine_rounds_1_and_2}
 
@@ -494,6 +499,15 @@ abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
 
 marginal_results <- data.frame(abcd)
 ```
+
+<!-- The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. -->
+<!-- Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. -->
+<!-- Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis. -->
+<!-- Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. -->
+<!-- The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). -->
+
+
+
 
 ```{r combine-123}
 lambda_1_2 <- calculate_lambda(round1_adj$weight, round2_adj$weight)
@@ -554,6 +568,73 @@ survey_123 <-
   data = round_123_long, 
   ids = ~CaseId, weights = ~weight)
 ```
+
+
+\kr{We need to update this chart to include the data from all 3 rounds instead of just the first 2}
+
+```{r accuracy,   warning=FALSE}
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| label: fig-alignment
+#| out-width: 80%
+#| fig-height: 5
+#| fig-width: 10
+
+gg1 <- round_12_long %>%
+  mutate(
+    Response = ifelse(Response, "Correct", "Not correct"),
+    Response = factor(Response, levels=c("Not correct", "Correct")),
+    Question = ifelse(Question=="CorrectAB",
+                      "Unaligned: A or B?", "Aligned: C or D?")
+  ) %>%
+#  filter(Response == "Correct") %>%
+  ggplot(aes(x = Question, fill = Response, weight = weight)) +
+  geom_bar() +
+  ylab("Number of (effective) Respondents") +
+  xlab("") +
+  scale_fill_manual(values=c("grey", "forestgreen")) +
+  scale_y_continuous(
+      sec.axis = sec_axis(~./sum(round_12$weight)*100,
+                          name="Percent responses")
+  ) +
+  theme(legend.position = "bottom") +
+  ggtitle("(a) Accuracy of survey responses")  +
+  geom_rect(
+    aes(
+      x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
+      xmin = 2:1 - 0.45,
+      ymin = ResponseTRUE - 1.96* se.ResponseTRUE,
+      xmax = 2:1 + 0.45,
+      ymax = ResponseTRUE + 1.96* se.ResponseTRUE,
+      weight = 1),
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = marginal_results
+  )
+
+gg2 <- round_12 %>%
+  mutate(
+    `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"),
+    `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
+    ) %>%
+  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
+  pcp_scale() %>%
+  pcp_arrange() %>%
+  ggplot(aes_pcp()) +
+    geom_pcp_axes() +
+    geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
+    geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) +
+    geom_pcp_labels(colour = "black") +
+  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25),
+                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+                     sec.axis = sec_axis(~.*100,
+                          name="Percent responses")) +
+  xlab("") +
+  scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) +
+  ggtitle("(b) Combinations of responses") +
+  theme(legend.position = "none")
+
+gg1 + gg2
+```
+
 
 We combine rounds 1, 2 and 3 as shown in Table above to incorporate all relevant responses to evaluate the three different designs of charts in terms of their accuracy in assessing small differences in tile sizes.
 
@@ -744,74 +825,6 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 
 
 
-<!-- The data used for assessing the accuracy of comparisons in \autoref{tbl-tasks-12} is collected in two rounds of the NORC Omnibus survey. -->
-<!-- Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`. -->
-<!-- Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis. -->
-<!-- Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts. -->
-<!-- The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). -->
-
-<!-- ```{r accuracy,   warning=FALSE} -->
-<!-- #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles." -->
-<!-- #| label: fig-alignment -->
-<!-- #| out-width: 80% -->
-<!-- #| fig-height: 5  -->
-<!-- #| fig-width: 10 -->
-
-<!-- gg1 <- round_12_long %>% -->
-<!--   mutate( -->
-<!--     Response = ifelse(Response, "Correct", "Not correct"), -->
-<!--     Response = factor(Response, levels=c("Not correct", "Correct")), -->
-<!--     Question = ifelse(Question=="CorrectAB", -->
-<!--                       "Unaligned: A or B?", "Aligned: C or D?") -->
-<!--   ) %>% -->
-<!-- #  filter(Response == "Correct") %>% -->
-<!--   ggplot(aes(x = Question, fill = Response, weight = weight)) + -->
-<!--   geom_bar() + -->
-<!--   ylab("Number of (effective) Respondents") + -->
-<!--   xlab("") + -->
-<!--   scale_fill_manual(values=c("grey", "forestgreen")) + -->
-<!--   scale_y_continuous( -->
-<!--       sec.axis = sec_axis(~./sum(round_12$weight)*100, -->
-<!--                           name="Percent responses") -->
-<!--   ) + -->
-<!--   theme(legend.position = "bottom") + -->
-<!--   ggtitle("(a) Accuracy of survey responses")  + -->
-<!--   geom_rect( -->
-<!--     aes( -->
-<!--       x = rev(c("Aligned: C or D?", "Unaligned: A or B?")), -->
-<!--       xmin = 2:1 - 0.45, -->
-<!--       ymin = ResponseTRUE - 1.96* se.ResponseTRUE, -->
-<!--       xmax = 2:1 + 0.45, -->
-<!--       ymax = ResponseTRUE + 1.96* se.ResponseTRUE, -->
-<!--       weight = 1), -->
-<!--     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25, -->
-<!--     data = marginal_results -->
-<!--   ) -->
-
-<!-- gg2 <- round_12 %>% -->
-<!--   mutate( -->
-<!--     `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"),  -->
-<!--     `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct") -->
-<!--     ) %>% -->
-<!--   pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>% -->
-<!--   pcp_scale() %>% -->
-<!--   pcp_arrange() %>% -->
-<!--   ggplot(aes_pcp()) +  -->
-<!--     geom_pcp_axes() +  -->
-<!--     geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+ -->
-<!--     geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) +  -->
-<!--     geom_pcp_labels(colour = "black") + -->
-<!--   scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25),  -->
-<!--                      labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0), -->
-<!--                      sec.axis = sec_axis(~.*100, -->
-<!--                           name="Percent responses")) + -->
-<!--   xlab("") +  -->
-<!--   scale_colour_manual(values = c("grey", "#84AC84", "#70A570", "forestgreen")) + -->
-<!--   ggtitle("(b) Combinations of responses") + -->
-<!--   theme(legend.position = "none") -->
-
-<!-- gg1 + gg2 -->
-<!-- ``` -->
 
 ### Respondent behavior  
 
