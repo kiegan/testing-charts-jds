@@ -43,10 +43,10 @@ preamble: >
   \usepackage{setspace}
 documentclass: jds
 format:
-  html: default
   pdf: 
     include-in-header: authors.tex
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -242,8 +242,6 @@ round_123_long <- round_123_long %>%
     zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
     response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
   )
-
-
 
 survey_123 <- 
   survey::svydesign(
@@ -554,45 +552,32 @@ We first investigate respondent accuracy in selecting the correct response. As p
 
 \autoref{accuracy}(a) displays all responses along the binary correctness measure, separated by whether the stimulus was an aligned task or unaligned task. We can see that levels of accuracy for all responses are significantly higher for the 'easier' (aligned) task, with about twice as many respondents correctly selecting the larger of the two marked elements. 
 
-\kr{Can we update the figure and t-test with combined data across all tasks/all rounds 1-3?}
+\kr{Can we update the figure and t-test with combined data across all tasks/all rounds 1-3?}\hh{done}
 
-```{r combine_rounds_1_and_2}
 
-lambda <- calculate_lambda(round1_adj$weight, round2_adj$weight)
-round_12 <- round1_adj %>%
-            mutate(weight = lambda[1]*weight) %>%
-            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight) %>%
-    rbind(round2_adj %>%
-            mutate(weight = (1-lambda[1])*weight) %>%
-            dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD, weight))
-round_12_long <- round_12 %>%
-  pivot_longer(CorrectAB:CorrectCD, names_to = "Question", values_to = "Response")
-
-survey_12 <-
-  survey::svydesign(
-  data = round_12_long,
-  ids = ~CaseId, weights = ~weight)
-```
 
 ```{r ttest}
-paired <- svyttest(Response~Question, survey_12)
-abcd <- svyby(~Response, by=~Question, survey_12, svytotal)
+paired <- svyttest(correct~task, survey_123)
+abcd <- svyby(~correct, by=~task, survey_123, svytotal)
 
 marginal_results <- data.frame(abcd)
 ```
 
-\kr{ Can we update this to include the values for ROund 3 as well?}
-Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambda[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.
+\kr{ Can we update this to include the values for ROund 3 as well?}\hh{done}
+<!--Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambdas[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.-->
+
+
+
 Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis.
 Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
-The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16).
+The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). \hh{how about: $p$-value: $<< 0.0001$ -- the e-16 looks very computery}
 
 
 
 
 
 
-\kr{We need to update this chart to include the data from all 3 rounds instead of just the first 2}
+\kr{We need to update this chart to include the data from all 3 rounds instead of just the first 2} \hh{done}
 
 ```{r accuracy,   warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
@@ -601,11 +586,11 @@ The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paire
 #| fig-height: 5
 #| fig-width: 10
 
-gg1 <- round_12_long %>%
+gg1 <- round_123_long %>%
   mutate(
-    Response = ifelse(Response, "Correct", "Not correct"),
+    Response = ifelse(correct, "Correct", "Not correct"),
     Response = factor(Response, levels=c("Not correct", "Correct")),
-    Question = ifelse(Question=="CorrectAB",
+    Question = ifelse(task=="ab",
                       "Unaligned: A or B?", "Aligned: C or D?")
   ) %>%
 #  filter(Response == "Correct") %>%
@@ -615,7 +600,7 @@ gg1 <- round_12_long %>%
   xlab("") +
   scale_fill_manual(values=c("grey", "forestgreen")) +
   scale_y_continuous(
-      sec.axis = sec_axis(~./sum(round_12$weight)*100,
+      sec.axis = sec_axis(~./sum(round_123$weight)*100,
                           name="Percent responses")
   ) +
   theme(legend.position = "bottom") +
@@ -624,15 +609,15 @@ gg1 <- round_12_long %>%
     aes(
       x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
       xmin = 2:1 - 0.45,
-      ymin = ResponseTRUE - 1.96* se.ResponseTRUE,
+      ymin = correctTRUE - 1.96* se.correctTRUE,
       xmax = 2:1 + 0.45,
-      ymax = ResponseTRUE + 1.96* se.ResponseTRUE,
+      ymax = correctTRUE + 1.96* se.correctTRUE,
       weight = 1),
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = marginal_results
   )
 
-gg2 <- round_12 %>%
+gg2 <- round_123 %>%
   mutate(
     `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"),
     `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
@@ -645,8 +630,8 @@ gg2 <- round_12 %>%
     geom_pcp(aes(colour = CorrectABCD), alpha = 0.2)+
     geom_pcp_boxes(fill=NA, colour = "black", linewidth=0.25) +
     geom_pcp_labels(colour = "black") +
-  scale_y_continuous("Number responses", breaks=seq(0,1,by=0.25),
-                     labels = round(sum(round_12$weight)*seq(0,1,by=0.25),0),
+  scale_y_continuous("Number of (effective) Respondents", breaks=seq(0,1,by=0.25),
+                     labels = round(sum(round_123$weight)*seq(0,1,by=0.25),0),
                      sec.axis = sec_axis(~.*100,
                           name="Percent responses")) +
   xlab("") +
