@@ -46,6 +46,7 @@ preamble: >
   \usepackage{amsfonts,amsmath,amssymb,amsthm}
   \usepackage{booktabs}
   \usepackage{lipsum}
+  \usepackage{subfig}
 abstract: >
   This article presents a classification of disease severity for
   patients with cystic fibrosis (CF). CF is a genetic disease that dramatically
@@ -110,7 +111,7 @@ figure in pdf format when you first generate it and keep in mind its
 sizes in the article to avoid over-scaling. Do not simply convert a
 jpeg or png image to a pdf.
 
-```{r, fig.show = 'hold', out.width = "30%", fig.align = 'left'}
+```{r, out.width = '.33\\linewidth', fig.align = 'left', fig.cap = 'caption', fig.subcap = c('Cap 1', 'Cap 2', 'Cap 3', 'Cap 4', 'Cap 5', 'Cap 6'), fig.ncol = 3}
 
 knitr::include_graphics("../SDSS-2023/images/vertical-ab.PNG")
 knitr::include_graphics("../SDSS-2023/images/round3/horizontal-ab.PNG")
