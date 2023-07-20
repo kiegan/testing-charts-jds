@@ -44,6 +44,7 @@ preamble: >
   \usepackage{lscape}
 documentclass: jds
 format:
+  html: default
   pdf: 
     includes:
       in_header: 'gt_packages.sty'
@@ -57,7 +58,6 @@ format:
         \affil[1]{NORC at the University of Chicago}
         \affil[2]{Department of Statistics, Iowa State University}
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -100,7 +100,6 @@ knitr::opts_chunk$set(echo = F,
 #                      dpi = 72#, # we can set the resolution up to 300 later.
                       #cache = TRUE) 
 )
-
 
 
 
@@ -559,9 +558,51 @@ All responses were combined into one set of survey responses, with adjusted comb
 \kr{Insert figure here of demographic breakdown across tasks or rounds?}
 
 ```{r}
+#| label: fig-rounds-demographics
+#| fig-cap: "Demographics of respondents"
+#| fig-height: 7
+#| fig-width: 10
 
-sum(round_123$weight)
+round_123 <- round_123 %>% group_by(round) %>% 
+  mutate(
+    weight_pct_round = weight/sum(weight)*100
+  )
 
+gender <- round_123 %>% 
+  ggplot(aes(x = gender, weight = weight_pct_round)) + geom_bar() + 
+  ylab("Percent") + 
+  ggtitle("Gender") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) +
+  xlab("") +
+  facet_grid(.~round)
+
+
+age <- round_123 %>% 
+  ggplot(aes(x = age4, weight = weight_pct_round)) + geom_bar() + 
+  ylab("Percent") + 
+  ggtitle("Age ") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) +
+  xlab("") + ylim(c(0,35)) +
+  facet_grid(.~round)
+
+education <- round_123 %>% 
+  ggplot(aes(x = educ5, weight = weight_pct_round)) + geom_bar() + 
+  ylab("Percent") + 
+  ggtitle("Education levels") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) +
+  xlab("") + ylim(c(0,35)) +
+  facet_grid(.~round)
+
+income <- round_123 %>% 
+  ggplot(aes(x = income4, weight = weight_pct_round)) + geom_bar() + 
+  ylab("Percent") + 
+  ggtitle("Income levels") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) +
+  xlab("") + ylim(c(0,35)) +
+  facet_grid(.~round)
+
+(gender + education + plot_layout(nrow=1, widths=c(2,5))) / 
+  (age + income + plot_layout(nrow=1, widths = c(4,4)))
 
 ```
 
@@ -1152,8 +1193,9 @@ coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
 coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 ```
 
-@tbl-demographics doesn't survive the formatting to pdf very well - \hh{need to shorten the row names or put into multiple lines}
-
+```{=tex}
+\hh{@tbl-demographics doesn't survive the formatting to pdf very well - need to shorten the row names or put into multiple lines} \hh{table rotates in pdf}
+```
 
 \blandscape
 
