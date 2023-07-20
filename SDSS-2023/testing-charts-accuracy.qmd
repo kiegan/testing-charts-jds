@@ -202,7 +202,7 @@ Second, the sample is representative of the general adult public in the U.S., wh
 
 We present viewers with structural variations on bar charts and pie charts and ask them to answer questions comparing the size of elements within those charts.
 In this work, we present the series of tests we completed and the resulting findings.
-The remainder of the paper is organized as follows: first, we describe the design of the visual stimulus used in our perception tests.
+The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in our perception tests.
 We then describe the population of study respondents and obtained survey sample.
 Subsequently, we share our analyses of the resulting survey responses across each of our tests, including analyses on accuracy of responses and response behavior.
 Finally, we discuss implications of this work and next steps.
@@ -247,8 +247,7 @@ Therefore, we focus on questions which vary the presented image, but ask viewers
 We focus on three main sets of structural variation in the design.
 First, we vary the alignment of the pieces in question.
 Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline.
-Second, we vary the orientation of the chart -- a vertically oriented stacked bar chart, a horizontally oriented version of the same chart, and then a wider version of the horizontally oriented chart.
-\kr{We need to finalize what we end up showing in the results and then revisit this section...} Third, we consider a facetted bar chart and facetted pie chart.
+Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer marked pieces.
 
 \hh{Not sure where should put this, parking it here for right now:}
 \hh{expectations - start}
@@ -269,11 +268,11 @@ include_graphics("images/sketch-tasks.png")
 **How do we present the task?** The format of a survey guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
 \kr{I'm not sure how important this second point is...} Second, participants should be given some context for the tasks they are being asked to complete; in a given round, our set of tasks appear as a group in the midst of other survey questions and topics, and without providing respondents some transition we risk a jarring shift and low respondent engagement in the task.
-Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
+Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey. 
 
 \kr{Somewhere here we should also talk about how we measure viewer behavior/interaction with the chart: certainty, time spent, zooming, devices, etc. }
 
-### Test 1: Alignment in stacked bar charts
+### Task 1: Alignment in stacked bar charts
 
 \autoref{fig-tasks-12} shows the two stacked bar charts shown to participants in the first test.
 The marked tiles in each plot are 155 pixels apart.
@@ -321,9 +320,19 @@ knitr::include_graphics("images/vertical-cd.PNG")
 
 
 
-### Test 2: Orientation of stacked bar charts
+### Task 2: Orientation of stacked bar charts
 
-In \autoref{fig-tasks-3} we see two structural variations on the stacked bar chart seen in Test 1: first, the Task 1 chart sized equally but rotated 90 degrees with bar lengths shown horizontally.
+Story here: not a huge difference, but we mainly see a difference in how people react. horizontal/vertical/horizontal. Even if there's not hugely significant differences by design, we can see differences in behavior. 
+
+Combine Tasks 1 and 2 and just present overall, aligned/unaligned by the 3 different orientations? Doesn't matter whether we have a vertical or horizontal position, 
+
+We can reproduce
+We can rank
+We can rank better because we have a bigger sample size
+WE can find changes in viewer behavior
+Demographics matter to accuracy and choices 
+
+In \autoref{fig-tasks-3} we see two structural variations on the stacked bar chart seen in Task 1: first, the Task 1 chart sized equally but rotated 90 degrees with bar lengths shown horizontally.
 Second, the horizontal chart with a smaller aspect ratio so the bars appear thinner and longer.
 Note that the wide version of the horizontal bars increases the pixel difference between the two marked pieces relative to the standard versions of the horizontal and vertical bars.
 
@@ -348,7 +357,7 @@ knitr::include_graphics("images/round3/horizontal-ab.PNG")
 knitr::include_graphics("images/round3/hwide-ab.PNG")
 ```
 
-### Test 3: Alignment and orientation in pie charts
+### Task 3: Alignment and orientation in pie charts
 
 Let's talk about the pies here
 
