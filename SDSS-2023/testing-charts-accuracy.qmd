@@ -227,6 +227,10 @@ round_123 <- round_12 %>%
                    ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
                    age4, gender, income4, racethnicity, educ5) 
   )
+
+levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
+
+levels(round_123$income4) <- c("< $30k", "$30k - $60k", "$60k - $100k", "more than $100k")
   
 round_123$weight <- neff(round_123$weight)/sum(round_123$weight)*round_123$weight 
 # does not affect the further analysis, but helps with the interpretation of results
@@ -948,7 +952,7 @@ $$
 #| fig-subcap: 
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
-#| fig-height: 5
+#| fig-height: 4
 #| fig-width: 7
 #| layout-nrow: 2
 #| out-width: 100%
