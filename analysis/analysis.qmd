@@ -99,6 +99,23 @@ survey2 <- survey::svydesign(
   ids = ~CaseId, weights = ~weight)
 ```
 
+
+```{r data-rnd5}
+# other github repo. 
+round5 <- readRDS(file.path(vs_repo_local, "round5.rds"))
+
+# floating bars (unaligned) are shown to all participants of round 5
+round5_adj <- round5 %>% mutate(
+  ab = ab1,
+  ab_zoom = ab1_zoom,
+  ab_certain = ab1_certain,
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB"
+)
+```
+
+
 ```{r data-rnd6}
 # other github repo. 
 round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
@@ -132,6 +149,8 @@ round3_adj <- round3 %>% mutate(
   cd != "SKIPPED ON WEB"
 )
 ```
+
+
 
 
 The data for this paper were collected in several rounds as part of the NORC Omnibus. 
@@ -1753,6 +1772,121 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
   ) 
 
 ```
+
+## Model 4: Unaligned Elements in horizontal wide barcharts compared to floating bars
+
+```{r}
+#| label: fig-context-bars
+#| fig-cap: Floating bars show and horizontal wide barcharts show the same areas  with the same distances
+#| fig-subcap: 
+#|   - floating bars
+#|   - horizontal wide
+#| layout-nrow: 1
+#| out-width: 100%
+knitr::include_graphics("images/floating - all.PNG")
+knitr::include_graphics("images/round3/hwide-ab.PNG")
+```
+
+
+```{r combine-r35}
+# wide horizontal
+wide_horiz <- round3_adj %>% filter(design=="Horizontal wide")
+  
+# floating bars are in round5
+lambda <- calculate_lambda(wide_horiz$weight, round5_adj$weight)
+
+round_35 <- rbind(
+  wide_horiz %>% mutate(
+    weight = lambda*weight/sum(weight),
+    task = "horizontal wide"
+  ) %>% dplyr::select(CaseId, weight, ab, ab_zoom, ab_certain, task),
+  round5_adj %>% mutate(
+    weight = (1-lambda)*weight/sum(weight),
+    task = "floating"
+  ) %>% dplyr::select(CaseId, weight, ab, ab_zoom, ab_certain, task)
+) %>% mutate(
+  correct = ab=="B is bigger",
+  not_wrong = ab != "A is bigger",
+  task = factor(task)
+) 
+
+survey_35 <- svydesign(ids=~CaseId, weights=~weight, data = round_35)
+```
+
+```{r model-r35}
+logit_35_correct <- svyglm(correct~task-1, design = survey_35, family=quasibinomial())
+logit_35_not_wrong <- svyglm(not_wrong~task-1, design = survey_35, family=quasibinomial())
+
+coefs_35_correct <- broom::tidy(logit_35_correct) %>% 
+  mutate(task = factor(gsub("task", "", term), levels=levels(round_35$task)))
+coefs_35_notwrong <- broom::tidy(logit_35_not_wrong) %>% 
+  mutate(task = factor(gsub("task", "", term), levels=levels(round_35$task)))
+```
+
+
+```{r}
+#| label: fig-round-floats
+#| fig-cap: "Accuracy of responses by design. Free floating bars are comparisons of lengths. The additional context of stacked barcharts anchors the bars for a significant  increase in correct responses. However, the percentage of wrong responses also significantly increases. "
+#| out-width: 70%
+
+round_35 %>% 
+  mutate(
+    response3 = c("Wrong", "They are the same", "Correct")[correct+not_wrong+1],
+    response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong")))
+  ) %>% 
+  ggplot(aes(x = task)) + 
+  geom_bar(aes(fill = response3, weight = weight), position="fill") +
+#  facet_grid(.~task) + 
+  theme(legend.position="bottom") + 
+  scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
+  xlab("") +
+  scale_y_continuous("Percent responses", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25)) + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(task) - 0.45,
+      ymin = inv_logit(estimate - 1.96* std.error),
+      xmax = as.numeric(task) + 0.45,
+      ymax = inv_logit(estimate + 1.96* std.error),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = coefs_35_correct
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(task) - 0.45,
+      y = inv_logit(estimate ),
+      xend = as.numeric(task) + 0.45,
+      yend = inv_logit(estimate )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = coefs_35_correct
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(task) - 0.45,
+      ymin = inv_logit(estimate - 1.96* std.error),
+      xmax = as.numeric(task) + 0.45,
+      ymax = inv_logit(estimate + 1.96* std.error),
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = coefs_35_notwrong
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(task) - 0.45,
+      y = inv_logit(estimate ),
+      xend = as.numeric(task) + 0.45,
+      yend = inv_logit(estimate )
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = coefs_35_notwrong
+  )
+#+ 
+#  geom_text(aes(label=letters), y = -0.05, data = ci_confint, colour = "steelblue") +
+#  geom_text(aes(label=letters), y = 1.05, data = ci_confint3, colour = "darkorange") 
+
+```
+
 
 ## Model X: Comparing Aligned and Unaligned Elements Facets {#sec-modelX}
 

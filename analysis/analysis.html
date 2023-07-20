@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-07-18">
+<meta name="dcterms.date" content="2023-07-20">
 
 <title>Supplement: Analysis and code for ‘Testing Perceptual Accuracy in Charts using Surveys’</title>
 <style>
@@ -86,7 +86,8 @@ div.csl-indent {
   <li><a href="#certainty" id="toc-certainty" class="nav-link" data-scroll-target="#certainty"><span class="header-section-number">4.3</span> Certainty</a></li>
   <li><a href="#accuracy-and-demographics" id="toc-accuracy-and-demographics" class="nav-link" data-scroll-target="#accuracy-and-demographics"><span class="header-section-number">4.4</span> Accuracy and Demographics</a></li>
   </ul></li>
-  <li><a href="#sec-modelX" id="toc-sec-modelX" class="nav-link" data-scroll-target="#sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</a></li>
+  <li><a href="#model-4-unaligned-elements-in-horizontal-wide-barcharts-compared-to-floating-bars" id="toc-model-4-unaligned-elements-in-horizontal-wide-barcharts-compared-to-floating-bars" class="nav-link" data-scroll-target="#model-4-unaligned-elements-in-horizontal-wide-barcharts-compared-to-floating-bars"><span class="header-section-number">5</span> Model 4: Unaligned Elements in horizontal wide barcharts compared to floating bars</a></li>
+  <li><a href="#sec-modelX" id="toc-sec-modelX" class="nav-link" data-scroll-target="#sec-modelX"><span class="header-section-number">6</span> Model X: Comparing Aligned and Unaligned Elements Facets</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="analysis.pdf"><i class="bi bi-file-pdf"></i>PDF (jasa)</a></li></ul></div></nav>
@@ -106,7 +107,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 18, 2023</p>
+      <p class="date">July 20, 2023</p>
     </div>
   </div>
   
@@ -241,23 +242,23 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 <div class="cell-output-display">
 <div id="tbl-coefs-12" class="anchored">
 
-<div id="kfjdhmxslp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kfjdhmxslp table {
+<div id="eaqahwgmru" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eaqahwgmru table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kfjdhmxslp thead, #kfjdhmxslp tbody, #kfjdhmxslp tfoot, #kfjdhmxslp tr, #kfjdhmxslp td, #kfjdhmxslp th {
+#eaqahwgmru thead, #eaqahwgmru tbody, #eaqahwgmru tfoot, #eaqahwgmru tr, #eaqahwgmru td, #eaqahwgmru th {
   border-style: none;
 }
 
-#kfjdhmxslp p {
+#eaqahwgmru p {
   margin: 0;
   padding: 0;
 }
 
-#kfjdhmxslp .gt_table {
+#eaqahwgmru .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -283,12 +284,12 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-left-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_caption {
+#eaqahwgmru .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kfjdhmxslp .gt_title {
+#eaqahwgmru .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -300,7 +301,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-width: 0;
 }
 
-#kfjdhmxslp .gt_subtitle {
+#eaqahwgmru .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -312,7 +313,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-width: 0;
 }
 
-#kfjdhmxslp .gt_heading {
+#eaqahwgmru .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -324,13 +325,13 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_bottom_border {
+#eaqahwgmru .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_col_headings {
+#eaqahwgmru .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -345,7 +346,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_col_heading {
+#eaqahwgmru .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -365,7 +366,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#kfjdhmxslp .gt_column_spanner_outer {
+#eaqahwgmru .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -377,15 +378,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 4px;
 }
 
-#kfjdhmxslp .gt_column_spanner_outer:first-child {
+#eaqahwgmru .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kfjdhmxslp .gt_column_spanner_outer:last-child {
+#eaqahwgmru .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kfjdhmxslp .gt_column_spanner {
+#eaqahwgmru .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -397,11 +398,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   width: 100%;
 }
 
-#kfjdhmxslp .gt_spanner_row {
+#eaqahwgmru .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kfjdhmxslp .gt_group_heading {
+#eaqahwgmru .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -427,7 +428,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   text-align: left;
 }
 
-#kfjdhmxslp .gt_empty_group_heading {
+#eaqahwgmru .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -442,15 +443,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: middle;
 }
 
-#kfjdhmxslp .gt_from_md > :first-child {
+#eaqahwgmru .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kfjdhmxslp .gt_from_md > :last-child {
+#eaqahwgmru .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kfjdhmxslp .gt_row {
+#eaqahwgmru .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -469,7 +470,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   overflow-x: hidden;
 }
 
-#kfjdhmxslp .gt_stub {
+#eaqahwgmru .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -482,7 +483,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#kfjdhmxslp .gt_stub_row_group {
+#eaqahwgmru .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -496,15 +497,15 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   vertical-align: top;
 }
 
-#kfjdhmxslp .gt_row_group_first td {
+#eaqahwgmru .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kfjdhmxslp .gt_row_group_first th {
+#eaqahwgmru .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kfjdhmxslp .gt_summary_row {
+#eaqahwgmru .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -514,16 +515,16 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#kfjdhmxslp .gt_first_summary_row {
+#eaqahwgmru .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_first_summary_row.thick {
+#eaqahwgmru .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kfjdhmxslp .gt_last_summary_row {
+#eaqahwgmru .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -533,7 +534,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_grand_summary_row {
+#eaqahwgmru .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -543,7 +544,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#kfjdhmxslp .gt_first_grand_summary_row {
+#eaqahwgmru .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -553,7 +554,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-top-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_last_grand_summary_row_top {
+#eaqahwgmru .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -563,11 +564,11 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_striped {
+#eaqahwgmru .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kfjdhmxslp .gt_table_body {
+#eaqahwgmru .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -576,7 +577,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-bottom-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_footnotes {
+#eaqahwgmru .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -590,7 +591,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_footnote {
+#eaqahwgmru .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -599,7 +600,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#kfjdhmxslp .gt_sourcenotes {
+#eaqahwgmru .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -613,7 +614,7 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   border-right-color: #D3D3D3;
 }
 
-#kfjdhmxslp .gt_sourcenote {
+#eaqahwgmru .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -621,63 +622,63 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
   padding-right: 5px;
 }
 
-#kfjdhmxslp .gt_left {
+#eaqahwgmru .gt_left {
   text-align: left;
 }
 
-#kfjdhmxslp .gt_center {
+#eaqahwgmru .gt_center {
   text-align: center;
 }
 
-#kfjdhmxslp .gt_right {
+#eaqahwgmru .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kfjdhmxslp .gt_font_normal {
+#eaqahwgmru .gt_font_normal {
   font-weight: normal;
 }
 
-#kfjdhmxslp .gt_font_bold {
+#eaqahwgmru .gt_font_bold {
   font-weight: bold;
 }
 
-#kfjdhmxslp .gt_font_italic {
+#eaqahwgmru .gt_font_italic {
   font-style: italic;
 }
 
-#kfjdhmxslp .gt_super {
+#eaqahwgmru .gt_super {
   font-size: 65%;
 }
 
-#kfjdhmxslp .gt_footnote_marks {
+#eaqahwgmru .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kfjdhmxslp .gt_asterisk {
+#eaqahwgmru .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kfjdhmxslp .gt_indent_1 {
+#eaqahwgmru .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kfjdhmxslp .gt_indent_2 {
+#eaqahwgmru .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kfjdhmxslp .gt_indent_3 {
+#eaqahwgmru .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kfjdhmxslp .gt_indent_4 {
+#eaqahwgmru .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kfjdhmxslp .gt_indent_5 {
+#eaqahwgmru .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -807,23 +808,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<div id="myupscjkhs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#myupscjkhs table {
+<div id="dsgjhdqwco" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dsgjhdqwco table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#myupscjkhs thead, #myupscjkhs tbody, #myupscjkhs tfoot, #myupscjkhs tr, #myupscjkhs td, #myupscjkhs th {
+#dsgjhdqwco thead, #dsgjhdqwco tbody, #dsgjhdqwco tfoot, #dsgjhdqwco tr, #dsgjhdqwco td, #dsgjhdqwco th {
   border-style: none;
 }
 
-#myupscjkhs p {
+#dsgjhdqwco p {
   margin: 0;
   padding: 0;
 }
 
-#myupscjkhs .gt_table {
+#dsgjhdqwco .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -849,12 +850,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_caption {
+#dsgjhdqwco .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#myupscjkhs .gt_title {
+#dsgjhdqwco .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -866,7 +867,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#myupscjkhs .gt_subtitle {
+#dsgjhdqwco .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -878,7 +879,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#myupscjkhs .gt_heading {
+#dsgjhdqwco .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -890,13 +891,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_bottom_border {
+#dsgjhdqwco .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_col_headings {
+#dsgjhdqwco .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -911,7 +912,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_col_heading {
+#dsgjhdqwco .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -931,7 +932,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#myupscjkhs .gt_column_spanner_outer {
+#dsgjhdqwco .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -943,15 +944,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#myupscjkhs .gt_column_spanner_outer:first-child {
+#dsgjhdqwco .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#myupscjkhs .gt_column_spanner_outer:last-child {
+#dsgjhdqwco .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#myupscjkhs .gt_column_spanner {
+#dsgjhdqwco .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -963,11 +964,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#myupscjkhs .gt_spanner_row {
+#dsgjhdqwco .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#myupscjkhs .gt_group_heading {
+#dsgjhdqwco .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -993,7 +994,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#myupscjkhs .gt_empty_group_heading {
+#dsgjhdqwco .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1008,15 +1009,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#myupscjkhs .gt_from_md > :first-child {
+#dsgjhdqwco .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#myupscjkhs .gt_from_md > :last-child {
+#dsgjhdqwco .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#myupscjkhs .gt_row {
+#dsgjhdqwco .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1035,7 +1036,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#myupscjkhs .gt_stub {
+#dsgjhdqwco .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1048,7 +1049,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#myupscjkhs .gt_stub_row_group {
+#dsgjhdqwco .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1062,15 +1063,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#myupscjkhs .gt_row_group_first td {
+#dsgjhdqwco .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#myupscjkhs .gt_row_group_first th {
+#dsgjhdqwco .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#myupscjkhs .gt_summary_row {
+#dsgjhdqwco .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1080,16 +1081,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#myupscjkhs .gt_first_summary_row {
+#dsgjhdqwco .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_first_summary_row.thick {
+#dsgjhdqwco .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#myupscjkhs .gt_last_summary_row {
+#dsgjhdqwco .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1099,7 +1100,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_grand_summary_row {
+#dsgjhdqwco .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1109,7 +1110,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#myupscjkhs .gt_first_grand_summary_row {
+#dsgjhdqwco .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1119,7 +1120,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_last_grand_summary_row_top {
+#dsgjhdqwco .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1129,11 +1130,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_striped {
+#dsgjhdqwco .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#myupscjkhs .gt_table_body {
+#dsgjhdqwco .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1142,7 +1143,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_footnotes {
+#dsgjhdqwco .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1156,7 +1157,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_footnote {
+#dsgjhdqwco .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1165,7 +1166,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#myupscjkhs .gt_sourcenotes {
+#dsgjhdqwco .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1179,7 +1180,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#myupscjkhs .gt_sourcenote {
+#dsgjhdqwco .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1187,63 +1188,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#myupscjkhs .gt_left {
+#dsgjhdqwco .gt_left {
   text-align: left;
 }
 
-#myupscjkhs .gt_center {
+#dsgjhdqwco .gt_center {
   text-align: center;
 }
 
-#myupscjkhs .gt_right {
+#dsgjhdqwco .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#myupscjkhs .gt_font_normal {
+#dsgjhdqwco .gt_font_normal {
   font-weight: normal;
 }
 
-#myupscjkhs .gt_font_bold {
+#dsgjhdqwco .gt_font_bold {
   font-weight: bold;
 }
 
-#myupscjkhs .gt_font_italic {
+#dsgjhdqwco .gt_font_italic {
   font-style: italic;
 }
 
-#myupscjkhs .gt_super {
+#dsgjhdqwco .gt_super {
   font-size: 65%;
 }
 
-#myupscjkhs .gt_footnote_marks {
+#dsgjhdqwco .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#myupscjkhs .gt_asterisk {
+#dsgjhdqwco .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#myupscjkhs .gt_indent_1 {
+#dsgjhdqwco .gt_indent_1 {
   text-indent: 5px;
 }
 
-#myupscjkhs .gt_indent_2 {
+#dsgjhdqwco .gt_indent_2 {
   text-indent: 10px;
 }
 
-#myupscjkhs .gt_indent_3 {
+#dsgjhdqwco .gt_indent_3 {
   text-indent: 15px;
 }
 
-#myupscjkhs .gt_indent_4 {
+#dsgjhdqwco .gt_indent_4 {
   text-indent: 20px;
 }
 
-#myupscjkhs .gt_indent_5 {
+#dsgjhdqwco .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1353,23 +1354,23 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
 <div class="cell-output-display">
 <div id="tbl-combine-67" class="anchored">
 
-<div id="iijivrdmmw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iijivrdmmw table {
+<div id="fkxojwaohy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fkxojwaohy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#iijivrdmmw thead, #iijivrdmmw tbody, #iijivrdmmw tfoot, #iijivrdmmw tr, #iijivrdmmw td, #iijivrdmmw th {
+#fkxojwaohy thead, #fkxojwaohy tbody, #fkxojwaohy tfoot, #fkxojwaohy tr, #fkxojwaohy td, #fkxojwaohy th {
   border-style: none;
 }
 
-#iijivrdmmw p {
+#fkxojwaohy p {
   margin: 0;
   padding: 0;
 }
 
-#iijivrdmmw .gt_table {
+#fkxojwaohy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1395,12 +1396,12 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-left-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_caption {
+#fkxojwaohy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#iijivrdmmw .gt_title {
+#fkxojwaohy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1412,7 +1413,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-width: 0;
 }
 
-#iijivrdmmw .gt_subtitle {
+#fkxojwaohy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1424,7 +1425,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-width: 0;
 }
 
-#iijivrdmmw .gt_heading {
+#fkxojwaohy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1436,13 +1437,13 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_bottom_border {
+#fkxojwaohy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_col_headings {
+#fkxojwaohy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1457,7 +1458,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_col_heading {
+#fkxojwaohy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1477,7 +1478,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#iijivrdmmw .gt_column_spanner_outer {
+#fkxojwaohy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1489,15 +1490,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 4px;
 }
 
-#iijivrdmmw .gt_column_spanner_outer:first-child {
+#fkxojwaohy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#iijivrdmmw .gt_column_spanner_outer:last-child {
+#fkxojwaohy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#iijivrdmmw .gt_column_spanner {
+#fkxojwaohy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1509,11 +1510,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   width: 100%;
 }
 
-#iijivrdmmw .gt_spanner_row {
+#fkxojwaohy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#iijivrdmmw .gt_group_heading {
+#fkxojwaohy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1539,7 +1540,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   text-align: left;
 }
 
-#iijivrdmmw .gt_empty_group_heading {
+#fkxojwaohy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1554,15 +1555,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: middle;
 }
 
-#iijivrdmmw .gt_from_md > :first-child {
+#fkxojwaohy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#iijivrdmmw .gt_from_md > :last-child {
+#fkxojwaohy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#iijivrdmmw .gt_row {
+#fkxojwaohy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1581,7 +1582,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   overflow-x: hidden;
 }
 
-#iijivrdmmw .gt_stub {
+#fkxojwaohy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1594,7 +1595,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#iijivrdmmw .gt_stub_row_group {
+#fkxojwaohy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1608,15 +1609,15 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   vertical-align: top;
 }
 
-#iijivrdmmw .gt_row_group_first td {
+#fkxojwaohy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#iijivrdmmw .gt_row_group_first th {
+#fkxojwaohy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#iijivrdmmw .gt_summary_row {
+#fkxojwaohy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1626,16 +1627,16 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#iijivrdmmw .gt_first_summary_row {
+#fkxojwaohy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_first_summary_row.thick {
+#fkxojwaohy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#iijivrdmmw .gt_last_summary_row {
+#fkxojwaohy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1645,7 +1646,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_grand_summary_row {
+#fkxojwaohy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1655,7 +1656,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#iijivrdmmw .gt_first_grand_summary_row {
+#fkxojwaohy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1665,7 +1666,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-top-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_last_grand_summary_row_top {
+#fkxojwaohy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1675,11 +1676,11 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_striped {
+#fkxojwaohy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#iijivrdmmw .gt_table_body {
+#fkxojwaohy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1688,7 +1689,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-bottom-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_footnotes {
+#fkxojwaohy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1702,7 +1703,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_footnote {
+#fkxojwaohy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1711,7 +1712,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#iijivrdmmw .gt_sourcenotes {
+#fkxojwaohy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1725,7 +1726,7 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   border-right-color: #D3D3D3;
 }
 
-#iijivrdmmw .gt_sourcenote {
+#fkxojwaohy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1733,63 +1734,63 @@ Y_{k} = \mu_{ij(k)} + \epsilon_{k},
   padding-right: 5px;
 }
 
-#iijivrdmmw .gt_left {
+#fkxojwaohy .gt_left {
   text-align: left;
 }
 
-#iijivrdmmw .gt_center {
+#fkxojwaohy .gt_center {
   text-align: center;
 }
 
-#iijivrdmmw .gt_right {
+#fkxojwaohy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#iijivrdmmw .gt_font_normal {
+#fkxojwaohy .gt_font_normal {
   font-weight: normal;
 }
 
-#iijivrdmmw .gt_font_bold {
+#fkxojwaohy .gt_font_bold {
   font-weight: bold;
 }
 
-#iijivrdmmw .gt_font_italic {
+#fkxojwaohy .gt_font_italic {
   font-style: italic;
 }
 
-#iijivrdmmw .gt_super {
+#fkxojwaohy .gt_super {
   font-size: 65%;
 }
 
-#iijivrdmmw .gt_footnote_marks {
+#fkxojwaohy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#iijivrdmmw .gt_asterisk {
+#fkxojwaohy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#iijivrdmmw .gt_indent_1 {
+#fkxojwaohy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#iijivrdmmw .gt_indent_2 {
+#fkxojwaohy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#iijivrdmmw .gt_indent_3 {
+#fkxojwaohy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#iijivrdmmw .gt_indent_4 {
+#fkxojwaohy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#iijivrdmmw .gt_indent_5 {
+#fkxojwaohy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -4657,8 +4658,44 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 </div>
 </section>
 </section>
-<section id="sec-modelX" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="sec-modelX"><span class="header-section-number">5</span> Model X: Comparing Aligned and Unaligned Elements Facets</h2>
+<section id="model-4-unaligned-elements-in-horizontal-wide-barcharts-compared-to-floating-bars" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="model-4-unaligned-elements-in-horizontal-wide-barcharts-compared-to-floating-bars"><span class="header-section-number">5</span> Model 4: Unaligned Elements in horizontal wide barcharts compared to floating bars</h2>
+<div id="fig-context-bars" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-context-bars-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/floating%20-%20all.PNG" class="img-fluid figure-img" data-ref-parent="fig-context-bars"></p>
+<figcaption class="figure-caption">(a) floating bars</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-context-bars-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/round3/hwide-ab.PNG" class="img-fluid figure-img" data-ref-parent="fig-context-bars"></p>
+<figcaption class="figure-caption">(b) horizontal wide</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;13: Floating bars show and horizontal wide barcharts show the same areas with the same distances</figcaption><p></p>
+</figure>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-round-floats" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./figures/fig-round-floats-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;14: Accuracy of responses by design. Free floating bars are comparisons of lengths. The additional context of stacked barcharts anchors the bars for a significant increase in correct responses. However, the percentage of wrong responses also significantly increases.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-modelX" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-modelX"><span class="header-section-number">6</span> Model X: Comparing Aligned and Unaligned Elements Facets</h2>
 <p>The survey setup and all stimuli are shown in <a href="#tbl-tasks-7">Table&nbsp;8</a>. A total of 984 panelists (Effective sample size: 524.5) were shown four sets of facetted charts each. For questions 3 and 4, the panel was split into two (roughly) halves. One set of panelists was shown the floating wedges, while the other half was shown the framed wedges on the right.</p>
 <p>For each chart, panelists were asked to compare all marked tiles against each other.</p>
 <div id="tbl-tasks-7" class="anchored">
@@ -4709,12 +4746,12 @@ The re-scaled design of the wide horizontal bars reclaims some of the loss for u
 <div id="fig-pies" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./figures/fig-pies-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;13: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;15: Panelist responses by task and comparison. On average, the accuracy for aligned pieces is higher than for unaligned pieces. Similarly, the accuracy for framed pieces is higher than for floating pieces, which in turn has a higher accuracy than the full pie chart.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-pies">Figure&nbsp;13</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;9</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
+<p><a href="#fig-pies">Figure&nbsp;15</a> shows a summary of panelists’ accuracy of their responses. The panels are sorted according to the level of difficulty of a comparison as hypothesized above from lowest difficulty (BD) to highest (CD). We see that the percentage of correct responses follows (on average) this hypothesized order. Using the comparison of A versus B as the baseline, we see from <a href="#tbl-model7">Table&nbsp;9</a>, that comparisons BC and BD have a significantly higher accuracy (in that order), while the accuracy of comparisons AD, AC, and CD are significantly worse (HH: should we do pairwise comparisons for that?). Comparisons involving aligned pieces have (with two exceptions) a higher rate of accuracy than a comparison of the same-size, unaliged pieces.<br>
 Generally, framed pieces have the highest rate of accuracy, while the comparisons within the full context of the pie chart fared the worst, both in the percent of ‘the same’ responses as well as in identifying the smaller piece as the bigger.</p>
 <p>Using a frame as an additional visual cue was shown by <span class="citation" data-cites="clevelandGraphicalPerceptionTheory1984">Cleveland and McGill (<a href="#ref-clevelandGraphicalPerceptionTheory1984" role="doc-biblioref">1984</a>)</span> to significantly improve the accuracy of perceiving the height of bars (cf.&nbsp;Fig. 12, p.&nbsp;538; difference between ‘length’ and ‘position along an unaligned identical axis’). Here, we find that framed pieces show the same trend in accuracy, however, this effect fails to become significant in the model (tasknameFloat).</p>
 <p>The fact that the full pie chart sees the lowest accuracy rates is similar to the finding in <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> for bars. <span class="citation" data-cites="talbotFourExperimentsPerception2014">Talbot et al. (<a href="#ref-talbotFourExperimentsPerception2014" role="doc-biblioref">2014</a>)</span> report that other bars serve as distractors when comparing two other bars.</p>
@@ -5232,6 +5269,8 @@ Generally, framed pieces have the highest rate of accuracy, while the comparison
 </div>
 </div>
 </div>
+<p>How do our findings relate to <span class="citation" data-cites="cejaTruthSquareAspect2021">(<a href="#ref-cejaTruthSquareAspect2021" role="doc-biblioref"><strong>cejaTruthSquareAspect2021?</strong></a>)</span> ?</p>
+<p>Science communication review of visuals: <span class="citation" data-cites="desnoyersTaxonomyVisualsScience2023">(<a href="#ref-desnoyersTaxonomyVisualsScience2023" role="doc-biblioref"><strong>desnoyersTaxonomyVisualsScience2023?</strong></a>)</span></p>
 </section>
 <section id="references" class="level2 unnumbered">
 
