@@ -44,7 +44,6 @@ preamble: >
   \usepackage{lscape}
 documentclass: jds
 format:
-  html: default
   pdf: 
     includes:
       in_header: 'gt_packages.sty'
@@ -58,6 +57,7 @@ format:
         \affil[1]{NORC at the University of Chicago}
         \affil[2]{Department of Statistics, Iowa State University}
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -403,7 +403,7 @@ When viewing each chart, participants were asked to compare the relative sizes o
 
 -   B is bigger
 
--   They are the same"
+-   They are the same
 
 When presented with the aligned version of each chart, pieces were marked with a C and D and the question text is updated accordingly.
 In all scenarios, the second option (B \[D\] is bigger) is the correct response.  
@@ -630,7 +630,7 @@ marginal_results <- data.frame(abcd)
 
 
 Because each participant was shown both the aligned and unaligned versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
-The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $<< 0.0001$).
+The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $\ll 0.0001$).
 
 
 ```{r accuracy,   warning=FALSE}
