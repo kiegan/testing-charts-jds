@@ -110,7 +110,7 @@ figure in pdf format when you first generate it and keep in mind its
 sizes in the article to avoid over-scaling. Do not simply convert a
 jpeg or png image to a pdf.
 
-```{r, fig.show = 'hold', out.width = "30%"}
+```{r, fig.show = 'hold', out.width = "30%", fig.align = 'left'}
 
 knitr::include_graphics("../SDSS-2023/images/vertical-ab.PNG")
 knitr::include_graphics("../SDSS-2023/images/round3/horizontal-ab.PNG")
