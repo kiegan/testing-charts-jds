@@ -25,7 +25,7 @@ footnote:
     type: corresp               # set type for the corresponding author
     id: 1
 affiliation:
-  - institution: National Opinion Research Center (NORC)
+  - institution: NORC at the University of Chicago
     country: United States
     marker: 1
   - institution: Iowa State University
@@ -43,7 +43,7 @@ preamble: >
 format:
   html: default
   pdf: 
-    documentclass: jds
+    documentclass: jdsart
     include-in-header: authors.tex
     keep-tex: true
 editor: 
@@ -222,6 +222,8 @@ We seek to answer whether it is possible to reproduce some of their findings in 
 1.  How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
 2.  How is viewer interaction with the task impacted by structural design choices in a data visualization?
+
+3.  Are there differences in perception and interaction with the tasks across demographic groups?  
 
 We employ a probability-based survey panel and run a series of perception tests with nationally-representative samples of respondents from that panel.
 The advantage of using a probability-based approach is two-fold.
