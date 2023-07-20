@@ -1313,17 +1313,17 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
 
 \elandscape
 
-Results to discuss:
+<!-- Results to discuss: -->
 
-There are differences by alignment
-There are not huge differences across structures
-However, we see a difference in how people react across different structures (zooming behavior, certainty? time?)
+<!-- There are differences by alignment -->
+<!-- There are not huge differences across structures -->
+<!-- However, we see a difference in how people react across different structures (zooming behavior, certainty? time?) -->
 
-- We can reproduce prior findings with nat rep sample 
-- We can rank 
-- We can rank better because we have a bigger sample size 
-- We can find changes in viewer behavior 
-- Demographics matter to accuracy and choices
+<!-- - We can reproduce prior findings with nat rep sample  -->
+<!-- - We can rank  -->
+<!-- - We can rank better because we have a bigger sample size  -->
+<!-- - We can find changes in viewer behavior  -->
+<!-- - Demographics matter to accuracy and choices -->
 
 # Conclusions
 
@@ -1352,13 +1352,13 @@ While our results are limited to mapping in a stacked bar chart with a specific 
 
 <!--     -   new finding: pie charts accuracy in work better when framed (wedges) -->
 
--   Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked).
+<!-- -   Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked). -->
 
--   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts.
+<!-- -   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts. -->
 
-    -   Design choices impact viewer behavior: zooming
+<!--     -   Design choices impact viewer behavior: zooming -->
 
--   (some) Demographics matter: age and gender does not seem to matter for perception economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication
+<!-- -   (some) Demographics matter: age and gender does not seem to matter for perception economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication -->
 
 # Supplementary Material {.unnumbered}
 
