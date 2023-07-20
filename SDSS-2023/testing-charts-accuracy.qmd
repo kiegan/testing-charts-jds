@@ -1,5 +1,5 @@
 ---
-title: "Testing Charts: viewer's perceptual accuracy in surveys"
+title: "Testing Charts: viewers' perceptual accuracy in surveys"
 short-title: Testing charts in surveys # running title
 author:
   - first: Kiegan                 # first name
@@ -284,16 +284,12 @@ More broadly, the design of a data visualization can change how viewers interact
 
 A crucial step in the process of interacting with and understanding a chart is the viewer's employment of comparisons of the parts within.
 @clevelandGraphicalPerceptionTheory1984 observed as such, and in their seminal study defined the better visual among a pair as the one that allows viewers to make more accurate comparisons.
-Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales, as shown in @fig-perceptual-tasks.
+Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
-@heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform.
-A total of XXX Amazon Mechanical Turkers were involved.
-Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole.
-These study populations are thus not representative of the general population, a common target audience for data visualization and scientific communication work.
+@heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of XXX Amazon Mechanical Turk (mTurk) workers for the study.
+Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
 Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
-\kr{I don't know if the prior statement is going too far? Maybe we can rephrase.}
-\hh{I think this is going to hold - the demographics are pretty significant}
 <!-- Bias from crowd-sourcing? sample size?  -->
 
 \kr{The mackinlay thing feels like maybe we are overemphasizing the ranking done by cleveland/mcgill and then mackinlay - I think we could emphasize less if we want}
@@ -319,11 +315,11 @@ We then describe the population of study respondents and obtained survey sample.
 Subsequently, we share our analyses of the resulting survey responses across each of our tests, including analyses on accuracy of responses and response behavior.
 Finally, we discuss implications of this work and next steps.
 
-```{r}
-#| label: fig-perceptual-tasks
-#| fig-cap: Ranking of perceptual tasks, as given by @mackinlayAutomatingDesignGraphical1986. The ranking of tasks on the quantitative scale are empirically verified by @clevelandGraphicalPerceptionTheory1984.
-knitr::include_graphics("images/mackinlay-tasks.png")
-```
+<!-- # ```{r} -->
+<!-- # #| label: fig-perceptual-tasks -->
+<!-- # #| fig-cap: Ranking of perceptual tasks, as given by @mackinlayAutomatingDesignGraphical1986. The ranking of tasks on the quantitative scale are empirically verified by @clevelandGraphicalPerceptionTheory1984. -->
+<!-- # knitr::include_graphics("images/mackinlay-tasks.png") -->
+<!-- # ``` -->
 
 <!-- \kr{The figure below is still a bit of an orphan, but I think we can revisit the intro ad study setup after we get more of the results in the paper} -->
 
@@ -345,18 +341,17 @@ knitr::include_graphics("images/mackinlay-tasks.png")
 Each task is made up of two elements: a visual stimulus and a question about that stimulus that the viewer is asked to respond to.
 In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
 
-**What specifically is each task?** Each comparison between marked pairs is designed to be a difficult task, with the difference between the values represented in the two marked pieces being a just-noticeable difference.
+The comparison between sets of marked pairs is designed to be a difficult task, with the difference between the values represented in the two marked pieces being a just-noticeable difference.
 The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time.
 Prior results from studies on bar charts and pie charts [@luModelingJustNoticeable2022] inform the differences in charts shown to our survey panelists.
 
-**Why do we utilize just-noticeable differences?** We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
+We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
 Asking perception tasks in a survey differs from the controlled environment of a cognitive lab, where these kind of questions may usually be assessed.
 Rather than asking the same (or similar) type of question with varied signal strength dozens or hundreds of times, we are limited to only a few questions at a time.
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
-Therefore, we focus on questions which vary the presented image, but ask viewers to compare the same values across those varied images.
+Therefore, we focus on questions which vary the structure of the presented image, but ask viewers to compare the same underlying data values across those varied images.
 
-**How do we vary the task?** We ask participants to determine which of two just-noticeably different marked pieces is larger within the data visualization image, and we vary the structural design of that data visualization image.
-We focus on three main sets of structural variation in the design.
+We ask participants to determine which of two just-noticeably different marked pieces is larger within each data visualization image, and focus on three main sets of structural variation in the design of that data visualization image.
 First, we vary the alignment of the pieces in question.
 Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline.
 Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces.
@@ -368,10 +363,11 @@ Finally, we change the aspect ratio of the chart and present a wider version of 
 ```
 What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications: both 'aligned' and 'unaligned' bars share the same axis.
 Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment.
-Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.\
+Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.
 
-We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column (or the same pie) mitigating some of this difficulty.
+We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column mitigating some of this difficulty.
 @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill.
+\kr{The updated sketch is great here!! One note -- can we move the label for the "positions along the same, but unaligned scale", it's not aligned with the others}
 
 ```{=tex}
 \hh{I think we should include the floating bars here to demonstrate that they are worse than the wide horizontal bars. }
@@ -387,12 +383,13 @@ include_graphics("images/sketch-tasks.png")
 
 \hh{expectations - end}
 
-**How do we present the task?** Our use of a survey format guides the format and design of the questions asked and how they are presented to respondents.
+Our use of a survey format guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
 Second, we want to utilize content within the data visualization image which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the presented task.
 For this reason, we utilize data on living arrangements of older U.S. adults -- a topic which most U.S. adults will have some familiarity with, but is not inherently polarizing.
-Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct version of the chart or test variations of a chart across distinct rounds of the survey.
+Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct structural version of the chart or test variations of a chart across distinct rounds of the survey. 
 
+#### Question text  
 When viewing each chart, participants were asked to compare the relative sizes of marked elements within the chart:
 
 "There are many charts used in the news media to portray data visually. Looking at the chart below, which of the marked dark blue pieces is bigger, A or B? Just your best guess is fine.
@@ -404,9 +401,9 @@ When viewing each chart, participants were asked to compare the relative sizes o
 -   They are the same"
 
 When presented with the aligned version of each chart, pieces were marked with a C and D and the question text is updated accordingly.
-In all scenarios, the second option (B \[D\] is bigger) is the correct response.
+In all scenarios, the second option (B \[D\] is bigger) is the correct response.  
 
-The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
+For a given task, viewers are first presented with the unaligned version of the task, followed by the aligned version of the task. The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
 Respondents were also asked to rate their certainty in their response to each question on a five-point scale.
 
 ```{r}
@@ -433,9 +430,8 @@ knitr::include_graphics("images/round3/hwide-cd.PNG")
 ### Task 1: Vertical stacked bar
 
 \autoref{fig-tasks}(a,d) shows the two stacked bar charts shown to participants in the first task.
-The marked tiles in each plot are 155 pixels apart.
-Based on @luModelingJustNoticeable2022's model, a difference of 155 pixels leads to a just noticeable difference of 3.5 pixels.
-The heights of the bars are 205 (left) and 213 pixels (right), respectively, corresponding to about twice the JND.
+The marked tiles in each plot are 155 pixels apart, which leads to a JND of 3.5 pixels based on @luModelingJustNoticeable2022's model.
+The heights of the bars are 205 (left) and 213 pixels (right), corresponding to about twice the JND.
 This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'.
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
@@ -443,7 +439,7 @@ This difference should lead to a relatively high accuracy rate for participants 
 <!-- describe stimulus -->
 
 Both charts show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
-Both charts are shown at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
+Both charts are displayed at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
 This leaves the vertical positioning of the bars as the only difference between the charts.
 Any differences in observed responses can therefore be attributed to this difference in presentation.
 
@@ -454,25 +450,28 @@ There were no significant differences in respondent accuracy or behavior across 
 
 ### Task 2: Horizontal stacked bar
 
-The visual mappings in the second task, shown in \autoref{fig-tasks-3a}, are identical to the first task, but the axes of the chart are rotated so that the stacked bar is represented in a horizontal format.
+The visual mappings in the second task, shown in \autoref{fig-tasks}(b, e), are identical to the first task, but the axes of the chart are rotated so that the stacked bar is represented in a horizontal format.
 This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
 Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sample was randomly split among respondents, with 50% of participants seeing the Task 2 stimuli and 50% of participants seeing the Task 3 stimuli.
 
-### Task 3: Wide horizontal stacked bar
+### Task 3: Horizontal wide stacked bar
 
-The images utilized in the third task again represent the same data, and the overall image has dimensions which are identical to the images in the first two tasks.
+The images utilized in the third task again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey.
 However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and decrease the relative thickness \kr{wording?} of each bar. 
+\kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}
+
+
 
 ## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
 The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households @dennis2019technical.
-\hh{I don't think I've got the right citation} Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
+\hh{I don't think I've got the right citation} Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics. Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews. 
 
 \hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}
 
 Given the nature of pulling a sample from the panel for each Omnibus round, there is a possibility that some participants may have been included in multiple rounds; however, our collected data is not a longitudinal or panel study, so we do not have repeated responses from the same participants across each of our tests.
-Each of the tests was run at least a month apart, so if respondents participated in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
+Each of the tests was run at least a month apart, so if respondents did participate in multiple rounds, there was at least a one month gap between viewing each visual stimulus.
 
 ## Study design -- survey weighting
 
@@ -498,9 +497,10 @@ CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 $$
 
 Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex.
-We employ that strategy whenever we include demographic variables in the analysis, otherwise we will use a single adjustment for the weights.
+We employ that strategy whenever we include demographic variables in the analysis, otherwise we use a single adjustment for the weights. 
 
-The data for this paper were collected in several rounds as part of the NORC Omnibus.
+
+The data for this paper were collected in several rounds as part of the NORC Omnibus, and the resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
 \hh{we might be able to include the lambda values for combining the tables here as well}
 
@@ -522,24 +522,7 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 <!-- : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds} -->
 
-# Results
-
-There are differences by alignment
-There are not huge differences across structures
-However, we see a difference in how people react across different structures (zooming behavior, certainty? time?)
-
-- We can reproduce prior findings with nat rep sample 
-- We can rank 
-- We can rank better because we have a bigger sample size 
-- We can find changes in viewer behavior 
-- Demographics matter to accuracy and choices
-
-
-### Respondents
-
-A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}. 
-
-\kr{We need to be careful about not making it seem like the rounds are the same as the tasks, since we have 3 rounds and 3 tasks. We describe it, but I feel like this table kind of muddies the waters. Could we instead do a table of respondents by task?} \hh{does this comment still stand after the re-organization? ... I would suggest to move it up to the survey methods and add the lambdas}
+\kr{We need to be careful about not making it seem like the rounds are the same as the tasks, since we have 3 rounds and 3 tasks. We describe it, but I feel like this table kind of muddies the waters. Could we instead do a table of respondents by task?} \hh{does this comment still stand after the re-organization? ... I would suggest to move it up to the survey methods and add the lambdas} \kr{I think moving it here helps, I did also add another table below. Let me know what you think.}
 
 
 | Name    | Date       |      \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | $\lambda_i$ |
@@ -553,9 +536,22 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 
 
-All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. Across the distinct stimuli, we model the resulting accuracy of responses, metrics on viewer interaction with the chart, and differences across demographic groups. 
+# Results
 
-\kr{Insert figure here of demographic breakdown across tasks or rounds?}
+
+### Respondents
+
+A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}. All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. The resulting sample sizes corresponding to each task are shown in \autoref{tbl-tasks}. \kr{Is this table useful? I want to be clear about the difference between tasks and rounds and make sure it's clear what our resulting sizes are..}
+
+| Name    | Description    |      \# Participants |                effective sample size |
+|---------------|---------------|--------------:|--------------:|
+| Task 1 | Vertical| `r nrow(round1_adj) + nrow(round2_adj)` | `r round(neff(round_12$weight),1)` |
+| Task 2 | Horizontal |`r nrow(round3_adj[round3_adj$P_EXP == 1,])` | `r round(neff(round3_adj[round3_adj$P_EXP == 1,]$weight),1)` |
+| Task 3 | Horizontal wide |`r nrow(round3_adj[round3_adj$P_EXP == 2,])` | `r round(neff(round3_adj[round3_adj$P_EXP == 2,]$weight),1)` |
+
+: Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
+
+Distributions of demographic characteristics across each survey round are shown in \autoref{fig-rounds-demographics}. \kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}
 
 ```{r}
 #| label: fig-rounds-demographics
@@ -606,14 +602,12 @@ income <- round_123 %>%
 
 ```
 
+
 ### Accuracy of responses  
 
-We first investigate respondent accuracy in selecting the correct response. As participants were able to select the option 'They are the same', there are several ways to model accuracy and response. The argument could be made that for the purposes of practical interpretation, 'they are the same' is a correct choice, as the options are visually very similar and not substantially different values within the context of the data shown in the chart. However, we are interested in understanding whether viewers *can* perceive the difference and correctly identify which piece is larger. We consider multiple ways of modeling response to investigate participant response patterns. First, we define a measure of binary 'correctness', for which all answers that are not the correct option (B, D is bigger) are 'incorrect', including the selection of 'they are the same'. 
+We first investigate respondent accuracy in selecting the correct response. As participants were able to select the option 'They are the same', there are several ways to model accuracy and response. The argument could be made that for the purposes of practical interpretation, 'they are the same' is a correct choice, as the options are visually very similar and not substantially different values within the context of the data shown in the chart. However, we are interested in understanding whether viewers *can* perceive the difference and correctly identify which piece is larger and thus consider multiple ways of modeling response to investigate participant response patterns. We begin by defining a measure of binary 'correctness', for which all answers that are not the correct option (B [D] is bigger) are 'incorrect', including the selection of 'they are the same'. 
 
-\autoref{accuracy}(a) displays all responses along the binary correctness measure, separated by whether the stimulus was an aligned task or unaligned task. We can see that levels of accuracy for all responses are significantly higher for the 'easier' (aligned) task, with about twice as many respondents correctly selecting the larger of the two marked elements. 
-
-\kr{Can we update the figure and t-test with combined data across all tasks/all rounds 1-3?}\hh{done}
-
+\autoref{fig-alignment}(a) displays all responses along the binary correctness measure, separated by whether the stimulus was an aligned task or unaligned task. We can see that levels of accuracy for all responses are significantly higher for the 'easier' (aligned) task, with about twice as many respondents correctly selecting the larger of the two marked elements. 
 
 
 ```{r ttest}
@@ -623,21 +617,12 @@ abcd <- svyby(~correct, by=~task, survey_123, svytotal)
 marginal_results <- data.frame(abcd)
 ```
 
-\kr{ Can we update this to include the values for ROund 3 as well?}\hh{done}
 <!--Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambdas[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.-->
 
 
+Because each participant was shown both the aligned and unaligned versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
+The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $<< 0.0001$).
 
-Figure \ref{fig-alignment}(a) shows that more than twice the number of responses are correct, when the tiles are aligned along the same axis.
-Because each participant was shown both versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
-The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: \< 2.2e-16). \hh{how about: $p$-value: $<< 0.0001$ -- the e-16 looks very computery}
-
-
-
-
-
-
-\kr{We need to update this chart to include the data from all 3 rounds instead of just the first 2} \hh{done}
 
 ```{r accuracy,   warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
@@ -702,7 +687,7 @@ gg2 <- round_123 %>%
 gg1 + gg2
 ```
 
-Next, we consider an ordinal model to investigate response behavior across all three options -- 'A (C) is bigger', 'B (D) is bigger', and 'they are the same', and consider these response patterns across each of the stimuli. 
+Next, we consider an ordinal model to investigate response behavior across all three options -- 'A [C] is bigger', 'B [D] is bigger', and 'They are the same', and consider these response patterns across each of the stimuli. 
 
 
 
@@ -829,7 +814,7 @@ $$
 $$
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
-The estimated values and 95% confidence intervals are shown in @tbl-rounds-123
+The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. 
 
 ```{r}
 #| label: tbl-rounds-123
@@ -887,16 +872,18 @@ dframe %>%
   )
 ```
 
-The same pattern in accuracy holds across each of the three structural variations; the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: The shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.
+One pattern in accuracy holds across each of the three structural variations: the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
 
+Rates of selecting the incorrect response are low across all three structural variations and the aligned and unaligned tasks; while viewers select the incorrect response at significantly higher rates for all three unaligned tasks relative to the aligned tasks, those rates do not differ significantly across the three structural variations. Most of the observed differences in response patterns across structural variations are attributed to respondents' selection between the correct option or the 'they are the same' option.  
 
+To better comprehend these observed patterns, we investigate viewer interaction with the tasks more broadly as well as differences in response selection across demographic groups.  
 
 ### Respondent behavior  
 
 
-A contributing factor to the observed patterns in response accuracy might be the way that participants interact with the different designs.
-Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
-However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
+One contributing factor to the observed patterns in response accuracy might be the way that participants interact with the different designs.
+Across all tasks, about half of all participants make use of the option to zoom into charts. We observe that while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
+However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
 
 <!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
 
@@ -949,14 +936,14 @@ zt + zd + plot_layout(widths=c(5, 7.5), guides='collect')
   
 ```
 
-Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$.
+To formalize this pattern in a model, let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$.
 We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$), task ($\tau$), and design ($\delta$) of the chart: 
 
 $$
 \text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
 $$
 
-I'll pretty up @tbl-zoom-123 if we are going to keep it. \kr{I think we should! it's nice to have a model for this}
+The resulting model estimates and confidence intervals are displayed in \autoref{tbl-zoom-123}. We can observe that zooming behavior *only* differs significantly by structural design; rates do not differ significantly between the aligned and unaligned tasks, nor do they differ significantly by the chosen response. This higher rate of zooming does not necessarily lead to higher accuracy; although rates of accuracy are significantly higher for the vertical orientation relative to the horizontal orientation, they are not significantly higher -- and in fact, are significantly lower on the aligned task -- than the accuracy for the horizontal wide orientation.  \hh{I'll pretty up @tbl-zoom-123 if we are going to keep it.} \kr{I think we should! it's nice to have a model for this}
 
 ```{r}
 #| label: tbl-zoom-123
@@ -989,18 +976,20 @@ coefs_zoom %>%
 
 ```
 
-However, zooming behavior *only* differs significantly by structural design -- rates do not differ significantly between the aligned and unaligned tasks, nor do they differ significantly by the chosen response. 
-
+ 
 \kr{Do we have anything about total time spent on tasks across the 3 structures? We have time on each question for rounds 2-3. And can we pull in some of the certainty stuff?}
 
 ### Differences across demographic groups
 
+Finally, we turn to investigating responses across demographic groups, a core benefit provided by the large and representative nature of our survey samples. \autoref{fig-demographics} displays response patterns across our three structural variations by gender, age (4 groups), educational attainment (5 groups), and income level (4 groups). Our pattern of higher accuracy in selecting the correct response on the aligned task relative to the unaligned task holds across all demographic groups and structural variations. However, we do observe different response patterns, particularly on the unaligned task, across demographic groups. 
+
 Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'.
-We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.  
+We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients. 
 
 $$
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 $$
+The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
 
 ```{r}
 #| label: fig-demographics
@@ -1326,29 +1315,42 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
 
 Results to discuss:
 
--   Differences in accuracy between aligned and unaligned bar
+There are differences by alignment
+There are not huge differences across structures
+However, we see a difference in how people react across different structures (zooming behavior, certainty? time?)
 
--   Differences across structures
+- We can reproduce prior findings with nat rep sample 
+- We can rank 
+- We can rank better because we have a bigger sample size 
+- We can find changes in viewer behavior 
+- Demographics matter to accuracy and choices
 
--   Differences in timing and zooming behavior across all designs
+# Conclusions
 
--   Demographic differences and their interaction with alignment
+Through this work, we have tested the use of probability-based survey panels to ask perception questions; within a large survey covering a variety of topics, and with a limited number of questions for our specific tasks, we are able to measure viewer perception and produce results consistent with prior studies. Testing data visualization design structures and viewer behavior on a nationally-representative sample is of broad interest and applicability to the scientific communication community, and this study demonstrates a framework under which to complete further work in this area. 
 
-# Conclusion
+With our survey framework, we have shown that we can rank structural variations on design and tasks by their relative accuracy; we identified significantly different rates of respondent accuracy under different designs presenting the same data. The size of our sample aids in identifying this signal.  
 
-Key findings to discuss:
+Further, we can also study respondent behavior and how viewers interact with the chart. Paradata on viewer interaction with the chart (e.g., zooming and time spent on each task) can be collected as well as asking directly asking respondents questions about their certainty. Not only can we collect this information, but we can also identify significant differences in this behavior across different designs. Understanding viewer interaction and engagement is a key component to designing effective data visualizations. If a particular design leads viewers to zoom in more to investigate it when determining a response, we might consider that design to be more frustrating to viewers 'in the wild' when viewing it outside of the context of our tests. \kr{I don't love the last sentence but I think we can clean it up}.
 
--   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies
+Perhaps most salient among our results are the patterns in response behavior across demographic groups. The large size of our sample, paired with the probability-based survey panel approach, afford us the ability to dive into response patterns among demographics across tasks and identify significant differences among them. In particular, the differences across educational attainment groups and income groups underscore the importance of utilizing a representative population when testing perception; prior results in this area may be absorbing bias in responses due to the larger representation of individuals with higher education levels among those study respondents. 
 
--   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population:
 
-    -   Cleveland: position (aligned) versus unaligned
-    -   unaligned tiles within stacked bar are a hybrid between framed bar and floats
-    -   Talbot: pie charts - individual wedges vs piecharts
+While our results are limited to mapping in a stacked bar chart with a specific topic, they demonstrate among them a wealth of insights about how respondents perceive and interact with data visualizations. More expansive work on this topic should be completed to understand how the general public interacts with and understands charts, including expanding to a wider set of structural variations, more aesthetic design variations, and considering differences in respondent behavior across different data topic areas. 
 
--   Design choices impact viewer accuracy:
+<!-- Key findings to discuss: -->
 
-    -   new finding: pie charts accuracy in work better when framed (wedges)
+<!-- -   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies -->
+
+<!-- -   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population: -->
+
+<!--     -   Cleveland: position (aligned) versus unaligned -->
+<!--     -   unaligned tiles within stacked bar are a hybrid between framed bar and floats -->
+<!--     -   Talbot: pie charts - individual wedges vs piecharts -->
+
+<!-- -   Design choices impact viewer accuracy: -->
+
+<!--     -   new finding: pie charts accuracy in work better when framed (wedges) -->
 
 -   Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked).
 
