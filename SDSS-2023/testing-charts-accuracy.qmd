@@ -43,10 +43,10 @@ preamble: >
   \usepackage{setspace}
 documentclass: jds
 format:
+  html: default
   pdf: 
     include-in-header: authors.tex
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -849,7 +849,7 @@ The same pattern in accuracy holds across each of the three structural variation
 ### Respondent behavior  
 
 
-A contributing factor to this outcome might be the way that participants interact with the different designs.
+A contributing factor to the observed patterns in response accuracy might be the way that participants interact with the different designs.
 Generally, about half of all participants make use of the option to zoom into charts - while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
 However, different designs lead to different rates of zooming: when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
 
@@ -905,11 +905,13 @@ zt + zd + plot_layout(widths=c(5, 7.5), guides='collect')
 ```
 
 Let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$.
-We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$), task ($\tau$), and design ($\delta$) of the chart: $$
+We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$), task ($\tau$), and design ($\delta$) of the chart: 
+
+$$
 \text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
 $$
 
-I'll pretty up @tbl-zoom-123 if we are going to keep it.
+I'll pretty up @tbl-zoom-123 if we are going to keep it. \kr{I think we should! it's nice to have a model for this}
 
 ```{r}
 #| label: tbl-zoom-123
@@ -942,10 +944,15 @@ coefs_zoom %>%
 
 ```
 
+However, zooming behavior *only* differs significantly by structural design -- rates do not differ significantly between the aligned and unaligned tasks, nor do they differ significantly by the chosen response. 
+
+\kr{Do we have anything about total time spent on tasks across the 3 structures? We have time on each question for rounds 2-3. And can we pull in some of the certainty stuff?}
+
 ### Differences across demographic groups
 
 Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'.
-We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
+We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.  
+
 $$
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 $$
