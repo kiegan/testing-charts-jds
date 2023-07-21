@@ -13,7 +13,6 @@ preamble: >
   \usepackage{lscape}
 documentclass: jds
 format:
-  html: default
   pdf: 
     includes:
       in_header: 'gt_packages.sty'
@@ -27,6 +26,7 @@ format:
         \affil[1]{NORC at the University of Chicago}
         \affil[2]{Department of Statistics, Iowa State University}
     keep-tex: true
+  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -435,9 +435,9 @@ Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sam
 ### Task 3: Horizontal wide stacked bar
 
 The images utilized in the third task again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey.
-\hh{The length of bars is increased to fit the new dimensions. The height of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area the same as before}
+\hh{The length of bars is increased to fit the new dimensions. This increases the difference in the length of bars from previously 8 pixels to 13 pixels. The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant. }
 <!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. -->
-\kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }
+<!--kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }-->
 
 
 
