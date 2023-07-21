@@ -149,6 +149,19 @@ round3_adj <- round3 %>% mutate(
   cd != "SKIPPED ON WEB"
 )
 
+round5 <- readRDS(file.path(vs_repo_local, "round5.rds"))
+
+# floating bars (unaligned) are shown to all participants of round 5
+round5_adj <- round5 %>% mutate(
+  ab = ab1,
+  ab_zoom = ab1_zoom,
+  ab_certain = ab1_certain,
+  weight = WEIGHT_NOLA
+) %>% filter(
+  ab != "SKIPPED ON WEB"
+)
+
+
 round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
 
 round6_adj <- round6 %>% mutate(
@@ -163,17 +176,6 @@ round7_adj <- round7 %>% mutate(
 )
 ```
 
-```{r data-rnd3}
-round3 <- readRDS(file.path(vs_repo_local, "round3.rds"))
-
-# filter out all of the 'skipped on web':
-round3_adj <- round3 %>% mutate(
-  weight = WEIGHT_NOLA
-) %>% filter(
-  ab != "SKIPPED ON WEB",
-  cd != "SKIPPED ON WEB"
-)
-```
 
 ```{r combine-123}
 lambda_1_2 <- calculate_lambda(round1_adj$weight, round2_adj$weight)
@@ -213,7 +215,28 @@ round_123 <- round_12 %>%
         dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
                    ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
                    age4, gender, income4, racethnicity, educ5) 
-  )
+  ) 
+
+lambda_1235 <- calculate_lambda(round_123$weight, round5_adj$weight)
+round_123b <- round_123 %>% 
+              mutate(weight = lambda_1235*weight/sum(weight)) %>% 
+  rbind(
+    round5_adj %>% 
+      mutate(
+        weight = (1-lambda_1235)*weight/sum(weight),
+        round = "Round 5",
+        cd = NA,
+        cd_certain=NA,
+        cd_zoom=NA,
+        CorrectAB = ab == "B is bigger",
+        CorrectCD = NA,
+        CorrectABCD = NA,
+        chart = "Floating bars"
+       ) %>% 
+        dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
+                   age4, gender, income4, racethnicity, educ5) 
+  ) 
 
 levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
 
@@ -238,6 +261,24 @@ survey_123 <-
   survey::svydesign(
   data = round_123_long, 
   ids = ~CaseId, weights = ~weight)
+
+round_123b_long <- round_123b %>% 
+  pivot_longer(ab:cd, names_to = "task", values_to = "Response") %>%
+  mutate(
+    correct = Response %in% c("B is bigger", "D is bigger"),
+    correct3 = correct | (Response == "They are the same"),
+    task_chart = factor(paste(task, chart, sep="-")),
+    zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
+    response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
+  ) %>% filter(
+    !is.na(Response)
+  )
+
+survey_123b <- 
+  survey::svydesign(
+  data = round_123b_long, 
+  ids = ~CaseId, weights = ~weight)
+
 ```
 
 
@@ -676,12 +717,12 @@ Next, we consider an ordinal model to investigate response behavior across all t
 
 ```{r model-123, warning = FALSE, message = FALSE}
 
-logit_123_correct <- svyglm(correct~task_chart-1, family=quasibinomial(), design=survey_123)
-logit_123_correct3 <- svyglm(correct3~task_chart-1, family=quasibinomial(), design=survey_123)
+logit_123_correct <- svyglm(correct~task_chart-1, family=quasibinomial(), design=survey_123b)
+logit_123_correct3 <- svyglm(correct3~task_chart-1, family=quasibinomial(), design=survey_123b)
 
 
-ci_confint <- svyby(~correct, by=~task_chart, design=survey_123, svyciprop)
-ci_confint3 <- svyby(~correct3, by=~task_chart, design=survey_123, svyciprop)
+ci_confint <- svyby(~correct, by=~task_chart, design=survey_123b, svyciprop)
+ci_confint3 <- svyby(~correct3, by=~task_chart, design=survey_123b, svyciprop)
 
 
 coefs_123 <- broom::tidy(logit_123_correct)
@@ -713,7 +754,7 @@ ci_confint <- ci_confint %>%
     task_chart, delim = "-", names =c("task", "chart")
     )  %>% mutate(
   task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
-  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide", "Floating bars"))
 )
 
 ci_confint3 <- ci_confint3 %>% 
@@ -721,7 +762,7 @@ ci_confint3 <- ci_confint3 %>%
     task_chart, delim = "-", names =c("task", "chart")
     ) %>% mutate(
   task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
-  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide"))
+  chart = factor(chart, levels =c("Vertical", "Horizontal", "Horizontal wide", "Floating bars"))
 ) 
 ```
 
@@ -732,16 +773,16 @@ ci_confint3 <- ci_confint3 %>%
 #| fig-width: 7
 #| out-width: 80%
 
-round_123_long %>% 
+round_123b_long %>% 
   mutate(
     response3 = c("Wrong", "They are the same", "Correct")[correct+correct3+1],
     response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong"))),
     task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")),
-    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide"))
+    chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide", "Floating bars"))
   ) %>% 
   ggplot(aes(x = chart)) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  facet_grid(.~task) + 
+  facet_grid(.~task, scales = "free_x", space="free_x") + 
   theme(legend.position="bottom") + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") + 
@@ -852,7 +893,8 @@ dframe %>%
   ) %>%
   tab_options(
     column_labels.font.weight = "bold",
-    row_group.font.weight = "bold"
+    row_group.font.weight = "bold",
+    footnotes.font.size = 8
   ) %>%
   cols_label(
     .list = c(
@@ -866,7 +908,14 @@ dframe %>%
       "ci_low_correct | same or wrong" = "          [95% CI]",
       "letters_correct | same or wrong" = " "
     )
+  ) %>% tab_footnote(
+    footnote = "We are including here, responses on an A vs B comparison for floating bars, corresponding to a length assessment, see bottom right of Figure 1.",
+    locations = cells_body(
+      rows = 1,
+      columns = "chart"
+    )
   ) 
+
 ```
 
 One pattern in accuracy holds across each of the three structural variations: the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
