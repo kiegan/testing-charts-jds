@@ -537,7 +537,7 @@ Distributions of demographic characteristics across each survey round are shown 
 ```{r}
 #| label: fig-rounds-demographics
 #| fig-cap: "Demographics of respondents"
-#| fig-height: 6
+#| fig-height: 7
 #| fig-width: 12
 
 round_123 <- round_123 %>% group_by(chart) %>% 
@@ -725,7 +725,7 @@ ci_confint3 <- ci_confint3 %>%
 
 ```{r}
 #| label: fig-response-123
-#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
+#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions [@piephoAlgorithmLetterBasedRepresentation2004]: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
 #| fig-height: 4.25
 #| fig-width: 7
 #| out-width: 80%
@@ -958,9 +958,119 @@ coefs_zoom %>%
 ```
 
  
+
+### How certain are participants?
+
+<!--
 \kr{Do we have anything about total time spent on tasks across the 3 structures? We have time on each question for rounds 2-3. And can we pull in some of the certainty stuff?}
 
 \hh{we could include certainty - I'll look into it}
+-->
+
+```{r certainty-data}
+round_123_certainty_long <- round_123 %>% 
+  pivot_longer(ab_certain:cd_certain, names_to = "Question", values_to = "Response") %>%
+  filter(Response != "SKIPPED ON WEB") %>%  # 20 participants
+  mutate(
+    Correct = ifelse(Question == "ab_certain", CorrectAB, CorrectCD),
+    Question = ifelse(Question=="ab_certain", "Unaligned", "Aligned"),
+# ordering of levels in Response is from extremely=6 to not at all=2 - not very intuitive
+    Response = factor(Response, levels = c("not at all", "slightly", "moderately", "very", "extremely")) # gets rid of the 'SKIPPED ON WEB' and makes the ordering go from 1 to 5
+  )
+
+round_123_certainty_long <- round_123_certainty_long %>% mutate(
+  correct_question_chart = factor(paste(Correct, Question, chart, sep="-"))
+)
+survey_123_crt <- 
+  survey::svydesign(
+  data = round_123_certainty_long, 
+  ids = ~CaseId, weights = ~weight)
+```
+
+Using linear scores for the response of `Certainty`, with `not certain at all` assigned a score of 1 and `extremely certain` assigned a score of 5, we can estimate the effects of task, chart design, and correctness on certainty  by using  a cell-means model of the form:
+$$
+Y_{k} = \mu_{ij\ell(k)} + \epsilon_{k},
+$$
+where $k = 1, ..., N$, $\mu_{ij\ell(k)}$ is average certainty (measured on a scale from 1 to 5) of the four combinations of task and correctness by each of the three designs, where $i = 1, 2$ encodes unaligned/aligned, and $j=1,2$ encodes wrong, correct, and $\ell = 1, 2, 3$ encodes horizontal, wide horizontal, and vertical stacked bar charts, respectively. We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$. 
+The results are shown in @fig-certainty. 
+What we find, is that the highest scores for certainty are associated with comparing aligned tiles. Certainty scores are not significantly different between correct and wrong responses. Scores are (mostly) significantly lower for the unaligned task. Interestingly, the lowest scores of certainty are associated with correct responses, here. 
+
+```{r model-certainty}
+model_certain <- svyglm(as.numeric(Response)~ correct_question_chart-1, design = survey_123_crt)
+
+coefs_certainty <- broom::tidy(model_certain)
+coefs_certainty <- coefs_certainty %>% 
+  mutate(
+    term = gsub("correct_question_chart","", term)
+  ) %>%
+  separate(term, into=c("Correct", "Question", "chart"), sep="-", remove = FALSE) 
+
+coefs_certainty <- coefs_certainty %>% 
+  mutate(
+    Question = factor(Question, 
+                      levels = c("Aligned", "Unaligned")),
+    Correct = factor(Correct, levels=c("FALSE", "TRUE"), 
+                     labels = c("Wrong", "Correct")),
+    chart = factor(chart, levels=c("Horizontal wide", "Horizontal", "Vertical"))
+  )
+
+round_123_certainty_long <- round_123_certainty_long %>%
+  mutate(
+    Question = factor(Question, 
+                      levels =c("Aligned", "Unaligned")),
+    Correct = factor(Correct, levels=c("FALSE", "TRUE"), 
+                     labels = c("Wrong", "Correct")),
+    chart = factor(chart, levels=c("Horizontal wide", "Horizontal", "Vertical"))
+  )
+
+```
+
+```{r model-letters, warning=FALSE}
+# create all pairwise comparisons for tasks and questions.
+cross_compare_certainty <- glht(model_certain, mcp(correct_question_chart="Tukey"))
+
+foo <- cld(cross_compare_certainty)
+
+# get letters for each confidence 
+coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
+```
+
+
+```{r}
+#| label: fig-certainty
+#| out-width: 100%
+#| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Errorbars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significances. The scores for two bars are significantly different if they do not share a letter. "
+#| fig-width: 10
+#| fig-height: 4.5
+
+round_123_certainty_long %>%
+  ggplot(aes(x = chart)) +
+  facet_grid(.~Question+Correct) +
+  geom_bar(aes(fill=Response, weight=weight), 
+           position=position_fill(reverse=TRUE), 
+           colour="grey40", linewidth=0.25) +
+  theme(
+    axis.text.x = element_text(angle=30, hjust=1)
+  ) + 
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
+                     labels = seq(0,1, by=0.25)*100, limits = c(-0.1, 1)) +
+  xlab("") + 
+  scale_fill_brewer(palette = "PRGn", guide = guide_legend(reverse = TRUE)) + 
+  geom_point(
+    aes(y = estimate/5),
+    size = 3,
+    data = coefs_certainty
+  ) + 
+  geom_errorbar(
+    aes(ymin = (estimate-1.96*std.error)/5,
+        ymax = (estimate+1.96*std.error)/5),
+    width=0.3,
+    data = coefs_certainty
+  ) + 
+  geom_text(aes(label=letters), y = -0.05, data = coefs_certainty) 
+```
+
+
 
 ### Differences across demographic groups
 
