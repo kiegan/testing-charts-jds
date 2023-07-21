@@ -13,6 +13,7 @@ preamble: >
   \usepackage{lscape}
 documentclass: jds
 format:
+  html: default
   pdf: 
     includes:
       in_header: 'gt_packages.sty'
@@ -26,7 +27,6 @@ format:
         \affil[1]{NORC at the University of Chicago}
         \affil[2]{Department of Statistics, Iowa State University}
     keep-tex: true
-  html: default
 editor: 
   markdown: 
     wrap: sentence
@@ -725,7 +725,7 @@ ci_confint3 <- ci_confint3 %>%
 
 ```{r}
 #| label: fig-response-123
-#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions [@piephoAlgorithmLetterBasedRepresentation2004]: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
+#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
 #| fig-height: 4.25
 #| fig-width: 7
 #| out-width: 80%
@@ -795,7 +795,7 @@ $$
 $$
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
-The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. 
+The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. \hh{The lowercase letters indicate significances between pairs of estimates: two estimates (in the same column) are significantly different at 5% level, if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
 
 ```{r}
 #| label: tbl-rounds-123
@@ -825,7 +825,7 @@ dframe %>%
         values_from = c(estimate, ci_low, ci_high, letters)
       ) %>%
   gt() %>%
-  tab_header(title = "Log odds of accuracy by task and chart type") %>%
+  tab_header(title = "Odds of accuracy by task and chart type") %>%
   fmt_number(
     everything(),
     decimals=2
@@ -869,7 +869,8 @@ However, different designs lead to different rates of zooming: we observe in \au
 <!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
 
 ```{r zoom-123}
-logit_zoom <- svyglm(I(zoom=="yes")~response3+task+chart, family=quasibinomial(), design=survey_123)
+logit_zoom <- 
+  svyglm(I(zoom=="yes")~response3+task+chart, family=quasibinomial(), design=survey_123)
 
 coefs_zoom <- broom::tidy(logit_zoom)
 ```
@@ -895,7 +896,9 @@ zt <- round_123_long %>%
   theme(axis.text.x = element_text(angle=30, hjust = 1)) + 
   scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
   xlab("") + 
-  ggtitle("Zooming behavior by task")
+  ggtitle("Zooming behavior\nby task") +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
+                     labels = seq(0,1, by=0.25)*100)
 
 zd <- round_123_long %>% 
   mutate(
@@ -910,8 +913,10 @@ zd <- round_123_long %>%
   facet_grid(.~chart) + 
   scale_fill_manual("Zoom", values=c("grey", "#1274F3")) +
   xlab("") + 
-  ggtitle("Zooming behavior by chart") +
-  theme(axis.text.x = element_text(angle=30, hjust = 1))
+  ggtitle("\nby chart") +
+  theme(axis.text.x = element_text(angle=30, hjust = 1)) +
+  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
+                     labels = seq(0,1, by=0.25)*100)
 
 zt + zd + plot_layout(widths=c(5, 7.5), guides='collect') 
   
@@ -930,13 +935,25 @@ The resulting model estimates and confidence intervals are displayed in \autoref
 #| label: tbl-zoom-123
 #| tbl-cap: Coefficients for logistic regression of zooming by task
 
+#    term = TeX(c("$\\mu$", "They are the same $\\rho_2$", "wrong $\\rho_3$", "Aligned $\\tau_2$", "Horizontal wide $\\delta_2$", "Vertical $\\delta_3$"))
+
+coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
+                     "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
+                     "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+
 coefs_zoom %>%
   mutate(
     term = ifelse(term=="(Intercept)", "Intercept", term),
-    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
+    p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value)),
+    variable = c("", "Response", "Response", "Task", "Chart design", "Chart design")
   ) %>%
+  group_by(variable) %>%
   gt() %>%
   tab_header("Estimates for logistic regression on zooming behavior") %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    row_group.font.weight = "bold"
+  ) %>%
   cols_label(
     std.error = "SE",
     statistic = "t-statistic",
@@ -1332,7 +1349,7 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
     values_from = c(estimate, ci_low, ci_high, p.value),
   ) %>% 
  gt() %>%
-  tab_header(title = "Log odds of accuracy by task and demographics of respondents") %>%
+  tab_header(title = "Odds of accuracy by task and demographics of respondents") %>%
   tab_footnote("Signif. codes:  0 `***' 0.001 `**' 0.01 `*' 0.05 `.' 0.1 ` ' 1") %>%
  tab_options(
    column_labels.font.weight = "bold",
