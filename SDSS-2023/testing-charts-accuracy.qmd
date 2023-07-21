@@ -466,13 +466,15 @@ When combining responses from different rounds of the Omnibus survey, we calibra
 
 \kr{Do we need to update this description to just say how we did it for combining across all the rounds represented?}
 
-We *combine* (rather than cumulate) two surveys $S_1$ and $S_2$, as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_1$ and $S_2$ by $\lambda$ and $1 - \lambda$ respectively. $\lambda \in [0,1]$ is given as
+We *combine* (rather than cumulate) $\ell \ge 2$ surveys $S_1$, $S_2$, ... $S_\ell$ as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$. $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as
 $$
-\lambda = \frac{n_1/d_1}{n_1/d_1 + n_2/d_2},
-$$ where $n_1$ and $n_2$ are the nominal sample sizes and $d_1$ and $d_2$ are the design effects for the estimators.
-Here, $d_1$ and $d_2$ are estimated as $$
-d_1 = 1 + CV(w_i \in S_1)^2 \ \ \ \text{ and } \ \ \ d_2 = 1 + CV(w_i \in S_2)^2,
-$$ where $CV$ is the coefficient of variation of the weights within each sample, and is estimated as in @kishSurveySampling1965 :
+\lambda_i = \frac{n_i/d_i}{\sum_{j=1}^{\ell}n_j/d_j},
+$$ where $n_i$ is the nominal sample of survey $S_i$ and $d_i$ are the design effects for the estimators.
+Here, $d_i$ are estimated as 
+$$
+d_i = 1 + CV(w \in S_i)^2
+$$ 
+where $CV$ is the coefficient of variation of the weights $w$ within each sample, and is estimated as in @kishSurveySampling1965 :
 
 $$ 
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
