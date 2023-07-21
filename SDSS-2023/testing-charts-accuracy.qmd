@@ -831,14 +831,22 @@ dframe %>%
     decimals=2
   ) %>%
   cols_merge(
-    columns = c("estimate_correct | same or wrong", "ci_low_correct | same or wrong",
-                "ci_high_correct | same or wrong", "letters_correct | same or wrong"),
-    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
+    columns = contains("ci") & contains("same or wrong"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  tab_spanner(
+    label = "correct | same or wrong",
+    columns =  c("estimate_correct | same or wrong", "ci_low_correct | same or wrong",
+                 "letters_correct | same or wrong")
   ) %>%
   cols_merge(
-    columns = c("estimate_correct or same | wrong", "ci_low_correct or same | wrong",
-                "ci_high_correct or same | wrong", "letters_correct or same | wrong"),
-    pattern = "<<{1}>><< [{2}, {3}]>><< {4}>>"
+    columns = contains("ci") & contains("correct or same"),
+    pattern = "<< [{1}, {2}]>>"
+  ) %>%
+  tab_spanner(
+    label = "correct or same | wrong",
+    columns =  c("estimate_correct or same | wrong", "ci_low_correct or same | wrong",
+                "letters_correct or same | wrong")
   ) %>%
   tab_options(
     column_labels.font.weight = "bold",
@@ -848,9 +856,15 @@ dframe %>%
     .list = c(
       "chart" = "",
       "estimate_correct | same or wrong" = "correct | same or wrong",
-      "estimate_correct or same | wrong" = "correct or same | wrong"
+      "estimate_correct or same | wrong" = "correct or same | wrong",
+      "estimate_correct or same | wrong" = "Est.",
+      "ci_low_correct or same | wrong" = "          [95% CI]",
+      "letters_correct or same | wrong" = " ",
+      "estimate_correct | same or wrong" = "Est.",
+      "ci_low_correct | same or wrong" = "          [95% CI]",
+      "letters_correct | same or wrong" = " "
     )
-  )
+  ) 
 ```
 
 One pattern in accuracy holds across each of the three structural variations: the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
@@ -970,7 +984,7 @@ coefs_zoom %>%
   cols_align(
     columns = p.value,
     align = "right"
-  )
+  ) 
 
 ```
 
@@ -1413,6 +1427,7 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
   ) %>%
    cols_label(
     .list = c(
+      "term" = " ",
       "estimate_Aligned_correct" = "Est.",
       "ci_low_Aligned_correct" = "          [95% CI]",
       "p.value_Aligned_correct" = " ",
