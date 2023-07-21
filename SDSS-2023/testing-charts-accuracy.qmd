@@ -1014,6 +1014,16 @@ coefs_certainty <- coefs_certainty %>%
     chart = factor(chart, levels=c("Horizontal wide", "Horizontal", "Vertical"))
   )
 
+scale_x <- function(value, from, to) {
+  (value-from[1])/diff(from)*diff(to)
+}
+
+coefs_certainty <- coefs_certainty %>% 
+  mutate(
+    estimate = scale_x(estimate, from=c(1,5), to=c(0,1)),
+    std.error = std.error/4
+  )
+
 round_123_certainty_long <- round_123_certainty_long %>%
   mutate(
     Question = factor(Question, 
@@ -1053,17 +1063,18 @@ round_123_certainty_long %>%
     axis.text.x = element_text(angle=30, hjust=1)
   ) + 
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
-                     labels = seq(0,1, by=0.25)*100, limits = c(-0.1, 1)) +
+                     labels = seq(0,1, by=0.25)*100, limits = c(-0.1, 1),
+                     sec.axis = sec_axis( trans=~(.*4)+1, name="Certainty scores")) +
   xlab("") + 
   scale_fill_brewer(palette = "PRGn", guide = guide_legend(reverse = TRUE)) + 
   geom_point(
-    aes(y = estimate/5),
+    aes(y = estimate),
     size = 3,
     data = coefs_certainty
   ) + 
   geom_errorbar(
-    aes(ymin = (estimate-1.96*std.error)/5,
-        ymax = (estimate+1.96*std.error)/5),
+    aes(ymin = (estimate-1.96*std.error),
+        ymax = (estimate+1.96*std.error)),
     width=0.3,
     data = coefs_certainty
   ) + 
