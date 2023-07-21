@@ -1433,9 +1433,13 @@ $$
 #| label: tbl-zoom-123
 #| tbl-cap: Coefficients for logistic regression of zooming by task
 
+coefs_zoom$term <- c("$$\\hat{\\mu}$$", "They are the same $$\\widehat{\\rho}_{2}$$", 
+                     "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
+                     "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+
 coefs_zoom %>%
   mutate(
-    term = ifelse(term=="(Intercept)", "Intercept", term),
+#    term = ifelse(term=="(Intercept)", "Intercept", term),
     p.value = ifelse(p.value<0.0001, "< 0.0001", sprintf("%.4f", p.value))
   ) %>%
   gt() %>%
@@ -1889,7 +1893,36 @@ round_35 %>%
 ```
 
 ```{r m35-summary}
+#| label: tbl-floating
+#| tbl-cap: "Percentage of accuracy of responses by design."
+coefs_35 <- coefs_35_notwrong %>% mutate(
+  level = c("correct or same | wrong")
+) %>% rbind(
+coefs_35_correct %>% mutate(
+  level = c("correct | same or wrong")
+))
 
+coefs_35 %>% 
+  mutate(
+    ci_low = estimate - 1.96*std.error,
+    ci_high = estimate + 1.96*std.error,
+    estimate = inv_logit(estimate),
+    ci_low = inv_logit(ci_low),
+    ci_high = inv_logit(ci_high),
+    perc_ci = sprintf(" %.2f [%.2f, %.2f]", estimate, ci_low, ci_high)
+    # perc_ci = sprintf(" %.2f [%.2f, %.2f] %s", estimate, ci_low, ci_high,
+    #                    ifelse(p.value < 0.001, "***",
+    #                      ifelse(p.value < 0.01, "**",
+    #                        ifelse(p.value < 0.05, "*",
+    #                          ifelse(p.value < 0.1, ".", " ")))))
+  ) %>% 
+  dplyr::select(level, task, perc_ci) %>%
+  pivot_wider(names_from="task", values_from="perc_ci") %>%
+  gt() %>%
+  tab_header("Estimated percentage of responses [95% CI]") %>%
+  cols_label(
+    "level" = " "
+  )
 ```
 
 
