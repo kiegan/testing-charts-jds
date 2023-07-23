@@ -605,7 +605,7 @@ round_123 <- round_123 %>% group_by(chart) %>%
 # from ACS 2001
 # https://data.census.gov/table?q=sex+of+adults+age+greater+than+18+across+the+US&tid=ACSDP1Y2021.DP05	
 acs_gender <- data.frame(gender = c("Male", "Female"), 
-                         estimate = c(126690177, 131728290), moe=c(22354, 18838),
+                         estimate = c(125215171, 130276235), moe=c(4770, 4818),
                          percent = c(49, 51), moe_percent = 0.1)
 
 omni_gender <- data.frame(svyby(~gender, by=~chart, design=survey_123, svymean))
@@ -665,8 +665,39 @@ gender <- round_123 %>%
 
 
 acs_age <- data.frame(age4 = c("18-29", "30-44", "45-59", "60+"), 
-                      estimate = c(52325456, 66712246, 61814869, 77565896))
+                      estimate = c(22854328 + 30339089, 
+                                   22506614 + 21920290 + 20521593, 
+                                   20582187 + 21049271 + 21928936, 
+                                   73789098))
 acs_age <- acs_age %>% mutate(percent = estimate/sum(estimate)*100)
+
+
+omni_age <- data.frame(svyby(~age4, by=~chart, design=survey_123, svymean))
+omni_age_long <- omni_age %>% 
+  pivot_longer(starts_with("age"), names_to="age", values_to = "mean") %>% 
+  dplyr::select(chart, age, mean) 
+omni_age_long$SE <- omni_age %>% pivot_longer(starts_with("se."), names_to="age", values_to="SE") %>% pull(SE)
+omni_age <- omni_age_long %>% mutate(
+  age = gsub("age4", "", age),
+  age = gsub(".", "-", age, fixed=TRUE),
+  age = ifelse(age=="60-", "60+", age)
+)  
+omni_age <- omni_age %>% mutate(
+  age = factor(age, levels = c("18-29", "30-44", "45-59", "60+"))
+)  
+  
+omni_age <- omni_age %>% mutate(
+  low = mean - 1.6445*SE, # for 90% MoE 
+  high = mean + 1.6445*SE
+)
+omni_age <- omni_age %>%
+  dplyr::select(-SE) %>%
+  pivot_longer(cols =c(mean, low, high), names_to="group", values_to="value") %>%
+  mutate(
+    value = 100*value
+  )
+
+
 
 age <- round_123 %>% 
   ggplot(aes(x = age4)) + 
@@ -674,9 +705,22 @@ age <- round_123 %>%
   ylab("Percent") + 
   ggtitle("Age ") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
-  xlab("") + ylim(c(0,35)) +
+  xlab("") + ylim(c(0,40)) +
   facet_grid(.~chart) +
-  geom_point(aes(x = age4, y = percent), data = acs_age)
+  geom_point(aes(x = age4, y = percent), data = acs_age) +
+  geom_segment(
+    aes(
+      x = as.numeric(age) - 0.45,
+      y = value,
+      xend = as.numeric(age) + 0.45,
+      yend = value,
+      linetype=group
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = omni_age
+  )  +
+  scale_linetype_manual(values=c(2,2,1)) +
+  theme(legend.position = "none")
 
 
 acs_educ5 <- data.frame(educ5 = c("Less than HS", "HS or equivalent", "Some college",  "Bachelor", "Post graduate"), 
