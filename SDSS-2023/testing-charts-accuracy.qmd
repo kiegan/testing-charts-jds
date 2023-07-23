@@ -588,8 +588,8 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
-Distributions of demographic characteristics across each survey round are shown in \autoref{fig-rounds-demographics}. 
-\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}
+Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the American Community Survey 2021. The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) all cover the Census estimates. 
+<!--\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}-->
 
 ```{r}
 #| label: fig-rounds-demographics
@@ -608,16 +608,60 @@ acs_gender <- data.frame(gender = c("Male", "Female"),
                          estimate = c(126690177, 131728290), moe=c(22354, 18838),
                          percent = c(49, 51), moe_percent = 0.1)
 
+omni_gender <- data.frame(svyby(~gender, by=~chart, design=survey_123, svymean))
+omni_gender <- rbind(
+  omni_gender %>% dplyr::select(chart, ends_with("Male")) %>% mutate(sex="Male") %>%
+    rename(mean = "genderMale", SE = "se.genderMale") %>% 
+    dplyr::select(chart, mean, SE, sex),
+  omni_gender %>% dplyr::select(chart, ends_with("Female")) %>% mutate(sex="Female") %>%
+    rename(mean = "genderFemale", SE = "se.genderFemale")
+  ) %>%
+  mutate(
+    sex = factor(sex, levels=c("Male", "Female")),
+    mean = 100*mean,
+    SE = 100*SE
+  )
+omni_gender <- omni_gender %>% mutate(
+  low = mean - 1.6445*SE, # for 90% MoE 
+  high = mean + 1.6445*SE
+)
+omni_gender <- omni_gender %>%
+  dplyr::select(-SE) %>%
+  pivot_longer(cols =c(mean, low, high), names_to="group", values_to="value") 
+
 
 gender <- round_123 %>% 
-  ggplot(aes(x = gender)) + 
-  geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
+  ggplot() + 
+  geom_bar(aes(x = gender, weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
+  # geom_rect(
+  #   aes(
+  #     xmin = as.numeric(sex) - 0.45,
+  #     ymin = mean - 1.96* SE,
+  #     xmax = as.numeric(sex) + 0.45,
+  #     ymax = mean + 1.96* SE,
+  #   ), 
+  #   fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  #   data = omni_gender
+  # ) +
+  geom_segment(
+    aes(
+      x = as.numeric(sex) - 0.45,
+      y = value,
+      xend = as.numeric(sex) + 0.45,
+      yend = value,
+      linetype=group
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = omni_gender
+  )  +
   ylab("Percent") + 
   ggtitle("Gender") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
   xlab("") +
   facet_grid(.~chart) + 
-  geom_point(aes(x = gender, y = percent), data = acs_gender)
+  geom_point(aes(x = gender, y = percent), data = acs_gender) +
+  theme(legend.position ="none") +
+  scale_linetype_manual(values=c(2,2,1))
 
 
 acs_age <- data.frame(age4 = c("18-29", "30-44", "45-59", "60+"), 
