@@ -425,18 +425,22 @@ In all scenarios, the second option (B \[D\] is bigger) is the correct response.
 For a given task, viewers are first presented with the unaligned version of the task, followed by the aligned version of the task. The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
 Respondents were also asked to rate their certainty in their response to each question on a five-point scale.
 
-```{r}
-#| label: fig-tasks
+<!--
+```{r eval=FALSE}
+#| label: fig-tasks-old
 #| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. "
 #| fig-subcap:
-#| - "Vertical stacked bar, unaligned"
-#| - "Horizontal stacked bar, unaligned"
-#| - "Wide horizontal stacked bar, unaligned"
-#| - "Vertical stacked bar, aligned"
-#| - "Horizontal stacked bar, aligned"
-#| - "Wide horizontal stacked bar, aligned"
-#| layout-nrow: 2
+#| - "Vertical, unaligned"
+#| - "Horizontal, unaligned"
+#| - "Wide horizontal, unaligned"
+#| - "Vertical, aligned"
+#| - "Horizontal, aligned"
+#| - "Wide horizontal, aligned"
+#| layout-nrow: 3
 #| out-width: 90%
+cat("Task 1")
+cat("Task 2")
+cat("Task 3")
 knitr::include_graphics("images/vertical-ab.PNG")
 knitr::include_graphics("images/round3/horizontal-ab.PNG")
 knitr::include_graphics("images/round3/hwide-ab.PNG")
@@ -444,7 +448,16 @@ knitr::include_graphics("images/vertical-cd.PNG")
 knitr::include_graphics("images/round3/horizontal-cd.PNG")
 knitr::include_graphics("images/round3/hwide-cd.PNG")
 ```
+-->
 
+
+
+```{r}
+#| label: fig-tasks
+#| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. "
+#| out-width: 90%
+knitr::include_graphics("images/stimuli-overview.png")
+```
 
 ### Task 1: Vertical stacked bar
 
@@ -462,14 +475,14 @@ Both charts are displayed at the same size, i.e. in both cases both the differen
 This leaves the vertical positioning of the bars as the only difference between the charts.
 Any differences in observed responses can therefore be attributed to this difference in presentation.
 
-Task 1 was presented to viewers in one of two rounds (Rounds 1-2), with four color scheme variations each presented to 50% of respondents in each round. 
-There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to compare structural differences.
+Task 1 was presented to viewers in two rounds (Rounds 1-2), with four color scheme variations each presented to 50% of respondents in each round. 
+There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to focus on the comparison of structural differences.
 \kr{Should we put the color variations and a test for significance in accuracy/a visual in the appendix/supplementary materials? } \hh{we could do that, but I'm not sure that we need to mention color at all.}
 
 
 ### Task 2: Horizontal stacked bar
 
-The visual mappings in the second task, shown in \autoref{fig-tasks}(b, e), are identical to the first task, but the axes of the chart are rotated so that the stacked bar is represented in a horizontal format.
+The visual mappings in the second task, shown in \autoref{fig-tasks}(b, e), are identical to the first task, but the axes of the chart are rotated so that the stacked bars are represented in a horizontal format.
 This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
 Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sample was randomly split among respondents, with 50% of participants seeing the Task 2 stimuli and 50% of participants seeing the Task 3 stimuli.
 
@@ -485,7 +498,7 @@ The images utilized in the third task again represent the same data as in the fi
 ## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households @dennis2019technical.
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households [@dennis2019technical].
 \hh{I don't think I've got the right citation} Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics. Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews. 
 
 <!--\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}-->
@@ -503,11 +516,12 @@ Paragraph on how survey weights are derived?
 
 All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
-When combining responses from different rounds of the Omnibus survey, we calibrate weights in each round to the total population  across all rounds in the resulting model.
+When combining responses from different surveys, weights need to be calibrated to the total population, so that their order after combining still reflects their relative importance. 
 
-\kr{Do we need to update this description to just say how we did it for combining across all the rounds represented?}
+<!--
+\kr{Do we need to update this description to just say how we did it for combining across all the rounds represented?}\hh{done} -->
 
-We *combine* (rather than cumulate) $\ell \ge 2$ surveys $S_1$, $S_2$, ... $S_\ell$ as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$. $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as
+We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with $ \ell \ge 2$ ) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$. $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as
 $$
 \lambda_i = \frac{n_i/d_i}{\sum_{j=1}^{\ell}n_j/d_j},
 $$ where $n_i$ is the nominal sample of survey $S_i$ and $d_i$ are the design effects for the estimators.
@@ -516,7 +530,6 @@ $$
 d_i = 1 + CV(w \in S_i)^2
 $$ 
 where $CV$ is the coefficient of variation of the weights $w$ within each sample, and is estimated as in @kishSurveySampling1965 :
-
 $$ 
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 $$
@@ -525,7 +538,7 @@ $$
 We employ that strategy whenever we include demographic variables in the analysis, otherwise we use a single adjustment for the weights. -->
 
 
-The data for this paper were collected in several rounds as part of the NORC Omnibus, and the resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
+The data for this paper were collected in several rounds as part of the NORC Omnibus. The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
 \hh{we might be able to include the lambda values for combining the tables here as well}
 
@@ -553,7 +566,7 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 |---------------|---------------|--------------:|--------------:|--------------:|--------------:|
 | Round 1 | April 2022 | `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` | $\lambda_1$  =  `r round(lambdas[1],3)` |
 | Round 2 | May 2022   | `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` | $\lambda_2$  = `r sprintf("%.3f",lambdas[2])` |
-| Round 3 | Jun 2022   | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` | $\lambda_3$  = `r round(lambdas[3],3)` |
+| Round 3 | June 2022   | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` | $\lambda_3$  = `r round(lambdas[3],3)` |
 | **Total**        |    ---        |    `r nrow(round_123)`   |  `r round(neff(round_123$weight),1)`   |    |   |
 
 : Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the convex combination as discussed above. {#tbl-rounds}
@@ -575,11 +588,12 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
-Distributions of demographic characteristics across each survey round are shown in \autoref{fig-rounds-demographics}. \kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}
+Distributions of demographic characteristics across each survey round are shown in \autoref{fig-rounds-demographics}. 
+\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}
 
 ```{r}
 #| label: fig-rounds-demographics
-#| fig-cap: "Demographics of respondents"
+#| fig-cap: "Demographics of respondents in each of the tasks. The dots show percentages of the national demographics as estimated by the American Community Survery (ACS) 2021."
 #| fig-height: 7
 #| fig-width: 12
 
@@ -588,30 +602,52 @@ round_123 <- round_123 %>% group_by(chart) %>%
     weight_pct_round = weight/sum(weight)*100
   )
 
+# from ACS 2001
+# https://data.census.gov/table?q=sex+of+adults+age+greater+than+18+across+the+US&tid=ACSDP1Y2021.DP05	
+acs_gender <- data.frame(gender = c("Male", "Female"), 
+                         estimate = c(126690177, 131728290), moe=c(22354, 18838),
+                         percent = c(49, 51), moe_percent = 0.1)
+
+
 gender <- round_123 %>% 
-  ggplot(aes(x = gender, weight = weight_pct_round)) + geom_bar() + 
+  ggplot(aes(x = gender)) + 
+  geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
   ggtitle("Gender") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
   xlab("") +
-  facet_grid(.~chart)
+  facet_grid(.~chart) + 
+  geom_point(aes(x = gender, y = percent), data = acs_gender)
 
+
+acs_age <- data.frame(age4 = c("18-29", "30-44", "45-59", "60+"), 
+                      estimate = c(52325456, 66712246, 61814869, 77565896))
+acs_age <- acs_age %>% mutate(percent = estimate/sum(estimate)*100)
 
 age <- round_123 %>% 
-  ggplot(aes(x = age4, weight = weight_pct_round)) + geom_bar() + 
+  ggplot(aes(x = age4)) + 
+  geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
   ggtitle("Age ") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
   xlab("") + ylim(c(0,35)) +
-  facet_grid(.~chart)
+  facet_grid(.~chart) +
+  geom_point(aes(x = age4, y = percent), data = acs_age)
+
+
+acs_educ5 <- data.frame(educ5 = c("Less than HS", "HS or equivalent", "Some college",  "Bachelor", "Post graduate"), 
+                      estimate = c(28687047, 69610758, 77707408, 50031690, 29454503))
+acs_educ5 <- acs_educ5 %>% mutate(percent = estimate/sum(estimate)*100)
 
 education <- round_123 %>% 
-  ggplot(aes(x = educ5, weight = weight_pct_round)) + geom_bar() + 
+  ggplot(aes(x = educ5)) + 
+  geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
   ggtitle("Education levels") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
   xlab("") + ylim(c(0,35)) +
-  facet_grid(.~chart)
+  facet_grid(.~chart) +
+  geom_point(aes(y = percent), data = acs_educ5)
 
 income <- round_123 %>% 
   ggplot(aes(x = income4, weight = weight_pct_round)) + geom_bar() + 
