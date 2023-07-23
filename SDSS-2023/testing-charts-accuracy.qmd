@@ -588,7 +588,7 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
-Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the American Community Survey 2021. The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) all cover the Census estimates. 
+Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the 5 year estimates of the American Community Survey 2021. The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) mostly cover the Census estimates. 
 <!--\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}-->
 
 ```{r}
@@ -727,23 +727,105 @@ acs_educ5 <- data.frame(educ5 = c("Less than HS", "HS or equivalent", "Some coll
                       estimate = c(28687047, 69610758, 77707408, 50031690, 29454503))
 acs_educ5 <- acs_educ5 %>% mutate(percent = estimate/sum(estimate)*100)
 
+omni_educ <- data.frame(svyby(~educ5, by=~chart, design=survey_123, svymean))
+omni_educ_long <- omni_educ %>% 
+  pivot_longer(starts_with("educ"), names_to="educ", values_to = "mean") %>% 
+  dplyr::select(chart, educ, mean) 
+omni_educ_long$SE <- omni_educ %>% pivot_longer(starts_with("se."), names_to="educ", values_to="SE") %>% pull(SE)
+omni_educ <- omni_educ_long %>% mutate(
+  educ = gsub("educ5", "", educ),
+  educ = gsub(".", " ", educ, fixed=TRUE)
+)  
+omni_educ <- omni_educ %>% mutate(
+  educ = factor(educ, levels = c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate"))
+)  
+  
+omni_educ <- omni_educ %>% mutate(
+  low = mean - 1.6445*SE, # for 90% MoE 
+  high = mean + 1.6445*SE
+)
+omni_educ <- omni_educ %>%
+  dplyr::select(-SE) %>%
+  pivot_longer(cols =c(mean, low, high), names_to="group", values_to="value") %>%
+  mutate(
+    value = 100*value
+  )
+
+
+
 education <- round_123 %>% 
   ggplot(aes(x = educ5)) + 
   geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
   ggtitle("Education levels") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
-  xlab("") + ylim(c(0,35)) +
+  xlab("") + ylim(c(0,40)) +
   facet_grid(.~chart) +
-  geom_point(aes(y = percent), data = acs_educ5)
+  geom_point(aes(y = percent), data = acs_educ5) +
+  geom_segment(
+    aes(
+      x = as.numeric(educ) - 0.45,
+      y = value,
+      xend = as.numeric(educ) + 0.45,
+      yend = value,
+      linetype=group
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = omni_educ
+  )  +
+  scale_linetype_manual(values=c(2,2,1)) +
+  theme(legend.position = "none")
+
+
+
+omni_income <- data.frame(svyby(~income4, by=~chart, design=survey_123, svymean))
+omni_income_long <- omni_income %>% 
+  pivot_longer(starts_with("income"), names_to="income", values_to = "mean") %>% 
+  dplyr::select(chart, income, mean) 
+omni_income_long$SE <- omni_income %>% pivot_longer(starts_with("se."), names_to="income", values_to="SE") %>% pull(SE)
+omni_income <- omni_income_long %>% mutate(
+  income = gsub("income4", "", income),
+  income = gsub(".", " ", income, fixed=TRUE)
+)  
+omni_income <- omni_income %>% mutate(
+  income = factor(income, levels = c("   30k", " 30k    60k", " 60k    100k" , "more than  100k"))
+)  
+  
+omni_income <- omni_income %>% mutate(
+  low = mean - 1.6445*SE, # for 90% MoE 
+  high = mean + 1.6445*SE
+)
+omni_income <- omni_income %>%
+  dplyr::select(-SE) %>%
+  pivot_longer(cols =c(mean, low, high), names_to="group", values_to="value") %>%
+  mutate(
+    value = 100*value
+  )
+levels(omni_income$income) <- levels(round_123$income4)
 
 income <- round_123 %>% 
-  ggplot(aes(x = income4, weight = weight_pct_round)) + geom_bar() + 
+  ggplot(aes(x = income4)) + 
+  geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
   ggtitle("Income levels") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
-  xlab("") + ylim(c(0,35)) +
-  facet_grid(.~chart)
+  xlab("") + ylim(c(0,40)) +
+  facet_grid(.~chart) +
+  geom_segment(
+    aes(
+      x = as.numeric(income) - 0.45,
+      y = value,
+      xend = as.numeric(income) + 0.45,
+      yend = value,
+      linetype=group
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = omni_income
+  )  +
+  scale_linetype_manual(values=c(2,2,1)) +
+  theme(legend.position = "none")
+
+
 
 (gender + education + plot_layout(nrow=1, widths=c(2,5))) / 
   (age + income + plot_layout(nrow=1, widths = c(4,4)))
