@@ -286,15 +286,15 @@ survey_123b <-
 ## Introduction
 
 <!-- What is our main objective? -->
-
+<!--
 \kr{Should the abstract match -- or be close to -- our SDSS short abstract?}
 \hh{I don't think it has to}
-
+-->
 
 What do viewers see when we show them a data chart?
-A data chart -- at its core -- maps quantitative values to graphical elements representing their relative values.
+A data chart -- at its core -- maps values to graphical elements: quantitative elements are represented as measurable features, such as position, size, or shade. \hh{do we need to also go into qualitative variables?}
 Modern data visualizations are much more than a simple, objective mapping of values to a plane; they contain contextual and design elements, and are often structured to support the viewer in understanding a particular view of a set of data or specific pattern underlying the values.
-The design of a data visualization impacts a viewer's ability to achieve that understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparison of values across groups or time points.
+The design of a data visualization impacts a viewer's ability to achieve that understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparisons of values across groups or time points.
 More broadly, the design of a data visualization can change how viewers interact with the chart.
 
 A crucial step in the process of interacting with and understanding a chart is the viewer's employment of comparisons of the parts within.
@@ -302,18 +302,20 @@ A crucial step in the process of interacting with and understanding a chart is t
 Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
-@heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of XXX Amazon Mechanical Turk (mTurk) workers for the study.
+@heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
 Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
 Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
 <!-- Bias from crowd-sourcing? sample size?  -->
 
+<!--
 \kr{The mackinlay thing feels like maybe we are overemphasizing the ranking done by cleveland/mcgill and then mackinlay - I think we could emphasize less if we want}
 \hh{my point was to emphasize that Mackinlay is a foundational paper (rightfully so), but not based on any data beyond Cleveland}
+-->
 
 <!--Our work -- as that of Cleveland and McGill and Heer and Bostock -- -->
 
-Our work also centers on studying data visualization design choices and their impact on viewer behavior and accuracy of viewers' responses.
-We seek to answer whether it is possible to reproduce some of their findings in the context of a survey with a large, nationally-representative set of respondents, and within that context we focus on the following research questions:
+<!--Our work centers on studying data visualization design choices and their impact on viewer behavior and accuracy of viewers' responses.-->
+Here, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents, and within that context we focus on the following research questions:
 
 1.  How do structural design choices in a data visualization impact viewers' ability to identify the larger of two elements?
 
@@ -326,11 +328,11 @@ The advantage of using a probability-based approach is two-fold.
 First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
 Second, the sample is representative of the general adult public in the U.S., and this allows us to test whether prior results from convenience samples hold with a nationally representative sample and whether there are differences in those results across demographic subgroups.
 
-We present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
+Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
 In this work, we present the series of tests we completed and the resulting findings.
-The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in our perception tests.
+The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in the perception tests.
 We then describe the population of study respondents and obtained survey sample.
-Subsequently, we share our analyses of the resulting survey responses across each of our tests, including analyses on accuracy of responses and response behavior.
+Subsequently, we share a summary of the resulting survey responses across each of the tests, including analyses on accuracy of responses and response behavior.
 Finally, we discuss implications of this work and next steps.
 
 <!-- # ```{r} -->
@@ -359,9 +361,9 @@ Finally, we discuss implications of this work and next steps.
 Each task is made up of two elements: a visual stimulus and a question about that stimulus that the viewer is asked to respond to.
 In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
 
-The comparison between sets of marked pairs is designed to be a difficult task, with the difference between the values represented in the two marked pieces being a just-noticeable difference.
+The comparison between sets of marked pairs is intentionally designed to be a difficult task, with the difference between the values represented in the two marked pieces being chosen close to their just-noticeable difference.
 The **Just-Noticeable Difference** (JND) is defined as the smallest difference that will be detected 50% of the time.
-Prior results from studies on bar charts and pie charts [@luModelingJustNoticeable2022] inform the differences in charts shown to our survey panelists.
+Prior results from studies on bar charts and pie charts [@luModelingJustNoticeable2022] inform the differences in charts shown to  survey panelists.
 
 We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
 Asking perception tasks in a survey differs from the controlled environment of a cognitive lab, where these kind of questions may usually be assessed.
@@ -379,15 +381,20 @@ Finally, we change the aspect ratio of the chart and present a wider version of 
 \hh{Not sure where should put this, parking it here for right now:}
 \hh{expectations - start}
 ```
-What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's set of rankings, but with some modifications: both 'aligned' and 'unaligned' bars share the same axis.
-Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment.
-Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes beyond a comparison of (arc) lengths or areas.
+What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's positions along aligned and unaligned scales, but with some modifications: both 'aligned' and 'unaligned' bars share the same axis.
+Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment, which in the absence of three-dimensional cues seems to be the general strategy for evaluating barcharts [@zacksReadingBarGraphs1998a].  
+Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes.
+
+
 
 We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column mitigating some of this difficulty.
 @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill.
 \kr{The updated sketch is great here!! One note -- can we move the label for the "positions along the same, but unaligned scale", it's not aligned with the others}
-\hh{that was on purpose :(  that goes beyond Cleveland and McGill ... I'll see what I can do about that}
+\hh{What about the sketch now?}
 
+<!--
+@cejaTruthSquareAspect2021 suggest that the aspect ratio of areas causes biases in the viewers' assessments -- given that all of the stimuli are close in size (and therefore close in aspect ratio), we do not expect this to be an issue. 
+-->
 
 ```{=tex}
 \hh{I think we should include the floating bars here to demonstrate that they are worse than the wide horizontal bars. }

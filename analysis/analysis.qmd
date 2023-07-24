@@ -602,6 +602,12 @@ round_12_certainty_long %>%
 
 The data this section is based on comes from (a part) of Round 6 and all responses from Round 7. 
 
+From @zacksReadingBarGraphs1998a a good explanation why the results from the facetted barcharts are so bad: we are running into a context-induced illusion. Lines are perceived to be bigger, if there is a bigger line next to them. -- Here, we see the opposite effect.
+
+> The graphical context in which an element occurs can produce distortions in judgments of color, angle, size, and orientation (see, e.g., Goldstein, 1989, especially chap. 7; Howard, 1982). One particularly relevant example of such a distortion is given in Figure 1. This figure demonstrates the parallel lines illusion: When two parallel lines are viewed, the viewer tends to perceive assimilation (the lengths of the lines seem closer than they are) or contrast (the lengths of the lines seem more different than they are), depending on the ratio of the line lengths and the distance between them (Jordan & Schiano, 1986; Schiano, 1986).
+
+
+
 ```{r combine_rnds67}
 lambda6 <- calculate_lambda(round6_adj$weight, round7_adj$weight)
 round6_adj <- round6_adj %>% 
