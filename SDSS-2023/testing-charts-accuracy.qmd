@@ -384,24 +384,23 @@ Finally, we change the aspect ratio of the chart and present a wider version of 
 \hh{Not sure where should put this, parking it here for right now:}
 \hh{expectations - start}
 ```
-What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's positions along aligned and unaligned scales, but with some modifications: both 'aligned' and 'unaligned' bars share the same axis.
-Aligned tiles are additionally anchored in the same position in one dimension, i.e. the difference between their sizes can be reduced to a positional assessment, which in the absence of three-dimensional cues seems to be the general strategy for evaluating barcharts [@zacksReadingBarGraphs1998a].  
-Unaligned tiles do not share this anchor, however, the context of the other tiles in the chart provide a frame, which *should* help with an assessment of the tiles' sizes.
-
-
-
-We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the context of the other tiles in the same column mitigating some of this difficulty.
+What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill's positions along aligned and unaligned scales, but with some modifications.
 @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill.
-\kr{The updated sketch is great here!! One note -- can we move the label for the "positions along the same, but unaligned scale", it's not aligned with the others}
-\hh{What about the sketch now?}
+
+In this paper, both 'aligned' and 'unaligned' bars share the same axis.
+
+Aligned tiles are additionally anchored in the same position along the axis, i.e. the difference between their sizes can be reduced to a positional assessment, which in the absence of three-dimensional cues seems to be the general strategy viewers use when evaluating barcharts [@zacksReadingBarGraphs1998a].  
+Unaligned tiles do not share this anchor of position, i.e. the difference between their sizes needs at least two comparisons of positions.
+However, unaligned bars in a stacked barchart are not just assessments of the lengths of bars -- the other tiles in the chart provide a reference frame of the shared axis, which *should* help with an assessment of the tiles' sizes. As shown in the sketch of @fig-tasks-explain, this framing leads to a stimulus that is between Cleveland and McGill's task of 'position along the same but unaligned axis' and an assessment of length. 
+
+We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the other tiles in the same column mitigating some of this difficulty. \hh{In particular, the additional context of the other tiles should *help* rather than *hurt* the comparison, unlike other situations, where additional information besides the pieces involved in the comparison were found to be distractors} [@talbotFourExperimentsPerception2014].
+<!--\kr{The updated sketch is great here!! One note -- can we move the label for the "positions along the same, but unaligned scale", it's not aligned with the others}-->
+<!--\hh{What about the sketch now?}-->
 
 <!--
 @cejaTruthSquareAspect2021 suggest that the aspect ratio of areas causes biases in the viewers' assessments -- given that all of the stimuli are close in size (and therefore close in aspect ratio), we do not expect this to be an issue. 
 -->
 
-```{=tex}
-\hh{I think we should include the floating bars here to demonstrate that they are worse than the wide horizontal bars. }
-```
 
 ```{r}
 #| label: fig-tasks-explain
@@ -411,7 +410,6 @@ We would expect that comparing unaligned tiles is a harder task (with correspond
 include_graphics("images/sketch-tasks.png")
 ```
 
-\hh{expectations - end}
 
 Our use of a survey format guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
@@ -435,33 +433,6 @@ In all scenarios, the second option (B \[D\] is bigger) is the correct response.
 
 For a given task, viewers are first presented with the unaligned version of the task, followed by the aligned version of the task. The time in seconds that each respondent spent on each task was recorded, as well as whether the participant zoomed in on each chart while answering the question.
 Respondents were also asked to rate their certainty in their response to each question on a five-point scale.
-
-<!--
-```{r eval=FALSE}
-#| label: fig-tasks-old
-#| fig-cap: "Each of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. "
-#| fig-subcap:
-#| - "Vertical, unaligned"
-#| - "Horizontal, unaligned"
-#| - "Wide horizontal, unaligned"
-#| - "Vertical, aligned"
-#| - "Horizontal, aligned"
-#| - "Wide horizontal, aligned"
-#| layout-nrow: 3
-#| out-width: 90%
-cat("Task 1")
-cat("Task 2")
-cat("Task 3")
-knitr::include_graphics("images/vertical-ab.PNG")
-knitr::include_graphics("images/round3/horizontal-ab.PNG")
-knitr::include_graphics("images/round3/hwide-ab.PNG")
-knitr::include_graphics("images/vertical-cd.PNG")
-knitr::include_graphics("images/round3/horizontal-cd.PNG")
-knitr::include_graphics("images/round3/hwide-cd.PNG")
-```
--->
-
-
 
 ```{r}
 #| label: fig-tasks
@@ -503,6 +474,16 @@ The images utilized in the third task again represent the same data as in the fi
 \hh{The length of bars is increased to fit the new dimensions. This increases the difference in the length of bars from previously 8 pixels to 13 pixels. The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant. }
 <!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. -->
 <!--kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }-->
+
+### Task 3b: Floating bars
+
+```{r}
+n5 <- nrow(round5_adj)
+n5_eff <- neff(round5_adj$weight)
+```
+
+\hh{
+In order to measure the impact of the chart's context, we asked a subset of participants to assess the size of the two tiles A and B (as shown in the bottom right of @fig-tasks-explain) to each other without giving any additional information.}  
 
 
 
@@ -594,6 +575,7 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 | Task 1 | Vertical| `r nrow(round1_adj) + nrow(round2_adj)` | `r round(neff(round_12$weight),1)` |
 | Task 2 | Horizontal |`r nrow(round3_adj[round3_adj$P_EXP == 1,])` | `r round(neff(round3_adj[round3_adj$P_EXP == 1,]$weight),1)` |
 | Task 3 | Horizontal wide |`r nrow(round3_adj[round3_adj$P_EXP == 2,])` | `r round(neff(round3_adj[round3_adj$P_EXP == 2,]$weight),1)` |
+| Task 3b | Floating bars |`r n5` | `r sprintf("%.1f",n5_eff)` |
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
@@ -1177,6 +1159,7 @@ dframe %>%
 ```
 
 One pattern in accuracy holds across each of the three structural variations: the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
+\hh{The beneficial effect of frames/context of the chart is apparent when comparing accuracy of responses for the Horizontal wide design and the floating bars: the rate of correct responses in floating bars is significantly lower than in the wide horizontal charts. }
 
 Rates of selecting the incorrect response are low across all three structural variations and the aligned and unaligned tasks; while viewers select the incorrect response at significantly higher rates for all three unaligned tasks relative to the aligned tasks, those rates do not differ significantly across the three structural variations. Most of the observed differences in response patterns across structural variations are attributed to respondents' selection between the correct option or the 'they are the same' option.  
 
@@ -1782,6 +1765,12 @@ Perhaps most salient among our results are the patterns in response behavior acr
 
 
 While our results are limited to mapping in a stacked bar chart with a specific topic, they demonstrate among them a wealth of insights about how respondents perceive and interact with data visualizations. More expansive work on this topic should be completed to understand how the general public interacts with and understands charts, including expanding to a wider set of structural variations, more aesthetic design variations, and considering differences in respondent behavior across different data topic areas. 
+
+\hh{The actionable insights are:}
+
+- make sure that the main comparison in a plot is lined up -- in an interactive setting it would be beneficial to have the possibility of re-ordering the categories to help with comparisons. 
+- offering zoom-ins help with certainty, even if it does not help with perceptual accuracy
+
 
 <!-- Key findings to discuss: -->
 
