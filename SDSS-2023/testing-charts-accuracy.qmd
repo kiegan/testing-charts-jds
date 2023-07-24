@@ -150,6 +150,8 @@ round3_adj <- round3 %>% mutate(
   cd != "SKIPPED ON WEB"
 )
 
+
+
 round5 <- readRDS(file.path(vs_repo_local, "round5.rds"))
 
 # floating bars (unaligned) are shown to all participants of round 5
@@ -218,11 +220,14 @@ round_123 <- round_12 %>%
                    age4, gender, income4, racethnicity, educ5) 
   ) 
 
+
 lambda_1235 <- calculate_lambda(round_123$weight, round5_adj$weight)
+
 round_123b <- round_123 %>% 
               mutate(weight = lambda_1235*weight/sum(weight)) %>% 
   rbind(
-    round5_adj %>% 
+    round5_adj
+     %>% 
       mutate(
         weight = (1-lambda_1235)*weight/sum(weight),
         round = "Round 5",
@@ -233,12 +238,10 @@ round_123b <- round_123 %>%
         CorrectCD = NA,
         CorrectABCD = NA,
         chart = "Floating bars"
-       ) %>% 
-        dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
+       ) %>% dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
                    ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
-                   age4, gender, income4, racethnicity, educ5) 
-  ) 
-
+                   age4, gender, income4, racethnicity, educ5))
+       
 levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
 
 levels(round_123$income4) <- c("< $30k", "$30k - $60k", "$60k - $100k", "more than $100k")
@@ -548,8 +551,6 @@ We employ that strategy whenever we include demographic variables in the analysi
 
 The data for this paper were collected in several rounds as part of the NORC Omnibus. The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
-\hh{we might be able to include the lambda values for combining the tables here as well}
-
 <!-- | Name    | Date       |                \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | -->
 
 <!-- |---------------|---------------|--------------:|--------------:|--------------:| -->
@@ -596,7 +597,8 @@ A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` resp
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
-Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the 5 year estimates of the American Community Survey 2021. The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) mostly cover the Census estimates. 
+Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the 5 year estimates of the American Community Survey 2021. The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) for the most part cover the Census estimates. 
+
 <!--\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}-->
 
 ```{r}
@@ -1094,7 +1096,7 @@ $$
 $$
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
-The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. \hh{The lowercase letters indicate significances between pairs of estimates: two estimates (in the same column) are significantly different at 5% level, if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
+The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. The lowercase letters indicate significances between pairs of estimates: two estimates (in the same column) are significantly different at 5% level, if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
 
 ```{r}
 #| label: tbl-rounds-123
@@ -1431,7 +1433,7 @@ We use a generalized cumulative logistic regression, where $\mu_i$ are intercept
 $$
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 $$
-The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. \ejm{add legend for colors} When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
+The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
 
 <!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
 
@@ -1529,7 +1531,7 @@ income_cd <- round_123_long %>%
   ggplot(aes(x = income4)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="none",
+  theme(legend.position="right",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
@@ -1547,7 +1549,7 @@ income_ab <- round_123_long %>%
   ggplot(aes(x = income4)) + 
   facet_grid(.~task) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
-  theme(legend.position="none",
+  theme(legend.position="right",
         axis.text.x = element_text(angle=30, hjust=1)) + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
@@ -1606,9 +1608,11 @@ age_ab <- round_123_long %>%
   xlab("") +
     ggtitle("\nby age") +
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
-gender_cd + age_cd  + educ_cd +income_cd + plot_layout(nrow=1, guides = "collect")
+gender_cd + age_cd  + educ_cd +income_cd + 
+    plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
 
-gender_ab + age_ab  + educ_ab +income_ab + plot_layout(nrow=1, guides = "collect")
+gender_ab + age_ab  + educ_ab +income_ab + 
+  plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
 ```
 
 ```{r demographics-model}
