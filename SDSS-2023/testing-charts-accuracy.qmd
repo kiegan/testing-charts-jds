@@ -35,6 +35,7 @@ editor:
 ```{=latex}
   \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
+  \newcommand{\ejm}[1]{{\textcolor{ForestGreen}{#1}}}.  
 
 % take out everything above later
 % keep everything below
@@ -498,8 +499,8 @@ The images utilized in the third task again represent the same data as in the fi
 ## Study design -- participants
 
 Participants were recruited as part of NORC's AmeriSpeak panel, which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
-The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households [@dennis2019technical].
-\hh{I don't think I've got the right citation} Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics. Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews. 
+The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households [@dennis2019technical]. \ejm{46,565 panelists are CAWI; they are 93.3% of the panel and 93.6% of the total panel weights.}
+Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics. Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews. 
 
 <!--\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}-->
 
@@ -516,7 +517,7 @@ Paragraph on how survey weights are derived?
 
 All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
-When combining responses from different surveys, weights need to be calibrated to the total population, so that their order after combining still reflects their relative importance. 
+When combining responses from different surveys, weights \ejm{are rescaled} with respect to the total population, so that their order after combining still reflects their relative importance. 
 
 <!--
 \kr{Do we need to update this description to just say how we did it for combining across all the rounds represented?}\hh{done} -->
@@ -1423,13 +1424,13 @@ We use a generalized cumulative logistic regression, where $\mu_i$ are intercept
 $$
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 $$
-The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
+The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}. \ejm{add legend for colors} When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level. We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000. When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups. We do not see significant differences in responses by age for either task. Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task. This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences. 
 
 <!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
 
 ```{r}
 #| label: fig-demographics
-#| fig-cap: "Panelists' demographics matter, particularly, when the task difficulty increases. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers (orange) decreases, while the percentage of correct answers (blue) increases slightly (significant at below 0.05). For the  more difficult task of comparing unaligned tiles, demographics are more significant. Higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers."
+#| fig-cap: "Panelists' demographics matter, particularly, when the task difficulty increases. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers (orange) decreases, while the percentage of correct answers (blue) increases slightly (significant at below 0.05). For the  more difficult task of comparing unaligned tiles, demographics are more significant. Higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers. "
 #| fig-subcap: 
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
