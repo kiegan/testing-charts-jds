@@ -36,6 +36,7 @@ editor:
   \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
   \newcommand{\ejm}[1]{{\textcolor{ForestGreen}{#1}}}.  
+  \newcommand{\ndt}[1]{{\textcolor{purple}{#1}}}.  
 
 % take out everything above later
 % keep everything below
@@ -82,6 +83,7 @@ library(tidyverse)
 library(knitr)
 library(bibtex)
 theme_set(theme_bw())
+theme_update(axis.ticks = element_blank())
 
 library(readxl)
 library(lubridate)
@@ -285,6 +287,7 @@ survey_123b <-
 
 ```
 
+\ndt{break up first sentence}
 
 ## Introduction
 
@@ -300,9 +303,11 @@ Modern data visualizations are much more than a simple, objective mapping of val
 The design of a data visualization impacts a viewer's ability to achieve that understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparisons of values across groups or time points.
 More broadly, the design of a data visualization can change how viewers interact with the chart.
 
-A crucial step in the process of interacting with and understanding a chart is the viewer's employment of comparisons of the parts within.
+\ndt{define structural}
+
+\ndt{The viewer's employment of comparisons of the components is a crucial step in the process of interacting with and understanding of chart.}
 @clevelandGraphicalPerceptionTheory1984 observed as such, and in their seminal study defined the better visual among a pair as the one that allows viewers to make more accurate comparisons.
-Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
+Based on mappings of quantitative variables to different graphical elements \ndt{example of element to explain it XXX}, Cleveland and McGill's study resulted in a ranking of perceptual tasks \ndt{give example of task} from most accurate to least accurate, which was then extended by  @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
@@ -331,6 +336,7 @@ The advantage of using a probability-based approach is two-fold.
 First, we have access to a large sample of survey participants and thus have greater power in making inference about graphical perceptional abilities.
 Second, the sample is representative of the general adult public in the U.S., and this allows us to test whether prior results from convenience samples hold with a nationally representative sample and whether there are differences in those results across demographic subgroups.
 
+\ndt{I think the next paragraph can be moved above the RQs. Use this paragraph to set up the concepts, define constructs, then explain the study, and then note the RQs.}
 Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
 In this work, we present the series of tests we completed and the resulting findings.
 The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in the perception tests.
@@ -361,7 +367,18 @@ Finally, we discuss implications of this work and next steps.
 
 ## Study design -- stimulus
 
-Each task is made up of two elements: a visual stimulus and a question about that stimulus that the viewer is asked to respond to.
+\ndt{
+I think this paragraph should go first in this section.
+1. the survey format
+2. the type of data
+3. The stimulus
+3. how we set up the stimulus and why
+4. the tasks and alighed v unaligned
+4. qtext
+5. fig 1}
+
+
+Each task is made up of two elements: a visual stimulus and a question about the stimulus.
 In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
 
 The comparison between sets of marked pairs is intentionally designed to be a difficult task, with the difference between the values represented in the two marked pieces being chosen close to their just-noticeable difference.
@@ -370,13 +387,13 @@ Prior results from studies on bar charts and pie charts [@luModelingJustNoticeab
 
 We employ comparisons at the JND in our tasks in order to maximize our ability to identify the impact of design changes on viewer accuracy and behavior.
 Asking perception tasks in a survey differs from the controlled environment of a cognitive lab, where these kind of questions may usually be assessed.
-Rather than asking the same (or similar) type of question with varied signal strength dozens or hundreds of times, we are limited to only a few questions at a time.
+Rather than asking the same (or similar) type of question with varied signal strength dozens or hundreds of times, we are limited to only a few questions at a time. \ndt{note why we are limited to only a few questions at a time - that is not clear.}
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
 Therefore, we focus on questions which vary the structure of the presented image, but ask viewers to compare the same underlying data values across those varied images.
 
-We ask participants to determine which of two just-noticeably different marked pieces is larger within each data visualization image, and focus on three main sets of structural variation in the design of that data visualization image.
-First, we vary the alignment of the pieces in question.
-Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline.
+We ask participants to determine which of two just-noticeably different marked pieces \ndt{is pieces the same as tiles below?} is larger within each chart, and focus on three main sets of structural variation in the design of that chart.
+First, we vary the alignment of the pieces in question. \ndt{perhaps a bulleted list would work better here}
+Viewers are presented with two marked pieces in a chart that do not share a common baseline, then two pieces that do share a common baseline. \ndt{"we refer to this as aligned and unaligned"}
 Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces.
 Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
 
@@ -410,15 +427,17 @@ We would expect that comparing unaligned tiles is a harder task (with correspond
 include_graphics("images/sketch-tasks.png")
 ```
 
-
+\ndt{"The survey format guides the design and structure of the questions asked...." Why is this so?}
 Our use of a survey format guides the format and design of the questions asked and how they are presented to respondents.
 First, participant instructions must be delivered in a very short and easily understandable format, because participants cannot ask clarifying questions about the task as they might be able to in a cognitive lab setting.
-Second, we want to utilize content within the data visualization image which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the presented task.
+Second, we want to utilize content within the data visualization image which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the presented task. \ndt{stimulus?}
 For this reason, we utilize data on living arrangements of older U.S. adults -- a topic which most U.S. adults will have some familiarity with, but is not inherently polarizing.
 Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct structural version of the chart or test variations of a chart across distinct rounds of the survey. 
 
 #### Question text  
 When viewing each chart, participants were asked to compare the relative sizes of marked elements within the chart:
+
+\ndt{This should go above fig 1 to explain the set up for fig 1}
 
 "There are many charts used in the news media to portray data visually. Looking at the chart below, which of the marked dark blue pieces is bigger, A or B? Just your best guess is fine.
 
@@ -474,6 +493,7 @@ The images utilized in the third task again represent the same data as in the fi
 \hh{The length of bars is increased to fit the new dimensions. This increases the difference in the length of bars from previously 8 pixels to 13 pixels. The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant. }
 <!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. -->
 <!--kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }-->
+\ndt{agree to drop note on color. Can perhaps just say we used CBlind  friendly}
 
 ### Task 3b: Floating bars
 
@@ -483,7 +503,7 @@ n5_eff <- neff(round5_adj$weight)
 ```
 
 \hh{
-In order to measure the impact of the chart's context, we asked a subset of participants to assess the size of the two tiles A and B (as shown in the bottom right of @fig-tasks-explain) to each other without giving any additional information.}  
+In order to measure the impact of the chart's context, we asked a subset of participants to assess the relative sizes of the two tiles A and B (as shown in the bottom right of @fig-tasks-explain) without giving any additional information.}  
 
 
 
@@ -532,7 +552,7 @@ We employ that strategy whenever we include demographic variables in the analysi
 
 The data for this paper were collected in several rounds as part of the NORC Omnibus. The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
-<!-- | Name    | Date       |                \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | -->
+<!-- | Name    | Date       |                \# Participants |                Effective Sample Size |         Sum of weights $\sum_i w_i$ | -->
 
 <!-- |---------------|---------------|--------------:|--------------:|--------------:| -->
 
@@ -552,14 +572,14 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 
 
-| Name    | Date       |      \# Participants |                effective sample size |         Sum of weights $\sum_i w_i$ | $\lambda_i$ |
+| Name    | Date       |      \# Participants |                Effective Sample Size |         Sum of weights $\sum_i w_i$ | $\lambda_i$ |
 |---------------|---------------|--------------:|--------------:|--------------:|--------------:|
 | Round 1 | April 2022 | `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` | $\lambda_1$  =  `r round(lambdas[1],3)` |
 | Round 2 | May 2022   | `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` | $\lambda_2$  = `r sprintf("%.3f",lambdas[2])` |
 | Round 3 | June 2022   | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` | $\lambda_3$  = `r round(lambdas[3],3)` |
 | **Total**        |    ---        |    `r nrow(round_123)`   |  `r round(neff(round_123$weight),1)`   |    |   |
 
-: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the convex combination as discussed above. {#tbl-rounds}
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining surveys as discussed above. {#tbl-rounds}
 
 
 
@@ -570,7 +590,7 @@ The data for this paper were collected in several rounds as part of the NORC Omn
 
 A total of `r sum(c(nrow(round1_adj), nrow(round2_adj), nrow(round3_adj)))` respondents participated across the three rounds. The number of responses and corresponding effective sample sizes in each round are shown in \autoref{tbl-rounds}. All responses were combined into one set of survey responses, with adjusted combined sample weights and indicators for which task each respondent was exposed to. The resulting sample sizes corresponding to each task are shown in \autoref{tbl-tasks}. 
 
-| Name    | Description    |      \# Participants |                effective sample size |
+| Name    | Description    |      \# Participants |                Effective Sample Size |
 |---------------|---------------|--------------:|--------------:|
 | Task 1 | Vertical| `r nrow(round1_adj) + nrow(round2_adj)` | `r round(neff(round_12$weight),1)` |
 | Task 2 | Horizontal |`r nrow(round3_adj[round3_adj$P_EXP == 1,])` | `r round(neff(round3_adj[round3_adj$P_EXP == 1,]$weight),1)` |
@@ -891,9 +911,9 @@ The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paire
 ```{r accuracy,   warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
-#| out-width: 80%
-#| fig-height: 5
-#| fig-width: 10
+#| out-width: 90%
+#| fig-height: 4
+#| fig-width: 8.5
 
 gg1 <- round_123_long %>%
   mutate(
@@ -907,12 +927,12 @@ gg1 <- round_123_long %>%
   geom_bar() +
   ylab("Number of (effective) Respondents") +
   xlab("") +
-  scale_fill_manual(values=c("grey", "forestgreen")) +
+  scale_fill_manual("", values=c("grey", "forestgreen")) +
   scale_y_continuous(
       sec.axis = sec_axis(~./sum(round_123$weight)*100,
                           name="Percent responses")
   ) +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "left") +
   ggtitle("(a) Accuracy of survey responses")  +
   geom_rect(
     aes(
@@ -1008,10 +1028,10 @@ ci_confint3 <- ci_confint3 %>%
 
 ```{r}
 #| label: fig-response-123
-#| fig-cap: "Responses for accuracy in the three designs. Responses to the same task are shown side-by-side for the three designs.  The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the three designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy."
-#| fig-height: 4.25
-#| fig-width: 7
-#| out-width: 80%
+#| fig-cap: "Responses for accuracy by task across the designs. The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the designs for wrong responses. When tiles are unaligned, the horizontal wide barchart is showing the highest accuracy. For aligned tile, the horizontal wide design and the vertical design do not show a significant difference in accuracy. Floating bars have a significantly lower rate of correct answers than all the other designs."
+#| fig-height: 4
+#| fig-width: 8
+#| out-width: 90%
 
 round_123b_long %>% 
   mutate(
@@ -1023,7 +1043,7 @@ round_123b_long %>%
   ggplot(aes(x = chart)) + 
   geom_bar(aes(fill = response3, weight = weight), position="fill") +
   facet_grid(.~task, scales = "free_x", space="free_x") + 
-  theme(legend.position="bottom") + 
+  theme(legend.position="right") + 
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") + 
   geom_rect(
@@ -1082,7 +1102,7 @@ The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. 
 
 ```{r}
 #| label: tbl-rounds-123
-#| tbl-cap: Log-odds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same **column** values are significantly different (at 5%) if they do not share the same letter.
+#| tbl-cap: OOdds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same *column* values are significantly different (at 5%) if they do not share the same letter.
 
 dframe <- rbind(
   coefs_123 %>% mutate(level = c("correct | same or wrong")),
@@ -1158,8 +1178,8 @@ dframe %>%
 
 ```
 
-One pattern in accuracy holds across each of the three structural variations: the aligned task has a higher level of accuracy than its unaligned counterpart. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
-\hh{The beneficial effect of frames/context of the chart is apparent when comparing accuracy of responses for the Horizontal wide design and the floating bars: the rate of correct responses in floating bars is significantly lower than in the wide horizontal charts. }
+One pattern in accuracy holds across each of the three structural variations: **the aligned task has a higher level of accuracy than its unaligned counterpart**. Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons. The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles. 
+\hh{The beneficial effect of frames/context of the chart is apparent when comparing accuracy of responses for the Horizontal wide design and the floating bars: the rate of correct responses in floating bars is significantly lower than in the wide horizontal charts. This shows that the additional context }
 
 Rates of selecting the incorrect response are low across all three structural variations and the aligned and unaligned tasks; while viewers select the incorrect response at significantly higher rates for all three unaligned tasks relative to the aligned tasks, those rates do not differ significantly across the three structural variations. Most of the observed differences in response patterns across structural variations are attributed to respondents' selection between the correct option or the 'they are the same' option.  
 
