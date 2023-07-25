@@ -879,11 +879,13 @@ income <- round_123 %>%
   scale_linetype_manual(values=c(2,2,1)) +
   theme(legend.position = "none")
 
+# # attempt at flipping
+# gender + coord_flip() + education + coord_flip()+ age + coord_flip() + income + coord_flip()+ plot_layout(ncol=2, nrow=2, heights=c(2, 5, 4,4), byrow=FALSE)
+
 
 
 (gender + education + plot_layout(nrow=1, widths=c(2,5))) / 
   (age + income + plot_layout(nrow=1, widths = c(4,4)))
-
 ```
 
 
