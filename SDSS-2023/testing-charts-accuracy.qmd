@@ -912,7 +912,6 @@ The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paire
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
 #| label: fig-alignment
 #| out-width: 90%
-#| fig-height: 4
 #| fig-width: 8.5
 
 gg1 <- round_123_long %>%
@@ -1102,7 +1101,7 @@ The estimated values and 95% confidence intervals are shown in @tbl-rounds-123. 
 
 ```{r}
 #| label: tbl-rounds-123
-#| tbl-cap: OOdds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same *column* values are significantly different (at 5%) if they do not share the same letter.
+#| tbl-cap: Odds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same *column* values are significantly different (at 5%) if they do not share the same letter.
 
 dframe <- rbind(
   coefs_123 %>% mutate(level = c("correct | same or wrong")),
@@ -1409,7 +1408,7 @@ round_123_certainty_long %>%
                      labels = seq(0,1, by=0.25)*100, limits = c(-0.1, 1),
                      sec.axis = sec_axis( trans=~(.*4)+1, name="Certainty scores")) +
   xlab("") + 
-  scale_fill_brewer(palette = "PRGn", guide = guide_legend(reverse = TRUE)) + 
+  scale_fill_brewer("How certain\nare you?", palette = "PRGn", guide = guide_legend(reverse = TRUE)) + 
   geom_point(
     aes(y = estimate),
     size = 3,
