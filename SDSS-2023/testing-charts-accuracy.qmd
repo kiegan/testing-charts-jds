@@ -3,7 +3,7 @@ title: "Testing Charts: viewers' perceptual accuracy in surveys"
 short-title: Testing charts in surveys # running title
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
-keywords: 'list, keywords, here, 3-6, are, fine'
+keywords: 'graphical perception, data visualization, survey data'
 preamble: >
   \usepackage{amsfonts,amsmath,amssymb,amsthm}
   \usepackage{booktabs}
@@ -301,12 +301,12 @@ What do viewers see when we show them a data chart?
 A data chart -- at its core -- maps values to graphical elements: quantitative elements are represented as measurable features, such as position, size, or shade.
 Modern data visualizations are much more than a simple, objective mapping of values to a plane; they contain contextual and design elements, and are often structured to support the viewer in understanding a particular view of a set of data or specific pattern underlying the values.
 Structural choices, such as the choice of a graphical element (e.g., bar or pie), orientation of the chart, and sizing and relative positioning of elements within the chart, are determined by the data visualization practitioner.
-The design of a data visualization impacts a viewer's ability to achieve that understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparisons of values across groups or time points.
+The design of a data visualization impacts a viewer's ability to achieve the intended understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparisons of values across groups or time points.
 More broadly, the design of a data visualization can change how viewers interact with the chart.
 
-The viewer's employment of comparisons of the components is a crucial step in the process of interacting with and understanding of chart.
+The viewer's employment of comparisons of the components is a crucial step in the process of interacting with and understanding the chart.
 @clevelandGraphicalPerceptionTheory1984 observed as such, and in their seminal study defined the better visual among a pair as the one that allows viewers to make more accurate comparisons.
-Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks (such as ranking the larger of two lengths or areas) from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
+Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks (such as identifying the larger of two lengths or areas) from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
@@ -332,7 +332,7 @@ Within that context we focus on the following research questions:
 
 3.  Are there differences in perception and interaction with the tasks across demographic groups?
 
-In this work, we present the series of tests we completed and the resulting findings.
+In this work, we present a series of completed tests and the resulting findings.
 The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in the perception tests.
 We then describe the population of study respondents and obtained survey sample.
 Subsequently, we share a summary of the resulting survey responses across each of the tests, including analyses on accuracy of responses and response behavior.
@@ -417,13 +417,13 @@ knitr::include_graphics("images/stimuli-overview.png")
 \autoref{fig-tasks}(a,d) shows the two stacked bar charts shown to participants in the first task.
 The marked tiles in each plot are 155 pixels apart, which leads to a JND of 3.5 pixels based on @luModelingJustNoticeable2022's model.
 The heights of the bars are 205 (left) and 213 pixels (right), corresponding to about twice the JND.
-This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as 'too hard'.
+This difference should lead to a relatively high accuracy rate for participants and simultaneously limit the amount of frustration resulting from a task that is perceived as `too hard'.
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
 <!-- describe stimulus -->
 
-Both charts show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the left and the right chart.
+Both charts show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the chart in (a) and the chart in (d).
 Both charts are displayed at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
 This leaves the vertical positioning of the bars as the only difference between the charts.
 Any differences in observed responses can therefore be attributed to this difference in presentation.
@@ -436,15 +436,15 @@ Any differences in observed responses can therefore be attributed to this differ
 
 ### Task 2: Horizontal stacked bar
 
-The visual mappings in the second task, shown in \autoref{fig-tasks}(b, e), are identical to the first task, but the axes of the chart are rotated so that the stacked bars are represented in a horizontal format.
+The visual mappings in the second task, shown in \autoref{fig-tasks}(b,e), are identical to the first task, but the axes of the chart are rotated so that the stacked bars are represented in a horizontal format.
 This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
 Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sample was randomly split among respondents, with 50% of participants seeing the Task 2 stimuli and 50% of participants seeing the Task 3 stimuli.
 
 ### Task 3: Horizontal wide stacked bar
 
-The images utilized in the third task, \autoref{fig-tasks}(c,f), again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey.
+The images utilized in the third task, \autoref{fig-tasks}(c,f), again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey. However, the aspect ratio is adjusted to make the plotting area match that of Task 1, with the mapping area being wider rather than taller. 
 The length of bars is increased to fit the new dimensions.
-This increases the difference in the length of bars from previously 8 pixels to 13 pixels.
+This increases the difference in the length of bars to 13 pixels (previously 8 pixels).
 The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant.
 <!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. --> <!--kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }--> <!-- \ndt{agree to drop note on color. Can perhaps just say we used CBlind  friendly} -->
 
@@ -464,7 +464,7 @@ When viewing each chart, participants were asked to compare the relative sizes o
 
 -   B is bigger
 
--   They are the same
+-   They are the same"
 
 When presented with the aligned version of each chart, pieces were marked with a C and D and the question text is updated accordingly.
 In all scenarios, the second option (B \[D\] is bigger) is the correct response.
@@ -504,7 +504,7 @@ In particular, the additional context of the other tiles should *help* rather th
 
 ## Study design -- participants
 
-Participants were recruited as part of NORC's AmeriSpeak panel^[NORC is a non-partisan organization that collects data for government and non-government clients], which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
+Participants were recruited as part of NORC's AmeriSpeak panel^[NORC is a non-partisan organization that collects data for government and non-government clients.], which utilizes a probability-based sampling methodology and samples U.S. households from NORC's National Sample Frame that provides coverage of over 97% of U.S. households.
 The current panel size is 54,001 panel members aged 13 and over residing in over 43,000 households [@dennis2019technical].
 Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly and samples around 1,000 U.S. adults to answer questions on a variety of topics.
 Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews.
@@ -525,9 +525,7 @@ Census Bureau.
 They are balanced by gender, age, education, race/ethnicity, and geographic region.
 All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
-When combining responses from different surveys, weights are rescaled with respect to the total population, so that their order after combining still reflects their relative importance.
-
-We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with \$ \ell \ge 2\$ ) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$.
+When combining responses from different surveys, weights are rescaled with respect to the total population, so that their order after combining still reflects their relative importance. We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with $ \ell \ge 2$ ) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$.
 $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as 
 $$
 \lambda_i = \frac{n_i/d_i}{\sum_{j=1}^{\ell}n_j/d_j},
@@ -546,7 +544,7 @@ $$
 <!--Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex.
 We employ that strategy whenever we include demographic variables in the analysis, otherwise we use a single adjustment for the weights. -->
 ```
-The data for this paper were collected in several rounds as part of the NORC Omnibus.
+The data for this paper were collected in several rounds.
 The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
 <!-- | Name    | Date       |                \# Participants |                Effective Sample Size |         Sum of weights $\sum_i w_i$ | -->
@@ -574,7 +572,7 @@ The resulting number of participants, effective sample sizes, and $\lambda$ valu
 | Round 3   | June 2022  | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` |        $\lambda_3$ = `r round(lambdas[3],3)` |
 | **Total** | ---        |  `r nrow(round_123)` |  `r round(neff(round_123$weight),1)` |                                     |                                              |
 
-: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining surveys as discussed above. {#tbl-rounds}
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining of surveys as discussed above. {#tbl-rounds}
 
 # Results
 
@@ -913,7 +911,7 @@ Because each participant was shown both the aligned and unaligned versions of th
 The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $\ll 0.0001$).
 
 ```{r accuracy,   warning=FALSE}
-#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green tiles corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly. A lot more responses are correct when comparing aligned tiles than unaligned tiles."
+#| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green bars corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly."
 #| label: fig-alignment
 #| out-width: 90%
 #| fig-width: 8.5
@@ -1106,11 +1104,11 @@ $$
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
 The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
-The lowercase letters indicate significances between pairs of estimates: two estimates (in the same column) are significantly different at 5% level, if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
+The lowercase letters indicate significances between pairs of estimates: two estimates within the same column are significantly different at 5% level if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
 
 ```{r}
 #| label: tbl-rounds-123
-#| tbl-cap: Odds for the cell-means model, letters behind numbers indicate pairwise significances. Within the same *column* values are significantly different (at 5%) if they do not share the same letter.
+#| tbl-cap: Estimated odds from the cell-means model for response patterns. Letters behind numbers indicate pairwise significances. Within the same column, values are significantly different (at 5%) if they do not share the same letter.
 
 dframe <- rbind(
   coefs_123 %>% mutate(level = c("correct | same or wrong")),
@@ -1136,7 +1134,7 @@ dframe %>%
         values_from = c(estimate, ci_low, ci_high, letters)
       ) %>%
   gt() %>%
-  tab_header(title = "Odds of accuracy by task and chart type") %>%
+  tab_header(title = "Odds of selecting responses by task and chart type") %>%
   fmt_number(
     everything(),
     decimals=2
@@ -1342,17 +1340,16 @@ survey_123_crt <-
   ids = ~CaseId, weights = ~weight)
 ```
 
-Using linear scores for the response of Certainty, with 'not certain at all' assigned a score of 1 and 'extremely certain' assigned a score of 5, we can estimate the effects of task, chart design, and correctness on certainty by using a cell-means model of the form: 
+Using linear scores for the response of certainty, with 'not certain at all' assigned a score of 1 and 'extremely certain' assigned a score of 5, we can estimate the effects of task, chart design, and correctness on certainty by using a cell-means model of the form: 
 $$
 Y_{k} = \mu_{ij\ell(k)} + \epsilon_{k},
 $$ 
 where $k = 1, ..., N$, $\mu_{ij\ell(k)}$ is average certainty (measured on a scale from 1 to 5) of the four combinations of task and correctness by each of the three designs, where $i = 1, 2$ encodes unaligned/aligned, and $j=1,2$ encodes wrong, correct, and $\ell = 1, 2, 3$ encodes horizontal, wide horizontal, and vertical stacked bar charts, respectively.
 We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$.
 The results are shown in @fig-certainty.
-What we find, is that the highest scores for certainty are associated with comparing aligned tiles.
-Certainty scores are not significantly different between correct and wrong responses.
+We find that the highest scores for certainty are associated with the aligned task, but certainty scores are not significantly different between correct and wrong responses.
 Scores are (mostly) significantly lower for the unaligned task.
-Interestingly, the lowest scores of certainty are associated with correct responses, here.
+Interestingly, the lowest certainty scores are associated with correct responses to the unaligned task; although respondents successfully complete the task, they are less certain in their selection.
 
 ```{r model-certainty}
 model_certain <- svyglm(as.numeric(Response)~ correct_question_chart-1, design = survey_123_crt)
@@ -1407,7 +1404,7 @@ coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
 ```{r}
 #| label: fig-certainty
 #| out-width: 100%
-#| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Errorbars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significances. The scores for two bars are significantly different if they do not share a letter. "
+#| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Error bars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significance at 5%. The scores for two bars are significantly different if they do not share a letter. "
 #| fig-width: 10
 #| fig-height: 4.5
 
@@ -1465,7 +1462,7 @@ This speaks to the difficulty of the task, and respondents' interpretation of th
 
 ```{r}
 #| label: fig-demographics
-#| fig-cap: "Panelists' demographics matter, particularly, when the task difficulty increases. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers decreases, while the percentage of correct answers increases slightly (significant at below 0.05). For the  more difficult task of comparing unaligned tiles, demographics are more significant. Higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers. "
+#| fig-cap: "Response patterns by alignment and demographic levels. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers decreases, while the percentage of correct answers increases slightly (significant at 5%). For the  more difficult task of comparing unaligned tiles, higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers. "
 #| fig-subcap: 
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
