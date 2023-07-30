@@ -21,7 +21,7 @@ format:
         \usepackage{lscape}
         \author[1]{Kiegan Rice\thanks{Corresponding author. Email: rice-kiegan@norc.org}}
         \author[2]{Heike Hofmann\footnote{Email: hofmann@iastate.edu}}
-        \author[1]{Nola du Toit\footnote{Email: dutoit-nola@norc.org}} 
+        \author[1]{Nola du Toit\footnote{Email: dutoit-nola@norc.org}}
         \author[1]{Edward Mulrow\footnote{Email: mulrow-edward@norc.org}}
         \affil[1]{NORC at the University of Chicago}
         \affil[2]{Department of Statistics, Iowa State University}
@@ -47,11 +47,7 @@ editor:
   \setlength{\parindent}{0pt}
   \singlespacing
 ```
-<!-- fig-width: 6.5 -->
 
-<!-- fig-height: 4.5 -->
-
-<!-- template: template-jdsart.cls.tex -->
 
 ```{r run-to-update-bibfile, eval=FALSE, include=FALSE}
 keys <- rbbt::bbt_detect_citations("testing-charts-accuracy.qmd")
@@ -152,33 +148,6 @@ round3_adj <- round3 %>% mutate(
   cd != "SKIPPED ON WEB"
 )
 
-
-
-round5 <- readRDS(file.path(vs_repo_local, "round5.rds"))
-
-# floating bars (unaligned) are shown to all participants of round 5
-round5_adj <- round5 %>% mutate(
-  ab = ab1,
-  ab_zoom = ab1_zoom,
-  ab_certain = ab1_certain,
-  weight = WEIGHT_NOLA
-) %>% filter(
-  ab != "SKIPPED ON WEB"
-)
-
-
-round6 <- readRDS(file.path(vs_repo_local, "round6.rds"))
-
-round6_adj <- round6 %>% mutate(
-  weight = WEIGHT_NOLA
-) %>% filter(RND_01 == 0) # same type of questions as round 7
-
-round7 <- readRDS(file.path(vs_repo_local, "round7.rds"))
-
-# filter out all of the 'skipped on web':
-round7_adj <- round7 %>% mutate(
-  weight = WEIGHT_NOLA
-)
 ```
 
 ```{r combine-123}
@@ -221,27 +190,6 @@ round_123 <- round_12 %>%
                    age4, gender, income4, racethnicity, educ5) 
   ) 
 
-
-lambda_1235 <- calculate_lambda(round_123$weight, round5_adj$weight)
-
-round_123b <- round_123 %>% 
-              mutate(weight = lambda_1235*weight/sum(weight)) %>% 
-  rbind(
-    round5_adj
-     %>% 
-      mutate(
-        weight = (1-lambda_1235)*weight/sum(weight),
-        round = "Round 5",
-        cd = NA,
-        cd_certain=NA,
-        cd_zoom=NA,
-        CorrectAB = ab == "B is bigger",
-        CorrectCD = NA,
-        CorrectABCD = NA,
-        chart = "Floating bars"
-       ) %>% dplyr::select(CaseId, ab, cd, CorrectAB, CorrectCD, CorrectABCD,
-                   ab_certain, cd_certain, ab_zoom, cd_zoom, round, chart, weight,
-                   age4, gender, income4, racethnicity, educ5))
        
 levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
 
@@ -267,36 +215,28 @@ survey_123 <-
   data = round_123_long, 
   ids = ~CaseId, weights = ~weight)
 
-round_123b_long <- round_123b %>% 
-  pivot_longer(ab:cd, names_to = "task", values_to = "Response") %>%
-  mutate(
-    correct = Response %in% c("B is bigger", "D is bigger"),
-    correct3 = correct | (Response == "They are the same"),
-    task_chart = factor(paste(task, chart, sep="-")),
-    zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
-    response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
-  ) %>% filter(
-    !is.na(Response)
-  )
-
-survey_123b <- 
-  survey::svydesign(
-  data = round_123b_long, 
-  ids = ~CaseId, weights = ~weight)
+# round_123b_long <- round_123b %>% 
+#   pivot_longer(ab:cd, names_to = "task", values_to = "Response") %>%
+#   mutate(
+#     correct = Response %in% c("B is bigger", "D is bigger"),
+#     correct3 = correct | (Response == "They are the same"),
+#     task_chart = factor(paste(task, chart, sep="-")),
+#     zoom = ifelse(task=="ab", ab_zoom, cd_zoom),
+#     response3 = ifelse(correct, "Correct", ifelse(correct3, "They are the same", "Wrong"))
+#   ) %>% filter(
+#     !is.na(Response)
+#   )
+# 
+# survey_123b <- 
+#   survey::svydesign(
+#   data = round_123b_long, 
+#   ids = ~CaseId, weights = ~weight)
 
 ```
 
 
 ## Introduction
 
-<!-- What is our main objective? -->
-
-```{=html}
-<!--
-\kr{Should the abstract match -- or be close to -- our SDSS short abstract?}
-\hh{I don't think it has to}
--->
-```
 What do viewers see when we show them a data chart?
 A data chart -- at its core -- maps values to graphical elements: quantitative elements are represented as measurable features, such as position, size, or shade.
 Modern data visualizations are much more than a simple, objective mapping of values to a plane; they contain contextual and design elements, and are often structured to support the viewer in understanding a particular view of a set of data or specific pattern underlying the values.
@@ -312,11 +252,6 @@ Cleveland and McGill's work -- while a foundational user study in graphical perc
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
 Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
 Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
-<!-- Bias from crowd-sourcing? sample size?  -->
-
-<!--Our work -- as that of Cleveland and McGill and Heer and Bostock -- -->
-
-<!--Our work centers on studying data visualization design choices and their impact on viewer behavior and accuracy of viewers' responses.-->
 
 Here, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents.
 Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
@@ -338,41 +273,7 @@ We then describe the population of study respondents and obtained survey sample.
 Subsequently, we share a summary of the resulting survey responses across each of the tests, including analyses on accuracy of responses and response behavior.
 Finally, we discuss implications of this work and next steps.
 
-<!-- # ```{r} -->
 
-<!-- # #| label: fig-perceptual-tasks -->
-
-<!-- # #| fig-cap: Ranking of perceptual tasks, as given by @mackinlayAutomatingDesignGraphical1986. The ranking of tasks on the quantitative scale are empirically verified by @clevelandGraphicalPerceptionTheory1984. -->
-
-<!-- # knitr::include_graphics("images/mackinlay-tasks.png") -->
-
-<!-- # ``` -->
-
-<!-- \kr{The figure below is still a bit of an orphan, but I think we can revisit the intro ad study setup after we get more of the results in the paper} -->
-
-<!-- ```{r} -->
-
-<!-- #| label: fig-aligned-unaligned -->
-
-<!-- #| fig-cap: "The only difference between the two pairs of rectangles A, B and C, D is their alignment, i.e. A and C are of identical size, as are B and D. When participants are asked to compare the size of these tiles in barcharts, the predominant response for the unaligned pair on the left is 'they are of the same size'. In contrast, more than half of the viewers respond with 'D is bigger' to the aligned pair of bars on the right." -->
-
-<!-- #| fig-subcap: -->
-
-<!-- #| - "**Unaligned bars**" -->
-
-<!-- #| - "**Aligned bars**" -->
-
-<!-- #| layout-nrow: 1 -->
-
-<!-- #| fig-align: "center" -->
-
-<!-- #| out-width: 50% -->
-
-<!-- knitr::include_graphics("images/round5-modified.PNG") -->
-
-<!-- knitr::include_graphics("images/round3-modified.PNG") -->
-
-<!-- ``` -->
 
 ## Study design -- stimulus
 
@@ -421,18 +322,12 @@ This difference should lead to a relatively high accuracy rate for participants 
 
 <!-- Lu et al calculation: log_{10}(JND) = -.4653 + .0065 distance -->
 
-<!-- describe stimulus -->
 
 Both charts show the same data with slight modifications to the order of the levels -- the first and second level in each of the bars are reversed between the chart in (a) and the chart in (d).
 Both charts are displayed at the same size, i.e. in both cases both the difference in size between the bars and the horizontal distance between the bars is the exact same amount.
 This leaves the vertical positioning of the bars as the only difference between the charts.
 Any differences in observed responses can therefore be attributed to this difference in presentation.
 
-<!-- Task 1 was presented to viewers in two rounds (Rounds 1-2), with four color scheme variations each presented to 50% of respondents in each round.  -->
-
-<!-- There were no significant differences in respondent accuracy or behavior across color schemes, and we combine them here into one set of stimulus responses to focus on the comparison of structural differences. -->
-
-<!-- \kr{Should we put the color variations and a test for significance in accuracy/a visual in the appendix/supplementary materials? } \hh{we could do that, but I'm not sure that we need to mention color at all.} -->
 
 ### Task 2: Horizontal stacked bar
 
@@ -446,13 +341,6 @@ The images utilized in the third task, \autoref{fig-tasks}(c,f), again represent
 The length of bars is increased to fit the new dimensions.
 This increases the difference in the length of bars to 13 pixels (previously 8 pixels).
 The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant.
-<!--However, the aspect ratio of the plotting area is adjusted to increase the length in pixels of the stacked bar elements, and  decrease the relative thickness \kr{wording?} of each bar. --> <!--kr{Do we have a measurement of the pixels for this? I think a sentence on that would close out this section nicely.}\hh{like that?}\kr{I was thinking the length pixels, since we talk about how many they are in Task 1, so we could talk about how many JND the difference is. I like the height thing though too, so maybe both? }--> <!-- \ndt{agree to drop note on color. Can perhaps just say we used CBlind  friendly} -->
-
-<!-- ### Task 3b: Floating bars -->
-
-<!-- \hh{ -->
-
-<!-- In order to measure the impact of the chart's context, we asked a subset of participants to assess the relative sizes of the two tiles A and B (as shown in the bottom right of @fig-tasks-explain) without giving any additional information.}   -->
 
 #### Question text
 
@@ -510,7 +398,6 @@ Each test was conducted using the AmeriSpeak Omnibus survey, which runs biweekly
 Our tests require visual inspection of an image; for this reason, our survey questions were only presented to web-based panelists and not panelists who respond via phone interviews.
 The panel has 45,565 web-based panelists, representing 93.3% of the total panel and 96.3% of the total panel weights.
 
-<!--\hh{XXX I think what you are trying to say is that we do not know, if participants have seen the stimuli multiple times, but if they did, there was at least a month in between?} \kr{Yes that's what I was trying to say here!!}-->
 
 The Omnibus sample is not longitudinal in nature, i.e. we do not have any information about whether the same panelists were included in multiple rounds.
 While there is a (small) chance that panelists are included in multiple rounds of our data, there was at least a one month gap between viewing each visual stimulus, and for the purposes of the analysis we will consider data from these viewings as independent.
@@ -540,30 +427,9 @@ $$
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
 $$
 
-```{=html}
-<!--Note that @omuircheartaighCombiningSamplesVs2002 estimate $\lambda$ separately for any combination of race/ethnicity by sex.
-We employ that strategy whenever we include demographic variables in the analysis, otherwise we use a single adjustment for the weights. -->
-```
 The data for this paper were collected in several rounds.
 The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
 
-<!-- | Name    | Date       |                \# Participants |                Effective Sample Size |         Sum of weights $\sum_i w_i$ | -->
-
-<!-- |---------------|---------------|--------------:|--------------:|--------------:| -->
-
-<!-- | Round 1 | April 2022 |           `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` | -->
-
-<!-- | Round 2 | May 2022   |           `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` | -->
-
-<!-- | Round 3 | Jun 2022   |           `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` | -->
-
-<!-- | Round 6 | Sep 2022   | `r nrow(round6_adj)` \[Split\] | `r round(neff(round6_adj$weight),1)` | `r round(sum(round6_adj$weight),1)` | -->
-
-<!-- | Round 7 | Oct 2022   |           `r nrow(round7_adj)` | `r round(neff(round7_adj$weight),1)` | `r round(sum(round7_adj$weight),1)` | -->
-
-<!-- |         |            |                                |                                      |                                     | -->
-
-<!-- : Survey rounds: dates, number of participants (nominal sample size), effective sample size, and sum of weights. {#tbl-rounds} -->
 
 | Name      | Date       |      \# Participants |                Effective Sample Size |         Sum of weights $\sum_i w_i$ |                                  $\lambda_i$ |
 |------------|------------|-----------:|-----------:|-----------:|-----------:|
@@ -594,7 +460,6 @@ The resulting sample sizes corresponding to each task are shown in \autoref{tbl-
 Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the 5 year estimates of the American Community Survey 2021.
 The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) for the most part cover the Census estimates.
 
-<!--\kr{Split by rounds or by tasks? I feel like since we later split by task, maybe we should show the demos by task? Or we can just talk about how Round 3 was split randomly along demos for Tasks 2/3?}\hh{changed the figure to show demos by task -- do we need confidence intervals? -- or a comparison against census data?}-->
 
 ```{r}
 #| label: fig-rounds-demographics
@@ -905,7 +770,6 @@ abcd <- svyby(~correct, by=~task, survey_123, svytotal)
 marginal_results <- data.frame(abcd)
 ```
 
-<!--Rounds 1 and 2 are combined by adjusting the weights with $\lambda$ = `r round(lambdas[1],3)` for an effective sample size of `r round(neff(round_12$weight),1)`.-->
 
 Because each participant was shown both the aligned and unaligned versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
 The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $\ll 0.0001$).
@@ -1189,7 +1053,6 @@ dframe %>%
 One pattern in accuracy holds across each of the three structural variations: **the aligned task has a higher level of accuracy than its unaligned counterpart**.
 Interestingly, while we expect an improvement in accuracy when shifting from the horizontal to the horizontal wide design given the larger difference in pixel length between the two pieces, the resulting effects on the accuracy of the responses are not completely straightforward: the shift from a vertical to the (tall) horizontal design is detrimental to an accurate perception for both aligned and unaligned comparisons.
 The re-scaled design of the wide horizontal bars reclaims some of the loss for unaligned bars and outperforms the vertical design by a similar margin in aligned bars, but does not out-perform the vertical design when comparing unaligned tiles.
-<!-- \hh{The beneficial effect of frames/context of the chart is apparent when comparing accuracy of responses for the Horizontal wide design and the floating bars: the rate of correct responses in floating bars is significantly lower than in the wide horizontal charts. This shows that the additional context } -->
 
 Rates of selecting the incorrect response are low across all three structural variations and the aligned and unaligned tasks; while viewers select the incorrect response at significantly higher rates for all three unaligned tasks relative to the aligned tasks, those rates do not differ significantly across the three structural variations.
 Most of the observed differences in response patterns across structural variations are attributed to respondents' selection between the correct option or the 'they are the same' option.
@@ -1203,7 +1066,6 @@ Across all tasks, about half of all participants make use of the option to zoom 
 We observe that while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
 However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
 
-<!-- The rate of zooming into charts is about twice as high for participants filling out the survey on their smart phones than on other, usually bigger devices such as tablets or desktops. -->
 
 ```{r zoom-123}
 logit_zoom <- 
@@ -1214,10 +1076,22 @@ coefs_zoom <- broom::tidy(logit_zoom)
 
 ```{r}
 #| label: fig-zoom-123
-#| fig-cap: "Rates of zooming by task, chart design, and correctness. There are significantly higher rates of zooming by respondents for the vertical task compared to both horizontal tasks; rates of zooming do not differ by correctness of response or alignment in the stimulus."
+#| fig-cap: "Rates of zooming by task, chart design, and correctness. The overlaid rectangles represent 95% confidence intervals. There are significantly higher rates of zooming by respondents for the vertical task compared to both horizontal tasks; rates of zooming do not differ by correctness of response or alignment in the stimulus."
 #| fig-height: 4.25
 #| fig-width: 7
 #| out-width: 80%
+
+confint_zoom1 <- svyby(formula = ~zoom, by = ~task+response3, design = survey_123, svyciprop) %>%
+  mutate(task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")), 
+         zoom2 = zoom, 
+        response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong")))) %>%
+  dplyr::select(-c("zoom"))
+
+confint_zoom2 <- svyby(formula = ~zoom, by = ~chart+response3, design = survey_123, svyciprop) %>%
+  mutate(chart = factor(chart, levels=c("Vertical", "Horizontal", "Horizontal wide")), 
+         zoom2 = zoom, 
+        response3 = factor(response3, levels=rev(c("Correct", "They are the same", "Wrong")))) %>%
+  dplyr::select(-c("zoom"))
 
 zt <- round_123_long %>% 
   mutate(
@@ -1235,7 +1109,27 @@ zt <- round_123_long %>%
   xlab("") + 
   ggtitle("Zooming behavior\nby task") +
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
-                     labels = seq(0,1, by=0.25)*100)
+                     labels = seq(0,1, by=0.25)*100) + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(response3) - 0.45,
+      ymin = zoom2 - 1.96* `se.as.numeric(zoom)`,
+      xmax = as.numeric(response3) + 0.45,
+      ymax = zoom2 + 1.96* `se.as.numeric(zoom)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = confint_zoom1
+  )  + 
+  geom_segment(
+    aes(
+      x = as.numeric(response3) - 0.45,
+      y = zoom2,
+      xend = as.numeric(response3) + 0.45,
+      yend = zoom2
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = confint_zoom1
+  )
 
 zd <- round_123_long %>% 
   mutate(
@@ -1253,7 +1147,27 @@ zd <- round_123_long %>%
   ggtitle("\nby chart") +
   theme(axis.text.x = element_text(angle=30, hjust = 1)) +
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
-                     labels = seq(0,1, by=0.25)*100)
+                     labels = seq(0,1, by=0.25)*100) + 
+  geom_rect(
+    aes(
+      xmin = as.numeric(response3) - 0.45,
+      ymin = zoom2 - 1.96* `se.as.numeric(zoom)`,
+      xmax = as.numeric(response3) + 0.45,
+      ymax = zoom2 + 1.96* `se.as.numeric(zoom)`,
+    ), 
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = confint_zoom2
+  )  + 
+  geom_segment(
+    aes(
+      x = as.numeric(response3) - 0.45,
+      y = zoom2,
+      xend = as.numeric(response3) + 0.45,
+      yend = zoom2
+    ), 
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = confint_zoom2
+  )
 
 zt + zd + plot_layout(widths=c(5, 7.5), guides='collect') 
   
@@ -1781,23 +1695,6 @@ coefs_clean(coefs_cd_correct) %>% mutate(task = "Aligned", correct="correct") %>
 
 \elandscape
 
-<!-- Results to discuss: -->
-
-<!-- There are differences by alignment -->
-
-<!-- There are not huge differences across structures -->
-
-<!-- However, we see a difference in how people react across different structures (zooming behavior, certainty? time?) -->
-
-<!-- - We can reproduce prior findings with nat rep sample  -->
-
-<!-- - We can rank  -->
-
-<!-- - We can rank better because we have a bigger sample size  -->
-
-<!-- - We can find changes in viewer behavior  -->
-
-<!-- - Demographics matter to accuracy and choices -->
 
 # Conclusions
 
@@ -1823,33 +1720,9 @@ While our results are limited to mapping in a stacked bar chart with a specific 
 More expansive work on this topic should be completed to understand how the general public interacts with and understands charts, including expanding to a wider set of structural variations, more aesthetic design variations, and considering differences in respondent behavior across different data topic areas.
 
 
-<!-- Key findings to discuss: -->
+<!-- # Supplementary Material {.unnumbered} -->
 
-<!-- -   Surveys can be used to ask these types of questions -- in the midst of other topics and with a limited number of questions, we are able to ask perception questions and produce results consistent with prior studies -->
-
-<!-- -   Reproduced (some) prior convenience sample results using a large, nationally-representative survey population: -->
-
-<!--     -   Cleveland: position (aligned) versus unaligned -->
-
-<!--     -   unaligned tiles within stacked bar are a hybrid between framed bar and floats -->
-
-<!--     -   Talbot: pie charts - individual wedges vs piecharts -->
-
-<!-- -   Design choices impact viewer accuracy: -->
-
-<!--     -   new finding: pie charts accuracy in work better when framed (wedges) -->
-
-<!-- -   Other important measures beyond accuracy: time to completion (automatic on web), certainty in response (asked). -->
-
-<!-- -   Studying how viewers interact with charts can be done in a survey, and more expansive work on this topic should be completed to understand how the general public interacts with and understands charts. -->
-
-<!--     -   Design choices impact viewer behavior: zooming -->
-
-<!-- -   (some) Demographics matter: age and gender does not seem to matter for perception economic background and education does matter for perception: we need to know, we do not want to create a hurdle in communication -->
-
-# Supplementary Material {.unnumbered}
-
--   **Participant Data (Linear):** Link to csv file with the data.
--   **Data Analysis Code:** Link to an html document with annotated code chunks.
+<!-- -   **Participant Data (Linear):** Link to csv file with the data. -->
+<!-- -   **Data Analysis Code:** Link to an html document with annotated code chunks. -->
 
 # References
