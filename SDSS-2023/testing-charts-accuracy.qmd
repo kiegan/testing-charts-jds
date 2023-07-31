@@ -413,18 +413,18 @@ All calculations in this paper are done in R [@RLanguage], and weights are appli
 
 When combining responses from different surveys, weights are rescaled with respect to the total population, so that their order after combining still reflects their relative importance. We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with $ \ell \ge 2$ ) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$.
 $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as 
-$$
+\begin{equation}
 \lambda_i = \frac{n_i/d_i}{\sum_{j=1}^{\ell}n_j/d_j},
-$$ 
+\end{equation}
 where $n_i$ is the nominal sample of survey $S_i$ and $d_i$ are the design effects for the estimators.
 Here, $d_i$ are estimated as 
-$$
+\begin{equation}
 d_i = 1 + CV(w \in S_i)^2
-$$ 
+\end{equation}
 where $CV$ is the coefficient of variation of the weights $w$ within each sample, and is estimated as in @kishSurveySampling1965 : 
-$$ 
+\begin{equation}
 CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
-$$
+\end{equation}
 
 The data for this paper were collected in several rounds.
 The resulting number of participants, effective sample sizes, and $\lambda$ values are shown in \autoref{tbl-rounds}.
@@ -961,9 +961,9 @@ round_123_long %>%
 
 @fig-response-123 shows the results of a cell-means model with ordinal response $Y_k$, where $Y_k$ is the $k$th participant's response, $Y_k \in \{1, 2, 3\}$, where 'correct' is encoded as 1, 'they are the same' is encoded as 2, and 'wrong' is encoded as 3:
 
-$$
+\begin{equation}
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
-$$
+\end{equation}
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
 The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
@@ -1220,9 +1220,9 @@ coefs_zoom %>%
 To formalize this pattern in a model, let $Y_{jk}$ describe the zooming behavior of panelist $k$ on task $j$.
 We model zooming behavior (no = 0, yes = 1) as a logistic regression by correctness of response ($\rho$), task ($\tau$), and design ($\delta$) of the chart:
 
-$$
+\begin{equation}
 \text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
-$$
+\end{equation}
 
 The resulting model estimates and confidence intervals are displayed in \autoref{tbl-zoom-123}.
 We observe that zooming behavior *only* differs significantly by structural design; rates do not differ significantly between the aligned and unaligned tasks, nor do they differ significantly by the chosen response.
@@ -1254,9 +1254,9 @@ survey_123_crt <-
 ```
 
 Using linear scores for the response of certainty, with 'not certain at all' assigned a score of 1 and 'extremely certain' assigned a score of 5, we can estimate the effects of task, chart design, and correctness on certainty by using a cell-means model of the form: 
-$$
+\begin{equation}
 Y_{k} = \mu_{ij\ell(k)} + \epsilon_{k},
-$$ 
+\end{equation}
 where $k = 1, ..., N$, $\mu_{ij\ell(k)}$ is average certainty (measured on a scale from 1 to 5) of the four combinations of task and correctness by each of the three designs, where $i = 1, 2$ encodes unaligned/aligned, and $j=1,2$ encodes wrong, correct, and $\ell = 1, 2, 3$ encodes horizontal, wide horizontal, and vertical stacked bar charts, respectively.
 We also assume that errors are normally distributed, i.e. $\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)$ for all $k = 1, ..., N$.
 The results are shown in @fig-certainty.
@@ -1359,9 +1359,9 @@ However, we do observe different response patterns, particularly on the unaligne
 Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'.
 We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
 
-$$
+\begin{equation}
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
-$$ 
+\end{equation}
 
 The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}.
 When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level.
