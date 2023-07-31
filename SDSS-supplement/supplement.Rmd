@@ -1,0 +1,12 @@
+---
+title: "Testing Charts: viewers' perceptual accuracy in surveys"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Supplementary Materials
+
+Additional materials for this paper are shared in the following GitHub repository: [https://github.com/kiegan/testing-charts-jds](https://github.com/kiegan/testing-charts-jds). The repository contains all data used in analyses, the original abstract submission file for SDSS 2023, and the code used to generate all figures and tables in the submission document. 
