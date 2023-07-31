@@ -194,7 +194,7 @@ survey respondents to test perception in statistical charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, frame hidden, interior hidden, borderline west={3pt}{0pt}{shadecolor}, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, interior hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
 
   \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
@@ -878,23 +878,21 @@ in the stimulus.}
 \toprule
 term & estimate & SE & t-statistic & p-value \\ 
 \midrule
-\multicolumn{5}{l}{} \\ 
-\midrule
-\$\$\textbackslash{}hat\{\textbackslash{}mu\}\$\$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
+$\hat{\mu}$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
 \midrule
 \multicolumn{5}{l}{Response} \\ 
 \midrule
-\$\$\textbackslash{}text\{They are the same \} \textbackslash{}widehat\{\textbackslash{}rho\}\_\{2\}\$\$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
-Wrong \$\$\textbackslash{}widehat\{\textbackslash{}rho\}\_\{3\}\$\$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
+They are the same, $\widehat{\rho_2}$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
+Wrong, $\widehat{\rho_3}$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
 \midrule
 \multicolumn{5}{l}{Task} \\ 
 \midrule
-Aligned \$\$\textbackslash{}widehat\{\textbackslash{}tau\}\_\{2\}\$\$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
+Aligned, $\widehat{\tau_2}$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
 \midrule
 \multicolumn{5}{l}{Chart design} \\ 
 \midrule
-Horizontal wide \$\$\textbackslash{}widehat\{\textbackslash{}delta\}\_\{2\}\$\$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
-Vertical \$\$\textbackslash{}widehat\{\textbackslash{}delta\}\_\{3\}\$\$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
+Horizontal wide, $\widehat{\delta_2}$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
+Vertical, $\widehat{\delta_3}$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
 \bottomrule
 \end{longtable}
 
@@ -1002,6 +1000,10 @@ respondents are more likely to select the `they are the same' option
 during the difficult task. This speaks to the difficulty of the task,
 and respondents' interpretation of the task when it is more difficult to
 perceive small differences.
+
+\begin{verbatim}
+Warning in RET$pfunction("adjusted", ...): Completion with error > abseps
+\end{verbatim}
 
 \begin{figure}
 
