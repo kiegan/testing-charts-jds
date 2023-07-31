@@ -7,7 +7,6 @@
 ]{jds}
 
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -17,6 +16,10 @@
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -150,10 +153,12 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 \makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
 \makeatother
 \makeatletter
 \@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
 \makeatother
 \makeatletter
 \makeatother
@@ -190,7 +195,7 @@ survey respondents to test perception in statistical charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, breakable, sharp corners, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, frame hidden, interior hidden, borderline west={3pt}{0pt}{shadecolor}, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
 
   \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
   \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
@@ -581,7 +586,7 @@ are shown in \autoref{tbl-rounds}.
 \caption{\label{tbl-rounds}Survey rounds: dates, number of participants
 (nominal sample size), effective sample size, sum of weights, and
 factors for the combining of surveys as discussed above.}\tabularnewline
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -595,9 +600,9 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endfirsthead
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -611,13 +616,14 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Round 1 & April 2022 & 933 & 521.1 & 934.9 & \(\lambda_1\) = 0.343 \\
 Round 2 & May 2022 & 953 & 485.7 & 953.4 & \(\lambda_2\) = 0.320 \\
 Round 3 & June 2022 & 921 & 513.5 & 923.1 & \(\lambda_3\) = 0.338 \\
 \textbf{Total} & --- & 2807 & 1520.8 & & \\
-\bottomrule()
 \end{longtable}
 
 \hypertarget{results}{%
@@ -642,7 +648,7 @@ resulting sample sizes corresponding to each task are shown in
   >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \caption{\label{tbl-tasks}Survey tasks: number of participants (nominal
 sample size) and effective sample size for each task.}\tabularnewline
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -652,9 +658,9 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endfirsthead
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -664,12 +670,13 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Task 1 & Vertical & 1886 & 1007.1 \\
 Task 2 & Horizontal & 459 & 266.5 \\
 Task 3 & Horizontal wide & 462 & 249.1 \\
-\bottomrule()
 \end{longtable}
 
 Distributions of demographic characteristics across each task are shown
@@ -1219,7 +1226,7 @@ Graphics} 5 (2): 110--41. \url{https://doi.org/10.1145/22949.22950}.
 \leavevmode\vadjust pre{\hypertarget{ref-omuircheartaighCombiningSamplesVs2002}{}}%
 O'Muircheartaigh, Colm, and Steven Pedlow. 2002. {``Combining {Samples
 Vs}. {Cumulating Cases}: {A Comparison} of {Two Weighting Strategies} in
-{Nlsy97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
+{NLSY97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
 Meetings}}, 2557--62.
 \url{http://www.asasrms.org/Proceedings/y2002/Files/JSM2002-001082.pdf}.
 

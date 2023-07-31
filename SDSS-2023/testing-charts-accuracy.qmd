@@ -1373,16 +1373,63 @@ This speaks to the difficulty of the task, and respondents' interpretation of th
 
 <!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
 
+```{r demographics-model}
+logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+logit_demo_task_cd_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+logit_demo_task_ab_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+logit_demo_task_ab_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+coefs_cd_correct <- broom::tidy(logit_demo_task_cd_correct)
+coefs_cd_correct_same <- broom::tidy(logit_demo_task_cd_correct_same)
+
+coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
+coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
+```
+
+
 ```{r}
 #| label: fig-demographics
 #| fig-cap: "Response patterns by alignment and demographic levels. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers decreases, while the percentage of correct answers increases slightly (significant at 5%). For the  more difficult task of comparing unaligned tiles, higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers. "
 #| fig-subcap: 
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
-#| fig-height: 4
+#| fig-height: 4.5
 #| fig-width: 10
 #| layout-nrow: 2
 #| out-width: 100%
+
+educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+educ_ci <- broom::tidy(educ_glm) %>%
+  mutate(
+    educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+educ_glm3 <- svyglm(correct3~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+educ_ci3 <- broom::tidy(educ_glm3) %>%
+  mutate(
+    educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+educ_compare <- glht(educ_glm, mcp(educ5="Tukey"))
+educ_compare3 <- glht(educ_glm3, mcp(educ5="Tukey"))
+
+# get letters for each confidence
+educ_ci$letters <- cld(educ_compare)$mcletters$Letters
+educ_ci3$letters <- cld(educ_compare3)$mcletters$Letters
+
+
 
 educ_cd <- round_123_long %>% 
   filter(task=="cd") %>%
@@ -1400,7 +1447,82 @@ educ_cd <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby education") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+    geom_segment(
+    aes(
+      x = as.numeric(educ5) - 0.45,
+      y = estimate,
+      xend = as.numeric(educ5) + 0.45,
+      yend = estimate
+    ),
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = educ_ci
+  ) +
+  geom_segment(
+    aes(
+      x = as.numeric(educ5) - 0.45,
+      y = estimate,
+      xend = as.numeric(educ5) + 0.45,
+      yend = estimate
+    ),
+    alpha = 1, colour = "black", linewidth = 0.25,
+    data = educ_ci3
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(educ5) - 0.45,
+      ymin = low,
+      xmax = as.numeric(educ5) + 0.45,
+      ymax = high,
+    ),
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = educ_ci
+  ) +
+  geom_rect(
+    aes(
+      xmin = as.numeric(educ5) - 0.45,
+      ymin = low,
+      xmax = as.numeric(educ5) + 0.45,
+      ymax = high,
+    ),
+    fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+    data = educ_ci3
+  ) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+  geom_text(aes(label=letters), y = -0.05, data = educ_ci, colour = "steelblue") +
+  geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange")
+
+
+
+educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+educ_ci <- broom::tidy(educ_glm) %>%
+  mutate(
+    educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+educ_glm3 <- svyglm(correct3~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+educ_ci3 <- broom::tidy(educ_glm3) %>%
+  mutate(
+    educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+educ_compare <- glht(educ_glm, mcp(educ5="Tukey"))
+educ_compare3 <- glht(educ_glm3, mcp(educ5="Tukey"))
+
+# get letters for each confidence
+educ_ci$letters <- cld(educ_compare)$mcletters$Letters
+educ_ci3$letters <- cld(educ_compare3)$mcletters$Letters
+
+
 
 educ_ab <- round_123_long %>% 
   filter(task=="ab") %>%
@@ -1418,7 +1540,84 @@ educ_ab <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby education") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+#  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100) 
+geom_segment(
+  aes(
+    x = as.numeric(educ5) - 0.45,
+    y = estimate,
+    xend = as.numeric(educ5) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = educ_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(educ5) - 0.45,
+    y = estimate,
+    xend = as.numeric(educ5) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = educ_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(educ5) - 0.45,
+    ymin = low,
+    xmax = as.numeric(educ5) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = educ_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(educ5) - 0.45,
+    ymin = low,
+    xmax = as.numeric(educ5) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = educ_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = educ_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange")
+
+########
+# gender
+
+gender_glm <- svyglm(correct~gender-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+gender_ci <- broom::tidy(gender_glm) %>%
+  mutate(
+    gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+gender_glm3 <- svyglm(correct3~gender-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+gender_ci3 <- broom::tidy(gender_glm3) %>%
+  mutate(
+    gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+gender_compare <- glht(gender_glm, mcp(gender="Tukey"))
+gender_compare3 <- glht(gender_glm3, mcp(gender="Tukey"))
+
+# get letters for each confidence
+gender_ci$letters <- cld(gender_compare)$mcletters$Letters
+gender_ci3$letters <- cld(gender_compare3)$mcletters$Letters
+
+
 
 gender_cd <- round_123_long %>% 
   filter(task=="cd") %>%
@@ -1436,7 +1635,81 @@ gender_cd <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
   ggtitle("Accuracy\nby gender") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+ geom_segment(
+  aes(
+    x = as.numeric(gender) - 0.45,
+    y = estimate,
+    xend = as.numeric(gender) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = gender_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(gender) - 0.45,
+    y = estimate,
+    xend = as.numeric(gender) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = gender_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(gender) - 0.45,
+    ymin = low,
+    xmax = as.numeric(gender) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = gender_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(gender) - 0.45,
+    ymin = low,
+    xmax = as.numeric(gender) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = gender_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = gender_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = gender_ci3, colour = "darkorange")
+  
+
+
+gender_glm <- svyglm(correct~gender-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+gender_ci <- broom::tidy(gender_glm) %>%
+  mutate(
+    gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+gender_glm3 <- svyglm(correct3~gender-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+gender_ci3 <- broom::tidy(gender_glm3) %>%
+  mutate(
+    gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+gender_compare <- glht(gender_glm, mcp(gender="Tukey"))
+gender_compare3 <- glht(gender_glm3, mcp(gender="Tukey"))
+
+# get letters for each confidence
+gender_ci$letters <- cld(gender_compare)$mcletters$Letters
+gender_ci3$letters <- cld(gender_compare3)$mcletters$Letters
+
 
 gender_ab <- round_123_long %>% 
   filter(task=="ab") %>%
@@ -1454,7 +1727,82 @@ gender_ab <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
   ggtitle("Accuracy\nby gender") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+   geom_segment(
+  aes(
+    x = as.numeric(gender) - 0.45,
+    y = estimate,
+    xend = as.numeric(gender) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = gender_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(gender) - 0.45,
+    y = estimate,
+    xend = as.numeric(gender) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = gender_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(gender) - 0.45,
+    ymin = low,
+    xmax = as.numeric(gender) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = gender_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(gender) - 0.45,
+    ymin = low,
+    xmax = as.numeric(gender) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = gender_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = gender_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = gender_ci3, colour = "darkorange")
+########### 
+
+# income 
+
+income_glm <- svyglm(correct~income4-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+income_ci <- broom::tidy(income_glm) %>%
+  mutate(
+    income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+income_glm3 <- svyglm(correct3~income4-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+income_ci3 <- broom::tidy(income_glm3) %>%
+  mutate(
+    income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+income_compare <- glht(income_glm, mcp(income4="Tukey"))
+income_compare3 <- glht(income_glm3, mcp(income4="Tukey"))
+
+# get letters for each confidence
+income_ci$letters <- cld(income_compare)$mcletters$Letters
+income_ci3$letters <- cld(income_compare3)$mcletters$Letters
+
 
 income_cd <- round_123_long %>% 
   filter(task=="cd") %>%
@@ -1472,7 +1820,82 @@ income_cd <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby income") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+   geom_segment(
+  aes(
+    x = as.numeric(income4) - 0.45,
+    y = estimate,
+    xend = as.numeric(income4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = income_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(income4) - 0.45,
+    y = estimate,
+    xend = as.numeric(income4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = income_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(income4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(income4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = income_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(income4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(income4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = income_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = income_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = income_ci3, colour = "darkorange")
+ 
+
+
+income_glm <- svyglm(correct~income4-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+income_ci <- broom::tidy(income_glm) %>%
+  mutate(
+    income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+income_glm3 <- svyglm(correct3~income4-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+income_ci3 <- broom::tidy(income_glm3) %>%
+  mutate(
+    income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+income_compare <- glht(income_glm, mcp(income4="Tukey"))
+income_compare3 <- glht(income_glm3, mcp(income4="Tukey"))
+
+# get letters for each confidence
+income_ci$letters <- cld(income_compare)$mcletters$Letters
+income_ci3$letters <- cld(income_compare3)$mcletters$Letters
+
+
 
 income_ab <- round_123_long %>% 
   filter(task=="ab") %>%
@@ -1490,7 +1913,52 @@ income_ab <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby income") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+   geom_segment(
+  aes(
+    x = as.numeric(income4) - 0.45,
+    y = estimate,
+    xend = as.numeric(income4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = income_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(income4) - 0.45,
+    y = estimate,
+    xend = as.numeric(income4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = income_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(income4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(income4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = income_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(income4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(income4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = income_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = income_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = income_ci3, colour = "darkorange")
+ 
+
+  
 
 race <- round_123_long %>% 
   mutate(
@@ -1509,6 +1977,37 @@ race <- round_123_long %>%
     ggtitle("Accuracy by race, ethnicity and task") +
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
 
+
+
+age_glm <- svyglm(correct~age4-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+age_ci <- broom::tidy(age_glm) %>%
+  mutate(
+    age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+age_glm3 <- svyglm(correct3~age4-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
+
+age_ci3 <- broom::tidy(age_glm3) %>%
+  mutate(
+    age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+age_compare <- glht(age_glm, mcp(age4="Tukey"))
+age_compare3 <- glht(age_glm3, mcp(age4="Tukey"))
+
+# get letters for each confidence
+age_ci$letters <- cld(age_compare)$mcletters$Letters
+age_ci3$letters <- cld(age_compare3)$mcletters$Letters
+
 age_cd <- round_123_long %>% 
   filter(task=="cd") %>%
   mutate(
@@ -1525,7 +2024,82 @@ age_cd <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby age") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+   geom_segment(
+  aes(
+    x = as.numeric(age4) - 0.45,
+    y = estimate,
+    xend = as.numeric(age4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = age_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(age4) - 0.45,
+    y = estimate,
+    xend = as.numeric(age4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = age_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(age4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(age4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = age_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(age4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(age4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = age_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = age_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = age_ci3, colour = "darkorange")
+ 
+
+
+age_glm <- svyglm(correct~age4-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+age_ci <- broom::tidy(age_glm) %>%
+  mutate(
+    age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+age_glm3 <- svyglm(correct3~age4-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
+
+age_ci3 <- broom::tidy(age_glm3) %>%
+  mutate(
+    age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
+    low = estimate-1.96*std.error,
+    high = estimate+1.96*std.error,
+    estimate = inv_logit(estimate),
+    low = inv_logit(low),
+    high = inv_logit(high))
+
+# create all pairwise comparisons for tasks and questions.
+age_compare <- glht(age_glm, mcp(age4="Tukey"))
+age_compare3 <- glht(age_glm3, mcp(age4="Tukey"))
+
+# get letters for each confidence
+age_ci$letters <- cld(age_compare)$mcletters$Letters
+age_ci3$letters <- cld(age_compare3)$mcletters$Letters
+
+
 
 age_ab <- round_123_long %>% 
   filter(task=="ab") %>%
@@ -1543,7 +2117,53 @@ age_ab <- round_123_long %>%
   scale_fill_manual("Response", values=c("orange", "grey", "steelblue")) +
   xlab("") +
     ggtitle("\nby age") +
-  scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), labels = seq(0,1, by=0.25)*100)
+   geom_segment(
+  aes(
+    x = as.numeric(age4) - 0.45,
+    y = estimate,
+    xend = as.numeric(age4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = age_ci
+) +
+geom_segment(
+  aes(
+    x = as.numeric(age4) - 0.45,
+    y = estimate,
+    xend = as.numeric(age4) + 0.45,
+    yend = estimate
+  ),
+  alpha = 1, colour = "black", linewidth = 0.25,
+  data = age_ci3
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(age4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(age4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = age_ci
+) +
+geom_rect(
+  aes(
+    xmin = as.numeric(age4) - 0.45,
+    ymin = low,
+    xmax = as.numeric(age4) + 0.45,
+    ymax = high,
+  ),
+  fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
+  data = age_ci3
+) +
+  scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
+ geom_text(aes(label=letters), y = -0.05, data = age_ci, colour = "steelblue") +
+ geom_text(aes(label=letters), y = 1.05, data = age_ci3, colour = "darkorange")
+ 
+
+
+
 gender_cd + age_cd  + educ_cd +income_cd + 
     plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
 
@@ -1551,20 +2171,6 @@ gender_ab + age_ab  + educ_ab +income_ab +
   plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
 ```
 
-```{r demographics-model}
-logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
-
-logit_demo_task_cd_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
-
-logit_demo_task_ab_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
-logit_demo_task_ab_correct_same <- svyglm(correct3~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="ab")
-
-coefs_cd_correct <- broom::tidy(logit_demo_task_cd_correct)
-coefs_cd_correct_same <- broom::tidy(logit_demo_task_cd_correct_same)
-
-coefs_ab_correct <- broom::tidy(logit_demo_task_ab_correct)
-coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
-```
 
 \blandscape
 
