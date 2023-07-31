@@ -10,5 +10,5 @@ This paper was authored by Kiegan Rice, Heike Hofmann, Nola du Toit, and Edward 
 - `SDSS-2023` folder contains files to complete analyses and render the paper, using a Quarto version of the JDS RMarkdown template (from SDSS 2022). The main file is [testing-charts-accuracy.qmd](SDSS-2023/testing-charts-accuracy.qmd). 
 
 - `data` folder contains all data files utilized in the analyses presented in the paper: 
-    - 3 rounds of collected survey data 
-    - demographic estimates from the American Community Survey (ACS)
+    - 3 rounds of collected survey data (`RDS` files)
+    - demographic estimates from the American Community Survey (ACS) (`xlsx` files)
