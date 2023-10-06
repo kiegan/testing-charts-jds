@@ -54,7 +54,8 @@ editor: source
 
     -   "Our study results provide actionable insights ... in the design of data visualisations." -\> This suggests wider scope than what the results suggest. I think the authors should say "design of stacked barplots" instead.
 
-    -   In the source code of the paper, authors use 1.96 and 1.645 for 0.875 and 0.95 quantiles but I think the authors should use `qnorm(0.975)` and `qnorm(0.95)` (I realize it doesn't make much difference in the end but I think you should avoid rounding unnecessary until the presentation of the results).
+    -   In the source code of the paper, authors use 1.96 and 1.645 for 0.875 and 0.95 quantiles but I think the authors should use `qnorm(0.975)` and `qnorm(0.95)` (I realize it doesn't make much difference in the end but I think you should avoid rounding unnecessary until the presentation of the results). 
+        -   **We will make this change**  
 
     -   I do appreciate that the authors present the results using vertical stacked barplot, reflected from their results. A minor point is that I actually don't like the angled display of the x-axis text and I would have preferred to present this in a horizontal display so the text stays horizontal. I realize this sacrifices partially the accuracy of the results for something more aesthetically pleasing for peripheral information. But this opens up another question: is communicating information about always presenting the most accurate results? Communication won't happen if the recipient isn't taking in that information in the first place and while it may be superficial, aesthetically pleasing display may perhaps drive *better engagement*. In that sense, horizontal display where axis text can be better presented may be a better alternative? Authors could perhaps include a discussion along this line and I'd be interested in knowing what the authors think/recommend.
 
