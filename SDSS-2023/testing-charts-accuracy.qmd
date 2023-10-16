@@ -1,8 +1,8 @@
 ---
-title: "Testing Charts: viewers' perceptual accuracy in surveys"
+title: "Testing Stacked Bar Charts: viewers' perceptual accuracy in surveys"
 short-title: Testing charts in surveys # running title
 bibliography: references.bib
-abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in statistical charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
+abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in stacked bar charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'graphical perception, data visualization, survey data'
 preamble: >
   \usepackage{amsfonts,amsmath,amssymb,amsthm}
@@ -33,10 +33,9 @@ editor:
 ---
 
 ```{=latex}
-  \newcommand{\hh}[1]{{\textcolor{orange}{#1}}} 
-  \newcommand{\kr}[1]{{\textcolor{teal}{#1}}}.  
-  \newcommand{\ejm}[1]{{\textcolor{ForestGreen}{#1}}}.  
-  \newcommand{\ndt}[1]{{\textcolor{purple}{#1}}}.  
+  \newcommand{\rev1}[1]{{\textcolor{teal}{#1}}}
+  \newcommand{\rev2}[1]{{\textcolor{purple}{#1}}}
+  \newcommand{\editors}[1]{{\textcolor{ForestGreen}{#1}}}
 
 % take out everything above later
 % keep everything below
@@ -244,16 +243,16 @@ Structural choices, such as the choice of a graphical element (e.g., bar or pie)
 The design of a data visualization impacts a viewer's ability to achieve the intended understanding; a poorly designed data visualization may leave viewers struggling to understand the content or context, or make it difficult to complete accurate and useful comparisons of values across groups or time points.
 More broadly, the design of a data visualization can change how viewers interact with the chart.
 
-The viewer's employment of comparisons of the components is a crucial step in the process of interacting with and understanding the chart.
+The comparisons of components is a crucial step in the process of interacting with and understanding the chart.
 @clevelandGraphicalPerceptionTheory1984 observed as such, and in their seminal study defined the better visual among a pair as the one that allows viewers to make more accurate comparisons.
 Based on mappings of quantitative variables to different graphical elements, Cleveland and McGill's study resulted in a ranking of perceptual tasks (such as identifying the larger of two lengths or areas) from most accurate to least accurate, which was then extended by @mackinlayAutomatingDesignGraphical1986 to a theoretical framework ranking tasks' order along their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
-Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively higher education relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
+Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively well-educated individuals relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
 Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
 
-Here, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents.
+In this work, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents.
 Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
 We employ a probability-based survey panel and run a series of perception tests with nationally-representative samples of respondents from that panel.
 The advantage of using a probability-based approach is two-fold.
@@ -297,14 +296,7 @@ Rather than asking the same (or similar) type of question with varied signal str
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
 Therefore, we focus on questions which vary the structure of the presented image, but ask viewers to compare the same underlying data values across those varied images.
 
-We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart:
-
--   First, we vary the alignment of the pieces in question.
-    Viewers are presented with two marked pieces in a chart that do not share a common baseline (aligned pieces), then two pieces that do share a common baseline (unaligned pieces).
-
--   Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces.
-
--   Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
+We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart. First, we vary the alignment of the pieces in question. Viewers are presented with two marked pieces in a chart that do not share a common baseline (aligned pieces), then two pieces that do share a common baseline (unaligned pieces). Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
 
 ```{r}
 #| label: fig-tasks
@@ -346,13 +338,7 @@ The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep 
 
 When viewing each chart, participants were asked to compare the relative sizes of marked elements within the chart:
 
-"There are many charts used in the news media to portray data visually. Looking at the chart below, which of the marked dark blue pieces is bigger, A or B? Just your best guess is fine.
-
--   A is bigger
-
--   B is bigger
-
--   They are the same"
+"There are many charts used in the news media to portray data visually. Looking at the chart below, which of the marked dark blue pieces is bigger, A or B? Just your best guess is fine. [] A is bigger; [] B is bigger; [] They are the same."
 
 When presented with the aligned version of each chart, pieces were marked with a C and D and the question text is updated accordingly.
 In all scenarios, the second option (B \[D\] is bigger) is the correct response.
@@ -411,7 +397,7 @@ Census Bureau.
 They are balanced by gender, age, education, race/ethnicity, and geographic region.
 All calculations in this paper are done in R [@RLanguage], and weights are applied in analyses using the `survey` package [@lumleyAnalysisComplexSurvey2004] version 4.0 [@survey] based on @lumleyComplexSurveysGuide2010.
 
-When combining responses from different surveys, weights are rescaled with respect to the total population, so that their order after combining still reflects their relative importance. We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with $ \ell \ge 2$ ) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$.
+When combining responses from different surveys, weights are rescaled with respect to the total population, so that their order after combining still reflects their relative importance. We *combine* (rather than cumulate) a set of $\ell$ surveys $S_1$, $S_2$, ... $S_\ell$ (with $\ell \ge 2$) as described in @omuircheartaighCombiningSamplesVs2002, by multiplying weights in $S_i$ by $\lambda_i$, for $1 \le i \le \ell$.
 $\lambda_i \in [0,1]$ with $\sum_i \lambda_i = 1$ is given as 
 \begin{equation}
 \lambda_i = \frac{n_i/d_i}{\sum_{j=1}^{\ell}n_j/d_j},
@@ -492,8 +478,8 @@ omni_gender <- rbind(
     SE = 100*SE
   )
 omni_gender <- omni_gender %>% mutate(
-  low = mean - 1.6445*SE, # for 90% MoE 
-  high = mean + 1.6445*SE
+  low = mean - qnorm(0.95)*SE, # for 90% MoE 
+  high = mean + qnorm(0.95)*SE
 )
 omni_gender <- omni_gender %>%
   dplyr::select(-SE) %>%
@@ -557,8 +543,8 @@ omni_age <- omni_age %>% mutate(
 )  
   
 omni_age <- omni_age %>% mutate(
-  low = mean - 1.6445*SE, # for 90% MoE 
-  high = mean + 1.6445*SE
+  low = mean - qnorm(0.95)*SE, # for 90% MoE 
+  high = mean + qnorm(0.95)*SE
 )
 omni_age <- omni_age %>%
   dplyr::select(-SE) %>%
@@ -611,8 +597,8 @@ omni_educ <- omni_educ %>% mutate(
 )  
   
 omni_educ <- omni_educ %>% mutate(
-  low = mean - 1.6445*SE, # for 90% MoE 
-  high = mean + 1.6445*SE
+  low = mean - qnorm(0.95)*SE, # for 90% MoE 
+  high = mean + qnorm(0.95)*SE
 )
 omni_educ <- omni_educ %>%
   dplyr::select(-SE) %>%
@@ -703,8 +689,8 @@ omni_income <- omni_income %>% mutate(
 )  
   
 omni_income <- omni_income %>% mutate(
-  low = mean - 1.6445*SE, # for 90% MoE 
-  high = mean + 1.6445*SE
+  low = mean - qnorm(0.95)*SE, # for 90% MoE 
+  high = mean + qnorm(0.95)*SE
 )
 omni_income <- omni_income %>%
   dplyr::select(-SE) %>%
@@ -802,9 +788,9 @@ gg1 <- round_123_long %>%
     aes(
       x = rev(c("Aligned: C or D?", "Unaligned: A or B?")),
       xmin = 2:1 - 0.45,
-      ymin = correctTRUE - 1.96* se.correctTRUE,
+      ymin = correctTRUE - qnorm(0.975)* se.correctTRUE,
       xmax = 2:1 + 0.45,
-      ymax = correctTRUE + 1.96* se.correctTRUE,
+      ymax = correctTRUE + qnorm(0.975)* se.correctTRUE,
       weight = 1),
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = marginal_results
@@ -917,9 +903,9 @@ round_123_long %>%
   geom_rect(
     aes(
       xmin = as.numeric(chart) - 0.45,
-      ymin = correct - 1.96* `se.as.numeric(correct)`,
+      ymin = correct - qnorm(0.975)* `se.as.numeric(correct)`,
       xmax = as.numeric(chart) + 0.45,
-      ymax = correct + 1.96* `se.as.numeric(correct)`,
+      ymax = correct + qnorm(0.975)* `se.as.numeric(correct)`,
     ), 
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = ci_confint
@@ -937,9 +923,9 @@ round_123_long %>%
   geom_rect(
     aes(
       xmin = as.numeric(chart) - 0.45,
-      ymin = correct3 - 1.96* `se.as.numeric(correct3)`,
+      ymin = correct3 - qnorm(0.975)* `se.as.numeric(correct3)`,
       xmax = as.numeric(chart) + 0.45,
-      ymax = correct3 + 1.96* `se.as.numeric(correct3)`,
+      ymax = correct3 + qnorm(0.975)* `se.as.numeric(correct3)`,
     ), 
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = ci_confint3
@@ -987,8 +973,8 @@ dframe %>%
   ) %>%
   group_by(task) %>%
   mutate(
-    ci_low = exp(estimate-1.96*std.error),
-    ci_high = exp(estimate+1.96*std.error),
+    ci_low = exp(estimate-qnorm(0.975)*std.error),
+    ci_high = exp(estimate+qnorm(0.975)*std.error),
     estimate = exp(estimate)
   ) %>%
   tidyr::pivot_wider(
@@ -1112,9 +1098,9 @@ zt <- round_123_long %>%
   geom_rect(
     aes(
       xmin = as.numeric(response3) - 0.45,
-      ymin = zoom2 - 1.96* `se.as.numeric(zoom)`,
+      ymin = zoom2 - qnorm(0.975)* `se.as.numeric(zoom)`,
       xmax = as.numeric(response3) + 0.45,
-      ymax = zoom2 + 1.96* `se.as.numeric(zoom)`,
+      ymax = zoom2 + qnorm(0.975)* `se.as.numeric(zoom)`,
     ), 
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = confint_zoom1
@@ -1150,9 +1136,9 @@ zd <- round_123_long %>%
   geom_rect(
     aes(
       xmin = as.numeric(response3) - 0.45,
-      ymin = zoom2 - 1.96* `se.as.numeric(zoom)`,
+      ymin = zoom2 - qnorm(0.975)* `se.as.numeric(zoom)`,
       xmax = as.numeric(response3) + 0.45,
-      ymax = zoom2 + 1.96* `se.as.numeric(zoom)`,
+      ymax = zoom2 + qnorm(0.975)* `se.as.numeric(zoom)`,
     ), 
     fill = "black", alpha = 0.25, #colour = "white", linewidth = 0.25,
     data = confint_zoom2
@@ -1341,8 +1327,8 @@ round_123_certainty_long %>%
     data = coefs_certainty
   ) + 
   geom_errorbar(
-    aes(ymin = (estimate-1.96*std.error),
-        ymax = (estimate+1.96*std.error)),
+    aes(ymin = (estimate-qnorm(0.975)*std.error),
+        ymax = (estimate+qnorm(0.975)*std.error)),
     width=0.3,
     data = coefs_certainty
   ) + 
@@ -1404,8 +1390,8 @@ educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), s
 educ_ci <- broom::tidy(educ_glm) %>%
   mutate(
     educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1415,8 +1401,8 @@ educ_glm3 <- svyglm(correct3~educ5-1, design=survey_123, family=quasibinomial(),
 educ_ci3 <- broom::tidy(educ_glm3) %>%
   mutate(
     educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1497,8 +1483,8 @@ educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), s
 educ_ci <- broom::tidy(educ_glm) %>%
   mutate(
     educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1508,8 +1494,8 @@ educ_glm3 <- svyglm(correct3~educ5-1, design=survey_123, family=quasibinomial(),
 educ_ci3 <- broom::tidy(educ_glm3) %>%
   mutate(
     educ5 = factor(levels(round_123$educ5), levels = levels(round_123$educ5)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1592,8 +1578,8 @@ gender_glm <- svyglm(correct~gender-1, design=survey_123, family=quasibinomial()
 gender_ci <- broom::tidy(gender_glm) %>%
   mutate(
     gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1603,8 +1589,8 @@ gender_glm3 <- svyglm(correct3~gender-1, design=survey_123, family=quasibinomial
 gender_ci3 <- broom::tidy(gender_glm3) %>%
   mutate(
     gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1685,8 +1671,8 @@ gender_glm <- svyglm(correct~gender-1, design=survey_123, family=quasibinomial()
 gender_ci <- broom::tidy(gender_glm) %>%
   mutate(
     gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1696,8 +1682,8 @@ gender_glm3 <- svyglm(correct3~gender-1, design=survey_123, family=quasibinomial
 gender_ci3 <- broom::tidy(gender_glm3) %>%
   mutate(
     gender = factor(levels(round_123$gender), levels = levels(round_123$gender)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1778,8 +1764,8 @@ income_glm <- svyglm(correct~income4-1, design=survey_123, family=quasibinomial(
 income_ci <- broom::tidy(income_glm) %>%
   mutate(
     income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1789,8 +1775,8 @@ income_glm3 <- svyglm(correct3~income4-1, design=survey_123, family=quasibinomia
 income_ci3 <- broom::tidy(income_glm3) %>%
   mutate(
     income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1870,8 +1856,8 @@ income_glm <- svyglm(correct~income4-1, design=survey_123, family=quasibinomial(
 income_ci <- broom::tidy(income_glm) %>%
   mutate(
     income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1881,8 +1867,8 @@ income_glm3 <- svyglm(correct3~income4-1, design=survey_123, family=quasibinomia
 income_ci3 <- broom::tidy(income_glm3) %>%
   mutate(
     income4 = factor(levels(round_123$income4), levels = levels(round_123$income4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1983,8 +1969,8 @@ age_glm <- svyglm(correct~age4-1, design=survey_123, family=quasibinomial(), sub
 age_ci <- broom::tidy(age_glm) %>%
   mutate(
     age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -1994,8 +1980,8 @@ age_glm3 <- svyglm(correct3~age4-1, design=survey_123, family=quasibinomial(), s
 age_ci3 <- broom::tidy(age_glm3) %>%
   mutate(
     age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -2074,8 +2060,8 @@ age_glm <- svyglm(correct~age4-1, design=survey_123, family=quasibinomial(), sub
 age_ci <- broom::tidy(age_glm) %>%
   mutate(
     age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -2085,8 +2071,8 @@ age_glm3 <- svyglm(correct3~age4-1, design=survey_123, family=quasibinomial(), s
 age_ci3 <- broom::tidy(age_glm3) %>%
   mutate(
     age4 = factor(levels(round_123$age4), levels = levels(round_123$age4)),
-    low = estimate-1.96*std.error,
-    high = estimate+1.96*std.error,
+    low = estimate-qnorm(0.975)*std.error,
+    high = estimate+qnorm(0.975)*std.error,
     estimate = inv_logit(estimate),
     low = inv_logit(low),
     high = inv_logit(high))
@@ -2186,8 +2172,8 @@ gender_ab + age_ab  + educ_ab +income_ab +
     term = gsub("educ5", "", term),
     term = gsub("age4", "", term),
     term = gsub("income4", "", term),
-    ci_low = exp(estimate-1.96*std.error),
-    ci_high = exp(estimate+1.96*std.error),
+    ci_low = exp(estimate-qnorm(0.975)*std.error),
+    ci_high = exp(estimate+qnorm(0.975)*std.error),
     estimate = exp(estimate)
   )
 }
@@ -2310,7 +2296,7 @@ With our survey framework, we have shown that we can rank structural variations 
 The size of our sample aids in identifying this signal.
 
 Further, we can also study respondent behavior and how viewers interact with the chart.
-Paradata on viewer interaction with the chart (e.g., zooming and time spent on each task) can be collected as well as asking directly asking respondents questions about their certainty.
+Paradata on viewer interaction with the chart (e.g., zooming and time spent on each task) can be collected as well as directly asking respondents questions about their certainty.
 Not only can we collect this information, but we can also identify significant differences in this behavior across different designs.
 Understanding viewer interaction and engagement is a key component to designing effective data visualizations.
 If a particular design leads viewers to zoom in more to investigate it when determining a response, we might consider that design to be more frustrating to viewers 'in the wild' when viewing it outside of the context of our tests.
@@ -2319,7 +2305,7 @@ Perhaps most salient among our results are the patterns in response behavior acr
 The large size of our sample, paired with the probability-based survey panel approach, afford us the ability to dive into response patterns among demographics across tasks and identify significant differences among them.
 In particular, the differences across educational attainment groups and income groups underscore the importance of utilizing a representative population when testing perception; prior results in this area may be absorbing bias in responses due to the larger representation of individuals with higher education levels among those study respondents.  
 
-Our study results provide actionable insights that data visualization practitioners can utilize in the design of data visualizations. Comparisons of interest should be lined up and share a common baseline within a chart; in an interactive setting, it may be beneficial to give viewers the possibility of re-ordering categories to support effective comparison across groupings. Allowing users to zoom in on images may not impact perceptual accuracy, but it leads to higher certainty in viewers' comparisons. Considering the target audience for visualizations and what key findings are most important to convey should be an important step in the process of designing a data visualization. 
+Our study results provide actionable insights that data visualization practitioners can utilize in the design of stacked bar charts. Comparisons of interest should be lined up and share a common baseline within a chart; in an interactive setting, it may be beneficial to give viewers the possibility of re-ordering categories to support effective comparison across groupings. Allowing users to zoom in on images may not impact perceptual accuracy, but it leads to higher certainty in viewers' comparisons. Considering the target audience for visualizations and what key findings are most important to convey should be an important step in the process of designing a data visualization. 
 
 While our results are limited to mapping in a stacked bar chart with a specific topic, they demonstrate among them a wealth of insights about how respondents perceive and interact with data visualizations.
 More expansive work on this topic should be completed to understand how the general public interacts with and understands charts, including expanding to a wider set of structural variations, more aesthetic design variations, and considering differences in respondent behavior across different data topic areas.
