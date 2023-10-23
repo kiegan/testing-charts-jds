@@ -883,7 +883,7 @@ ci_confint3 <- ci_confint3 %>%
 
 ```{r}
 #| label: fig-response-123
-#| fig-cap: "Responses by task across the designs. The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions: two bars have a significantly different proportion (at a 5% significance level) if they do not share a letter. There is no significant difference between the designs for wrong responses."
+#| fig-cap: "Responses by task across the designs. The overlaid rectangles represent 95% confidence intervals. The letters in blue and orange encode significances between pairwise proportions [@piephoAlgorithmLetterBasedRepresentation2004]: two bars have a significantly different proportion (at a 5% significance level) if they do not have a letter in common. There is no significant difference between the designs for wrong responses."
 #| fig-height: 4
 #| fig-width: 8
 #| out-width: 90%
@@ -955,8 +955,9 @@ round_123_long %>%
 \end{equation}
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
+The letters allow us to assess whether differences between two means are significant:  two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common. This method is called connected letters and has been introduced by @piephoAlgorithmLetterBasedRepresentation2004. In @fig-response-123, we see, that the proportions of wrong responses are significantly different between tasks, but designs within each task are not significantly different. For correct responses, all proportions are significantly different except for the proportion of correctly assessing the difference between unaligned rectangles in the wide horizontal design: their label of `ab` shows us that assessing the differences between unaligned rectangles in the wide horizontal design is not significantly better than in the horizontal design (labelled `a`), but also not significantly worse than in the vertical design (labelled `b`).
+
 The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
-The lowercase letters indicate significances between pairs of estimates: two estimates within the same column are significantly different at 5% level if they do not have any letter in common [@piephoAlgorithmLetterBasedRepresentation2004].
 
 ```{r}
 #| label: tbl-rounds-123
@@ -1066,7 +1067,7 @@ coefs_zoom <- broom::tidy(logit_zoom)
 #| label: fig-zoom-123
 #| fig-cap: "Rates of zooming by task, chart design, and correctness. The overlaid rectangles represent 95% confidence intervals. There are significantly higher rates of zooming by respondents for the vertical task compared to both horizontal tasks; rates of zooming do not differ by correctness of response or alignment in the stimulus."
 #| fig-height: 3.5
-#| fig-width: 10
+#| fig-width: 11
 #| out-width: 90%
 
 confint_zoom1 <- svyby(formula = ~zoom, by = ~task+response3, design = survey_123, svyciprop) %>%

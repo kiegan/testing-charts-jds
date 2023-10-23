@@ -74,6 +74,11 @@ editor: source
         -   *This change has been made in the source code.*
 
     -   **I do appreciate that the authors present the results using vertical stacked barplot, reflected from their results. A minor point is that I actually don't like the angled display of the x-axis text and I would have preferred to present this in a horizontal display so the text stays horizontal. I realize this sacrifices partially the accuracy of the results for something more aesthetically pleasing for peripheral information. But this opens up another question: is communicating information about always presenting the most accurate results? Communication won't happen if the recipient isn't taking in that information in the first place and while it may be superficial, aesthetically pleasing display may perhaps drive *better engagement*. In that sense, horizontal display where axis text can be better presented may be a better alternative? Authors could perhaps include a discussion along this line and I'd be interested in knowing what the authors think/recommend.**
+    HH: figure 6: changed labels to horizontal - a vertical display of the results allows a comparison across all tasks and designs. A wide layout of the chart allows us to keep the number of pages down. 
+    XXX: Kiegan, could you make sure that the workaround actually works in the pdf? I think that my pdf looks different from the one you get.
+    
+    I'm not sure how much we can really go into liking something and engaging with charts. 
+    Signals from aesthetic changes are usually quite small and people like different things. Finding aesthetic changes that suit everybody is rare.
 
 ## Editors
 
@@ -92,6 +97,12 @@ editor: source
 
 -   **Is there a reason why the meaning/values of i from 1 to 3 are reversed between the two models specified in Equations 4 and 7?**
 
+
+
 -   **It appears the cumulative logistic regression model with respect to participant demographic covariates just considers first-order effects, but interactions would also be pretty interesting here. Are there any notable interaction effects?**
 
+HH *sample size*
+
 -   **The letter notation used to denote significance is a bit confusing to me (e.g., Figure 5, Table 3), can the authors clarify this within the text or modify accordingly? What do a, b, c, etc. actually mean? If this is convention from Piepho (2004), it would be useful for this to be explained more or changed for a more general audience.**
+
+HH *we have expanded the discussion on the interpretation of connected letters, and included an example for their first use.*
