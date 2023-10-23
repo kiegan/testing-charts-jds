@@ -461,7 +461,7 @@ round_123 <- round_123 %>% group_by(chart) %>%
     weight_pct_round = weight/sum(weight)*100
   )
 
-# from ACS 2001
+# from ACS 2021
 # https://data.census.gov/table?q=sex+of+adults+age+greater+than+18+across+the+US&tid=ACSDP1Y2021.DP05	
 acs_gender <- data.frame(gender = c("Male", "Female"), 
                          estimate = c(125215171, 130276235), moe=c(4770, 4818),
@@ -489,7 +489,7 @@ omni_gender <- omni_gender %>%
   pivot_longer(cols =c(mean, low, high), names_to="group", values_to="value") 
 
 
-gender <- round_123 %>% 
+gender_bak <- round_123 %>% 
   ggplot() + 
   geom_bar(aes(x = gender, weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   # geom_rect(
@@ -521,6 +521,27 @@ gender <- round_123 %>%
   geom_point(aes(x = gender, y = percent), data = acs_gender) +
   theme(legend.position ="none") +
   scale_linetype_manual(values=c(2,2,1))
+
+gender <- acs_gender %>%
+  ggplot(aes(x = gender)) +
+  geom_errorbar(aes(ymin = percent-moe_percent, ymax=percent+moe_percent)) +
+  geom_point(aes(y = percent)) +
+  geom_point(
+    aes(x = sex, y = value, colour=chart),
+    position = position_dodge(width = 0.5),
+    data = omni_gender %>% filter(group=="mean")
+  ) +
+  geom_linerange(
+    aes(
+      x = sex,
+      ymin = low,
+      ymax=high,
+      colour=chart
+    ),
+    position = position_dodge(width = 0.5),
+    data = omni_gender %>% pivot_wider(names_from=group, values_from=value)
+  )
+
 
 
 acs_age <- data.frame(age4 = c("18-29", "30-44", "45-59", "60+"), 
@@ -1066,7 +1087,7 @@ coefs_zoom <- broom::tidy(logit_zoom)
 ```{r}
 #| label: fig-zoom-123
 #| fig-cap: "Rates of zooming by task, chart design, and correctness. The overlaid rectangles represent 95% confidence intervals. There are significantly higher rates of zooming by respondents for the vertical task compared to both horizontal tasks; rates of zooming do not differ by correctness of response or alignment in the stimulus."
-#| fig-height: 3.5
+#| fig-height: 4
 #| fig-width: 11
 #| out-width: 90%
 
@@ -1316,7 +1337,7 @@ coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
 #| out-width: 100%
 #| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Error bars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significance at 5%. The scores for two bars are significantly different if they do not share a letter. "
 #| fig-width: 10
-#| fig-height: 4.5
+#| fig-height: 4.25
 
 round_123_certainty_long <- round_123_certainty_long %>% 
   mutate(
