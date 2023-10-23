@@ -1286,7 +1286,8 @@ scale_x <- function(value, from, to) {
 coefs_certainty <- coefs_certainty %>% 
   mutate(
     estimate = scale_x(estimate, from=c(1,5), to=c(0,1)),
-    std.error = std.error/4
+    std.error = std.error/4,
+    chart = factor(chart, levels=c("Horizontal wide", "Horizontal", "Vertical"))
   )
 
 round_123_certainty_long <- round_123_certainty_long %>%
@@ -1317,15 +1318,25 @@ coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
 #| fig-width: 10
 #| fig-height: 4.5
 
-round_123_certainty_long %>%
+round_123_certainty_long <- round_123_certainty_long %>% 
+  mutate(
+    chart = fct_recode(chart, "Horizontal\nwide" = "Horizontal wide")
+  )
+coefs_certainty <- coefs_certainty %>% 
+  mutate(
+    chart = fct_recode(chart, "Horizontal\nwide" = "Horizontal wide")
+  )
+
+gg <- round_123_certainty_long %>%
   ggplot(aes(x = chart)) +
   facet_grid(.~Question+Correct) +
   geom_bar(aes(fill=Response, weight=weight), 
            position=position_fill(reverse=TRUE), 
            colour="grey40", linewidth=0.25) +
-  theme(
-    axis.text.x = element_text(angle=30, hjust=1)
-  ) + 
+  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) + 
+  #theme(
+  #  axis.text.x = element_text(angle=30, hjust=1)
+  #) + 
   scale_y_continuous("Percentage", breaks=seq(0,1, by=0.25), 
                      labels = seq(0,1, by=0.25)*100, limits = c(-0.1, 1),
                      sec.axis = sec_axis( trans=~(.*4)+1, name="Certainty scores")) +
@@ -1342,7 +1353,12 @@ round_123_certainty_long %>%
     width=0.3,
     data = coefs_certainty
   ) + 
-  geom_text(aes(label=letters), y = -0.05, data = coefs_certainty) 
+  geom_text(aes(label=letters), y = -0.05, data = coefs_certainty) #+
+#  scale_x_discrete(breaks=c("Horizontal", "Horizontal\nwide", "Vertical"))
+
+#ggb <- ggplot2::ggplot_build(gg)
+
+gg
 ```
 
 ### Differences across demographic groups
