@@ -1,6 +1,6 @@
 ---
-title: "What do they see? Testing perceptual accuracy  in surveys of the of the general US population using stacked barcharts"
-short-title: Testing stacked barcharts in surveys # running title
+title: "What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts"
+short-title: Testing stacked bar charts in surveys # running title
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in stacked bar charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'graphical perception, data visualization, survey data'
@@ -32,10 +32,6 @@ editor:
 ---
 
 ```{=latex}
-  \newcommand{\rev1}[1]{{\textcolor{teal}{#1}}}
-  \newcommand{\rev2}[1]{{\textcolor{purple}{#1}}}
-  \newcommand{\editors}[1]{{\textcolor{ForestGreen}{#1}}}
-
 % take out everything above later
 % keep everything below
 
@@ -252,7 +248,7 @@ Based on mappings of quantitative variables to different graphical elements, Cle
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
 Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively well-educated individuals relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
-Further, the populations' emphasis on higher education individuals also leads to results which hold for groups of individuals who may be more likely to have prior exposure to data visualization in the context of scientific communication, or more exposure to data topics in higher education, but may not hold across other groups within the population.
+Further, higher education individuals are likely to have prior exposure to data visualization or data topics in higher education, which may not be the case for other groups within the population; existing differences in exposure to data may drive differences in results across groups.  
 
 In this work, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents.
 Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
@@ -363,9 +359,9 @@ What we call 'aligned' and 'unaligned', here, is similar to Cleveland and McGill
 @fig-tasks-explain gives an overview of the comparisons of tasks 1 through 3 and the closest corresponding tasks in Cleveland and McGill.
 In this paper, both 'aligned' and 'unaligned' bars share the same axis.
 
-Aligned tiles are additionally anchored in the same position along the axis, i.e. the difference between their sizes can be reduced to a positional assessment, which in the absence of three-dimensional cues seems to be the general strategy viewers use when evaluating barcharts [@zacksReadingBarGraphs1998a].
+Aligned tiles are additionally anchored in the same position along the axis, i.e. the difference between their sizes can be reduced to a positional assessment, which in the absence of three-dimensional cues seems to be the general strategy viewers use when evaluating bar charts [@zacksReadingBarGraphs1998a].
 Unaligned tiles do not share this anchor of position, i.e. the difference between their sizes needs at least two comparisons of positions.
-However, unaligned bars in a stacked barchart are not just assessments of the lengths of bars -- the other tiles in the chart provide a reference frame of the shared axis, which *should* help with an assessment of the tiles' sizes.
+However, unaligned bars in a stacked bar chart are not just assessments of the lengths of bars -- the other tiles in the chart provide a reference frame of the shared axis, which *should* help with an assessment of the tiles' sizes.
 As shown in the sketch of @fig-tasks-explain, this framing leads to a stimulus that is between Cleveland and McGill's task of 'position along the same but unaligned axis' and an assessment of length.
 
 We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the other tiles in the same column mitigating some of this difficulty.
@@ -423,7 +419,7 @@ The resulting number of participants, effective sample sizes, and $\lambda$ valu
 | Round 1   | April 2022 | `r nrow(round1_adj)` | `r round(neff(round1_adj$weight),1)` | `r round(sum(round1_adj$weight),1)` |        $\lambda_1$ = `r round(lambdas[1],3)` |
 | Round 2   | May 2022   | `r nrow(round2_adj)` | `r round(neff(round2_adj$weight),1)` | `r round(sum(round2_adj$weight),1)` | $\lambda_2$ = `r sprintf("%.3f",lambdas[2])` |
 | Round 3   | June 2022  | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` |        $\lambda_3$ = `r round(lambdas[3],3)` |
-| **Combined** | ---        |  `r nrow(round_123)` |  `r round(neff(round_123$weight),1)`* |                                     |                                              |
+| **Combined** | ---        |  `r nrow(round_123)` |  `r round(neff(round_123$weight),1)` |                                     |                                              |
 
 : Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining of surveys as discussed above.
 {#tbl-rounds}
