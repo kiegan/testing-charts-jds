@@ -1512,7 +1512,8 @@ Finally, we turn to investigating responses across demographic groups, a core be
 Our pattern of higher accuracy in selecting the correct response on the aligned task relative to the unaligned task holds across all demographic groups and structural variations.
 However, we do observe different response patterns, particularly on the unaligned task, across demographic groups.
 
-Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'wrong', 2 = 'they are the same' to 3 = 'correct'.
+Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'correct', 2 = 'they are the same' to 3 = 'wrong'.
+
 We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
 
 \begin{equation}

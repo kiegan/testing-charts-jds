@@ -102,6 +102,7 @@ editor: source
 -   **Is there a reason why the meaning/values of i from 1 to 3 are reversed between the two models specified in Equations 4 and 7?**
 
     -   KR: **Heike, please confirm** which order they should be in. 
+    - hh: the order in 4 is the correct one, and was actually the one used for the table. I have fixed the description for eqn 7.
 
 
 -   It appears the cumulative logistic regression model with respect to participant demographic covariates just considers first-order effects, but interactions would also be pretty interesting here. Are there any notable interaction effects?
