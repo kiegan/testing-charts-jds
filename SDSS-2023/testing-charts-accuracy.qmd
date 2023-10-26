@@ -247,8 +247,8 @@ Based on mappings of quantitative variables to different graphical elements, Cle
 
 Cleveland and McGill's work -- while a foundational user study in graphical perception -- utilized a small convenience sample, consisting of only a few individuals recruited from among the authors' coworkers and their spouses.
 @heerCrowdsourcingGraphicalPerception2010 reproduced Cleveland and McGill's rankings using a larger sample from a crowd sourcing platform, employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the study.
-Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively well-educated individuals relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population, a common target audience for data visualization and scientific communication work.
-Further, higher education individuals are likely to have prior exposure to data visualization or data topics in higher education, which may not be the case for other groups within the population; existing differences in exposure to data may drive differences in results across groups.  
+Crowd sourced samples were shown by @borgoCrowdsourcingInformationVisualization2017 to be biased towards more male, younger, and relatively well-educated individuals relative to the adult U.S. population as a whole; generally, convenience and opt-in samples are not representative of the general population.
+Further, higher education individuals are likely to have prior exposure to data visualization or data topics in higher education, which may not be the case for other groups within the population; existing differences in exposure to data may drive differences in results across groups. The general public is a common target audience for data visualization and scientific communication work; results of polls, surveys, and scientific work are presented often in the news, shared on social media, or posted online or in print materials. It is imperative that data visualizations used to communicate these topics are designed with the goal of reaching the entire population. To that end, an inclusive, representative approach to studying how viewers perceive information presented in charts is critical to understand how best to communicate with the general public.  
 
 In this work, we seek to answer whether it is possible to reproduce some of the previous findings in the context of a survey with a large, nationally-representative set of respondents.
 Specifically, we present viewers with structural variations of bar charts and ask them to answer questions comparing the size of elements within those charts.
@@ -365,7 +365,7 @@ However, unaligned bars in a stacked bar chart are not just assessments of the l
 As shown in the sketch of @fig-tasks-explain, this framing leads to a stimulus that is between Cleveland and McGill's task of 'position along the same but unaligned axis' and an assessment of length.
 
 We would expect that comparing unaligned tiles is a harder task (with correspondingly lower levels of accuracy) than a comparison of aligned tiles, with the framing given by the other tiles in the same column mitigating some of this difficulty.
-In particular, the additional context of the other tiles should *help* rather than *hurt* the comparison, unlike other situations, where additional information besides the pieces involved in the comparison were found to be distractors [@talbotFourExperimentsPerception2014].
+In particular, the additional context of the other tiles should *help* rather than *hurt* the comparison, unlike other situations, where additional information besides the pieces involved in the comparison were found to be distractors [@talbotFourExperimentsPerception2014]. Participants first saw the chart with the unaligned comparison, followed by the chart with the aligned comparison, but could not return to the first comparison after completing it. While there is some risk of participants recognizing the subsequent tasks to be the same value comparisons, the unaligned (harder) task was shown first to reduce the likelihood of participants carrying over an answer from the aligned (easier) task.  
 
 ```{=html}
 <!--
@@ -2336,7 +2336,7 @@ Through this work, we have tested the use of probability-based survey panels to 
 Testing data visualization design structures and viewer behavior on a nationally-representative sample is of broad interest and applicability to the scientific communication community, and this study demonstrates a framework under which to complete further work in this area.
 
 With our survey framework, we have shown that we can rank structural variations on design and tasks by their relative accuracy; we identified significantly different rates of respondent accuracy under different designs presenting the same data.
-The size of our sample aids in identifying this signal.
+Our study sample is larger than prior studies with a similar scope. That large sample size improves our power to identify this signal.
 
 Further, we can also study respondent behavior and how viewers interact with the chart.
 Paradata on viewer interaction with the chart (e.g., zooming and time spent on each task) can be collected as well as directly asking respondents questions about their certainty.
