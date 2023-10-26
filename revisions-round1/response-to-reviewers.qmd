@@ -99,10 +99,9 @@ editor: source
     
     -   *We acknowledge that this is a limitation. There is a chance that someone recognizes they are completing the same task with the same bars when we present the aligned task before the unaligned task; we made the assumption that the chance of recognizing the tasks is lower when seeing unaligned prior to aligned. Participants are not able to return to the prior question once they move on to the second question, which does make it more difficult for participants to compare the tasks to one another. We also added the following text in the section describing alignment: "Participants first saw the chart with the unaligned comparison, followed by the chart with the aligned comparison, but could not return to the first comparison after completing it. While there is some risk of participants recognizing the subsequent tasks to be the same value comparisons, the unaligned (harder) task was shown first to reduce the likelihood of participants carrying over an answer from the aligned (easier) task."* 
 
--   **Is there a reason why the meaning/values of i from 1 to 3 are reversed between the two models specified in Equations 4 and 7?**
+-   Is there a reason why the meaning/values of i from 1 to 3 are reversed between the two models specified in Equations 4 and 7?
 
-    -   KR: **Heike, please confirm** which order they should be in. 
-    - hh: the order in 4 is the correct one, and was actually the one used for the table. I have fixed the description for eqn 7.
+    -   *The order in 4 is the correct one, and was actually the parameterization used for both models and shown in both corresponding tables. We have fixed the description for Equation 7 to reflect this.*
 
 
 -   It appears the cumulative logistic regression model with respect to participant demographic covariates just considers first-order effects, but interactions would also be pretty interesting here. Are there any notable interaction effects?
