@@ -73,6 +73,7 @@ knitr::opts_chunk$set(echo = F,
 
 library(readr)
 library(tidyverse)
+library(tidycensus)
 library(knitr)
 library(bibtex)
 theme_set(theme_bw())
@@ -189,6 +190,8 @@ round_123 <- round_12 %>%
 
        
 levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
+
+#levels(round_123$educ5) <- c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate")
 
 levels(round_123$income4) <- c("< $30k", "$30k - $60k", "$60k - $100k", "more than $100k")
   
@@ -651,7 +654,7 @@ age <- acs_age %>%
   scale_color_manual(values=c("grey20", rounds_col))
 
 
-acs_educ5 <- data.frame(educ5 = c("Less than HS", "HS or equivalent", "Some college",  "Bachelor", "Post graduate"), 
+acs_educ5 <- data.frame(educ5 = levels(round_123$educ5), 
                       estimate = c(
                       3636691 + 10793507 + 14256849, 
                       9974372 + 59636386,
@@ -676,7 +679,7 @@ omni_educ <- omni_educ_long %>% mutate(
   educ = gsub(".", " ", educ, fixed=TRUE)
 )  
 omni_educ <- omni_educ %>% mutate(
-  educ = factor(educ, levels = c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate"))
+  educ = factor(educ, levels = levels(round_123$educ5))
 )  
   
 omni_educ <- omni_educ %>% mutate(
@@ -745,7 +748,8 @@ education <- acs_educ5 %>%
   xlab("") +
   theme(legend.position ="none") +
   scale_linetype_manual(values=c(2,2,1)) +
-  scale_color_manual(values=c("grey20", rounds_col))
+  scale_color_manual(values=c("grey20", rounds_col)) 
+  
 
 
 acs_income_raw <- read_xlsx("../data/ACSDT1Y2021.B19001-income.xlsx", sheet="Data", skip = 1) %>% mutate(
@@ -772,6 +776,8 @@ acs_income <- acs_income2 %>%
   income4 = factor(income4, levels = c("< $30k", "$30k - $60k", 
               "$60k - $100k", "more than $100k"))
 )
+
+levels(acs_income$income4) <- levels(round_123$income4)
 
 omni_income <- data.frame(svyby(~income4, by=~chart, design=survey_123, svymean))
 omni_income_long <- omni_income %>% 
@@ -1182,7 +1188,7 @@ To better comprehend these observed patterns, we investigate viewer interaction 
 One contributing factor to the observed patterns in response accuracy might be the way that participants interact with the different designs.
 Across all tasks, about half of all participants make use of the option to zoom into charts.
 We observe that while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
-However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
+However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when a significantly lower rate of respondents chose to make use of zooming when answering the horizontal designs compared to the vertical design.
 
 
 ```{r zoom-123}
@@ -1298,15 +1304,24 @@ zt + zd + plot_layout(widths=c(6, 9), guides='collect')
 ```
 
 
-```{r}
+```{r results="asis"}
 #| label: tbl-zoom-123
 #| tbl-cap: Coefficients for logistic regression of zooming by task
 
 #    term = TeX(c("$\\mu$", "They are the same $\\rho_2$", "wrong $\\rho_3$", "Aligned $\\tau_2$", "Horizontal wide $\\delta_2$", "Vertical $\\delta_3$"))
 
-coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
-                     "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
-                     "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+# coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
+#                      "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
+#                      "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+
+coefs_zoom$term <- c("\\hat{\\mu}", 
+                         "\\text{They are the same } \\widehat{\\rho}_{2}", 
+                         "Wrong $$\\widehat{\\rho}_{3}$$", 
+                         "Aligned $$\\widehat{\\tau}_{2}$$", 
+                         "Horizontal wide $$\\widehat{\\delta}_{2}$$", 
+                         "Vertical $$\\widehat{\\delta}_{3}$$")
+
+
 
 coefs_zoom %>%
   mutate(
@@ -1504,16 +1519,6 @@ We use a generalized cumulative logistic regression, where $\mu_i$ are intercept
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 \end{equation}
 
-The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}.
-When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level.
-We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000.
-When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups.
-We do not see significant differences in responses by age for either task.
-Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task.
-This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences.
-
-<!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
-
 ```{r demographics-model}
 logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
 
@@ -1540,6 +1545,14 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 #| fig-width: 10
 #| layout-nrow: 2
 #| out-width: 100%
+
+thm <- 
+  theme(axis.text.x = element_text(angle=0, hjust = 0.5))
+        
+thm2 <- 
+  theme(axis.text.x = element_text(angle=0, hjust = 0.5),
+        axis.title.y = element_blank(), 
+        axis.text.y = element_blank())
 
 educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
 educ_ci <- broom::tidy(educ_glm) %>%
@@ -1630,8 +1643,7 @@ educ_cd <- round_123_long %>%
   ) +
   scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
   geom_text(aes(label=letters), y = -0.05, data = educ_ci, colour = "steelblue") +
-  geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange")
-
+  geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange") 
 
 
 educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
@@ -2302,15 +2314,45 @@ geom_rect(
  geom_text(aes(label=letters), y = -0.05, data = age_ci, colour = "steelblue") +
  geom_text(aes(label=letters), y = 1.05, data = age_ci3, colour = "darkorange")
  
+educ_cd <- educ_cd + 
+  scale_x_discrete(labels=c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate"))
+educ_ab <- educ_ab + 
+  scale_x_discrete(labels=c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate"))
+
+income_cd <- income_cd +
+  scale_x_discrete(labels=c("< $30k", "$30-60k", "$60-100k", "≥ $100k"))
+income_ab <- income_ab +
+  scale_x_discrete(labels=c("< $30k", "$30-60k", "$60-100k", "≥ $100k"))
 
 
+gender_cd + thm + 
+ age_cd  + thm2 + 
+  educ_cd  + thm2 + 
+  income_cd + thm2 + 
+    plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4)) &
+  theme(legend.position = "bottom",
+        legend.box.margin = margin(t = -15, r = 0, b = 0, l = 0, unit = "pt"))
 
-gender_cd + age_cd  + educ_cd +income_cd + 
-    plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
-
-gender_ab + age_ab  + educ_ab +income_ab + 
-  plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
+gender_ab + thm + 
+  age_ab  + thm2 + 
+  educ_ab + thm2 +
+  income_ab + thm2 +
+  plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4)) &
+  theme(legend.position = "bottom", 
+        legend.box.margin = margin(t = -15, r = 0, b = 0, l = 0, unit = "pt"))
 ```
+
+The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}.
+When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level.
+We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000.
+When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups.
+We do not see significant differences in responses by age for either task.
+Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task.
+This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences.
+
+<!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
+
+
 
 
 \blandscape
