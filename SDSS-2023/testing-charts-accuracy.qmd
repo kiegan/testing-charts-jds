@@ -73,6 +73,7 @@ knitr::opts_chunk$set(echo = F,
 
 library(readr)
 library(tidyverse)
+library(tidycensus)
 library(knitr)
 library(bibtex)
 theme_set(theme_bw())
@@ -189,6 +190,8 @@ round_123 <- round_12 %>%
 
        
 levels(round_123$educ5) <- c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate")
+
+#levels(round_123$educ5) <- c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate")
 
 levels(round_123$income4) <- c("< $30k", "$30k - $60k", "$60k - $100k", "more than $100k")
   
@@ -447,7 +450,7 @@ The distribution of demographics are all quite similar across tasks and their 90
 
 ```{r}
 #| label: fig-rounds-demographics
-#| fig-cap: "Demographics of respondents in each of the tasks. The dots show percentages of the national demographics as estimated by the American Community Survery (ACS) 2021."
+#| fig-cap: "Overview of participants' demographics in each of the tasks: the colored dots show marginal percentages for demographics across the three tasks. In comparison, the dark lines show upper and lower 95% confidence of these demographics as estimated by the American Community Survery (ACS) 2021. Note that for a lot of these intervals the estimates are so close together that they appear as a single line. "
 #| fig-height: 7
 #| fig-width: 12
 
@@ -518,15 +521,19 @@ gender_bak <- round_123 %>%
   theme(legend.position ="none") +
   scale_linetype_manual(values=c(2,2,1))
 
+rounds_col <- RColorBrewer::brewer.pal(name="Accent", n=8)[c(1,3,5)]
+#[1] "#7FC97F" "#BEAED4" "#FDC086" "#FFFF99" "#386CB0" "#F0027F" "#BF5B17" "#666666"
 gender <- acs_gender %>%
   ggplot(aes(x = gender)) +
-  geom_errorbar(aes(ymin = percent-moe_percent, ymax=percent+moe_percent)) +
-  geom_point(aes(y = percent)) +
+  geom_errorbar(aes(ymin = percent-moe_percent, ymax=percent+moe_percent, colour="ACS estimate")) +
+#  geom_point(aes(y = percent)) +
   geom_point(
+    size=3,
     aes(x = sex, y = value, colour=chart),
     position = position_dodge(width = 0.5),
     data = omni_gender %>% filter(group=="mean")
   ) +
+  ylim(c(0, NA)) +
   geom_linerange(
     aes(
       x = sex,
@@ -534,9 +541,18 @@ gender <- acs_gender %>%
       ymax=high,
       colour=chart
     ),
+    linewidth = 1, 
     position = position_dodge(width = 0.5),
-    data = omni_gender %>% pivot_wider(names_from=group, values_from=value)
-  )
+    data = omni_gender %>% pivot_wider(names_from=group, values_from=value),
+    show.legend = FALSE
+  ) +
+  ylab("Percent") + 
+  ggtitle("Gender") +
+#  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
+  xlab("") +
+#  theme(legend.position ="none") +
+  scale_linetype_manual(values=c(2,2,1)) +
+  scale_color_manual(values=c("grey20", rounds_col))
 
 
 
@@ -544,8 +560,17 @@ acs_age <- data.frame(age4 = c("18-29", "30-44", "45-59", "60+"),
                       estimate = c(22854328 + 30339089, 
                                    22506614 + 21920290 + 20521593, 
                                    20582187 + 21049271 + 21928936, 
-                                   73789098))
-acs_age <- acs_age %>% mutate(percent = estimate/sum(estimate)*100)
+                                   73789098),
+                      percent = c(6.9 + 9.2, 
+                                  6.8 + 6.6 + 6.2, 
+                                  6.2 + 6.4 + 6.7, 
+                                  22.4
+                                  ),
+                      moe_percent = c(sqrt(0.1^2+0.1^2),
+                              sqrt(0.1^2+0.1^2 + 0.1^2),
+                              sqrt(0.1^2+0.1^2 + 0.1^2),
+                              0.1) )
+acs_age <- acs_age %>% mutate(percent2 = estimate/sum(estimate)*100)
 
 
 omni_age <- data.frame(svyby(~age4, by=~chart, design=survey_123, svymean))
@@ -575,7 +600,7 @@ omni_age <- omni_age %>%
 
 
 
-age <- round_123 %>% 
+age_bak <- round_123 %>% 
   ggplot(aes(x = age4)) + 
   geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
@@ -598,10 +623,51 @@ age <- round_123 %>%
   scale_linetype_manual(values=c(2,2,1)) +
   theme(legend.position = "none")
 
+age <- acs_age %>%
+  ggplot(aes(x = age4)) +
+  geom_errorbar(aes(ymin = percent2-moe_percent, ymax=percent2+moe_percent, colour="ACS estimate")) +
+#  geom_point(aes(y = percent)) +
+  geom_point(
+    size=3,
+    aes(x = age, y = value, colour=chart),
+    position = position_dodge(width = 0.5),
+    data = omni_age %>% filter(group=="mean")
+  ) +
+  ylim(c(0, NA)) +
+  geom_linerange(
+    aes(
+      x = age,
+      ymin = low,
+      ymax=high,
+      colour=chart
+    ),
+    linewidth = 1,
+    position = position_dodge(width = 0.5),
+    data = omni_age %>% pivot_wider(names_from=group, values_from=value)
+  ) +
+  ylab("Percent") + 
+  ggtitle("Age groups") +
+  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
+  xlab("") +
+  theme(legend.position ="none") +
+  scale_linetype_manual(values=c(2,2,1)) +
+  scale_color_manual(values=c("grey20", rounds_col))
 
-acs_educ5 <- data.frame(educ5 = c("Less than HS", "HS or equivalent", "Some college",  "Bachelor", "Post graduate"), 
-                      estimate = c(28687047, 69610758, 77707408, 50031690, 29454503))
-acs_educ5 <- acs_educ5 %>% mutate(percent = estimate/sum(estimate)*100)
+
+acs_educ5 <- data.frame(educ5 = levels(round_123$educ5), 
+                      estimate = c(
+                      3636691 + 10793507 + 14256849, 
+                      9974372 + 59636386,
+                      13050667 + 45042031 + 19614710,
+                      3677359 + 46354331,
+                      29454503),
+                      moe_percent = c(sqrt(0.1^2+0.1^2+0.1^2),
+                              sqrt(0.1^2+0.1^2 ),
+                              sqrt(0.1^2+0.1^2 + 0.1^2),
+                              sqrt(0.1^2+0.2^2 ),
+                              0.1) 
+                      )
+acs_educ5 <- acs_educ5 %>% mutate(percent = estimate/(30339089+225152317)*100)
 
 omni_educ <- data.frame(svyby(~educ5, by=~chart, design=survey_123, svymean))
 omni_educ_long <- omni_educ %>% 
@@ -613,7 +679,7 @@ omni_educ <- omni_educ_long %>% mutate(
   educ = gsub(".", " ", educ, fixed=TRUE)
 )  
 omni_educ <- omni_educ %>% mutate(
-  educ = factor(educ, levels = c("Less than HS", "HS or equivalent", "Some college", "Bachelor", "Post graduate"))
+  educ = factor(educ, levels = levels(round_123$educ5))
 )  
   
 omni_educ <- omni_educ %>% mutate(
@@ -629,7 +695,7 @@ omni_educ <- omni_educ %>%
 
 
 
-education <- round_123 %>% 
+education_bak <- round_123 %>% 
   ggplot(aes(x = educ5)) + 
   geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
@@ -652,48 +718,66 @@ education <- round_123 %>%
   scale_linetype_manual(values=c(2,2,1)) +
   theme(legend.position = "none")
 
-acs_income <- data.frame(
-  income4 = c("< $30k", "$30k - $60k", 
-              "$60k - $100k", "more than $100k"), 
-  percent = c(6+3.9+7.5+ .5*7.8, 
-              .5*7.8 + 11.3 + .4*16.8, 
-              .6*16.8+12.8,
-              16.3+7.9+9.8))
-
-# Household income
-# Less than $10,000	6.0
-# $10,000 to $14,999	3.9
-# $15,000 to $24,999	7.5
-# $25,000 to $34,999	7.8
-# $35,000 to $49,999	11.3
-# $50,000 to $74,999	16.8
-# $75,000 to $99,999	12.8
-# $100,000 to $149,999	16.3
-# $150,000 to $199,999	7.9
-# $200,000 or more	9.8
-
-
-# 
-# acs_income <- data.frame(
-#   income4 = c("< $30k", "$30k - $60k", 
-#               "$60k - $100k", "more than $100k"), 
-#   percent = c(1807928 + 2669815 + 10192511 + .5*16440260, 
-#               .5*16440260+ 21573641+ 2/3*17579780, 
-#               1/3*17579780 + 8347923+13881892, 
-#               21161141)/113654891*100 )
-# Population age 18 and over
-# FULL-TIME, YEAR-ROUND WORKERS WITH EARNINGS	113654891	79395	
-# $1 to $9,999 or loss	1807928	11027	1.6	0.1
-# $10,000 to $14,999	2669815	16330	2.3	0.1
-# $15,000 to $24,999	10192511	50628	9.0	0.1
-# $25,000 to $34,999	16440260	63750	14.5	0.1
-# $35,000 to $49,999	21573641	44746	19.0	0.1
-# $50,000 to $64,999	17579780	35183	15.5	0.1
-# $65,000 to $74,999	8347923	32204	7.3	0.1
-# $75,000 to $99,999	13881892	50191	12.2	0.1
-# $100,000 or more	21161141	100258	18.6	0.1
+education <- acs_educ5 %>%
+  mutate(educ5 = factor(educ5, levels=levels(omni_educ$educ))) %>%
+  ggplot(aes(x = educ5)) +
+  geom_errorbar(aes(ymin = percent-moe_percent, ymax=percent+moe_percent, colour="ACS estimate")) +
+#  geom_point(aes(y = percent)) +
+  geom_point(
+    size=3,
+    aes(x = educ, y = value, colour=chart),
+    position = position_dodge(width = 0.5),
+    data = omni_educ %>% filter(group=="mean")
+  ) +
+  ylim(c(0, NA)) +
+  geom_linerange(
+    aes(
+      x = educ,
+      ymin = low,
+      ymax=high,
+      colour=chart
+    ),
+    linewidth = 1, 
+    position = position_dodge(width = 0.5),
+    data = omni_educ %>% pivot_wider(names_from=group, values_from=value),
+    show.legend = FALSE
+  ) +
+  ylab("Percent") + 
+  ggtitle("Education") +
+#  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
+  xlab("") +
+  theme(legend.position ="none") +
+  scale_linetype_manual(values=c(2,2,1)) +
+  scale_color_manual(values=c("grey20", rounds_col)) 
+  
 
 
+acs_income_raw <- read_xlsx("../data/ACSDT1Y2021.B19001-income.xlsx", sheet="Data", skip = 1) %>% mutate(
+  estimate = parse_number(Estimate), 
+  moe = parse_number(`Margin of Error`)
+)
+acs_income_raw <- acs_income_raw %>% mutate(
+  income4 = c("Total", rep("< $30k", 5), rep("$30k - $60k", 5), rep("$60k - $100k", 2), rep("more than $100k", 4))
+)
+
+acs_income2 <- acs_income_raw %>% group_by(income4) %>% 
+  summarize(
+    moe = tidycensus::moe_sum(moe, estimate),
+    estimate = sum(estimate)
+  )
+acs_income2 <- acs_income2 %>% mutate(
+  percent = estimate/estimate[income4=="Total"]*100,
+  moe_percent = moe_prop(estimate, rep(estimate[income4=="Total"], n()), 
+                      100*moe, 100*rep(moe[income4=="Total"], n()))
+)
+acs_income <- acs_income2 %>%
+  filter(income4 != "Total") %>%
+  mutate(
+  income4 = factor(income4, levels = c("< $30k", "$30k - $60k", 
+              "$60k - $100k", "more than $100k"))
+)
+
+levels(acs_income$income4) <- levels(round_123$income4)
 
 omni_income <- data.frame(svyby(~income4, by=~chart, design=survey_123, svymean))
 omni_income_long <- omni_income %>% 
@@ -720,7 +804,7 @@ omni_income <- omni_income %>%
   )
 levels(omni_income$income) <- levels(round_123$income4)
 
-income <- round_123 %>% 
+income_bak <- round_123 %>% 
   ggplot(aes(x = income4)) + 
   geom_bar(aes(weight = weight_pct_round), fill="grey", colour = "grey30", linewidth=0.5) + 
   ylab("Percent") + 
@@ -742,6 +826,40 @@ income <- round_123 %>%
   )  +
   scale_linetype_manual(values=c(2,2,1)) +
   theme(legend.position = "none")
+
+
+income <- acs_income %>%
+  mutate(income4 = factor(income4, levels=levels(omni_income$income))) %>%
+  ggplot(aes(x = income4)) +
+  geom_errorbar(aes(ymin = percent-moe_percent, ymax=percent+moe_percent, colour="ACS estimate")) +
+#  geom_point(aes(y = percent)) +
+  geom_point(
+    size=3,
+    aes(x = income, y = value, colour=chart),
+    position = position_dodge(width = 0.5),
+    data = omni_income %>% filter(group=="mean")
+  ) +
+  ylim(c(0, NA)) +
+  geom_linerange(
+    aes(
+      x = income,
+      ymin = low,
+      ymax=high,
+      colour=chart
+    ),
+    linewidth = 1, 
+    position = position_dodge(width = 0.5),
+    data = omni_income %>% pivot_wider(names_from=group, values_from=value),
+    show.legend = FALSE
+  ) +
+  ylab("Percent") + 
+  ggtitle("Income") +
+#  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
+  xlab("") +
+  theme(legend.position ="none") +
+  scale_linetype_manual(values=c(2,2,1)) +
+  scale_color_manual(values=c("grey20", rounds_col))
+
 
 # # attempt at flipping
 # gender + coord_flip() + education + coord_flip()+ age + coord_flip() + income + coord_flip()+ plot_layout(ncol=2, nrow=2, heights=c(2, 5, 4,4), byrow=FALSE)
@@ -1070,7 +1188,7 @@ To better comprehend these observed patterns, we investigate viewer interaction 
 One contributing factor to the observed patterns in response accuracy might be the way that participants interact with the different designs.
 Across all tasks, about half of all participants make use of the option to zoom into charts.
 We observe that while zooming does help with the overall accuracy (which is in agreement with the findings by @luModelingJustNoticeable2022 about the physical size of stimuli), the increase is not significant.
-However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when dealing with the vertical design, the rate of zooming is significantly higher than for the two horizontal designs.
+However, different designs lead to different rates of zooming: we observe in \autoref{fig-zoom-123} that when a significantly lower rate of respondents chose to make use of zooming when answering the horizontal designs compared to the vertical design.
 
 
 ```{r zoom-123}
@@ -1186,15 +1304,24 @@ zt + zd + plot_layout(widths=c(6, 9), guides='collect')
 ```
 
 
-```{r}
+```{r results="asis"}
 #| label: tbl-zoom-123
 #| tbl-cap: Coefficients for logistic regression of zooming by task
 
 #    term = TeX(c("$\\mu$", "They are the same $\\rho_2$", "wrong $\\rho_3$", "Aligned $\\tau_2$", "Horizontal wide $\\delta_2$", "Vertical $\\delta_3$"))
 
-coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
-                     "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
-                     "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+# coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
+#                      "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
+#                      "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
+
+coefs_zoom$term <- c("\\hat{\\mu}", 
+                         "\\text{They are the same } \\widehat{\\rho}_{2}", 
+                         "Wrong $$\\widehat{\\rho}_{3}$$", 
+                         "Aligned $$\\widehat{\\tau}_{2}$$", 
+                         "Horizontal wide $$\\widehat{\\delta}_{2}$$", 
+                         "Vertical $$\\widehat{\\delta}_{3}$$")
+
+
 
 coefs_zoom %>%
   mutate(
@@ -1392,16 +1519,6 @@ We use a generalized cumulative logistic regression, where $\mu_i$ are intercept
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 \end{equation}
 
-The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}.
-When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level.
-We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000.
-When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups.
-We do not see significant differences in responses by age for either task.
-Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task.
-This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences.
-
-<!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
-
 ```{r demographics-model}
 logit_demo_task_cd_correct <- svyglm(correct~gender+age4+educ5+income4, design=survey_123, family=quasibinomial(), subset = task=="cd")
 
@@ -1428,6 +1545,14 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 #| fig-width: 10
 #| layout-nrow: 2
 #| out-width: 100%
+
+thm <- 
+  theme(axis.text.x = element_text(angle=0, hjust = 0.5))
+        
+thm2 <- 
+  theme(axis.text.x = element_text(angle=0, hjust = 0.5),
+        axis.title.y = element_blank(), 
+        axis.text.y = element_blank())
 
 educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="cd")
 educ_ci <- broom::tidy(educ_glm) %>%
@@ -1518,8 +1643,7 @@ educ_cd <- round_123_long %>%
   ) +
   scale_y_continuous("Percentage", breaks=seq(0,1,by=0.25), labels = 100*seq(0,1,by=0.25), limit=c(-.05, 1.05))  +
   geom_text(aes(label=letters), y = -0.05, data = educ_ci, colour = "steelblue") +
-  geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange")
-
+  geom_text(aes(label=letters), y = 1.05, data = educ_ci3, colour = "darkorange") 
 
 
 educ_glm <- svyglm(correct~educ5-1, design=survey_123, family=quasibinomial(), subset = task=="ab")
@@ -2190,15 +2314,45 @@ geom_rect(
  geom_text(aes(label=letters), y = -0.05, data = age_ci, colour = "steelblue") +
  geom_text(aes(label=letters), y = 1.05, data = age_ci3, colour = "darkorange")
  
+educ_cd <- educ_cd + 
+  scale_x_discrete(labels=c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate"))
+educ_ab <- educ_ab + 
+  scale_x_discrete(labels=c("< HS", "HS", "Some\ncollege", "Bachelor", "Post\ngraduate"))
+
+income_cd <- income_cd +
+  scale_x_discrete(labels=c("< $30k", "$30-60k", "$60-100k", "≥ $100k"))
+income_ab <- income_ab +
+  scale_x_discrete(labels=c("< $30k", "$30-60k", "$60-100k", "≥ $100k"))
 
 
+gender_cd + thm + 
+ age_cd  + thm2 + 
+  educ_cd  + thm2 + 
+  income_cd + thm2 + 
+    plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4)) &
+  theme(legend.position = "bottom",
+        legend.box.margin = margin(t = -15, r = 0, b = 0, l = 0, unit = "pt"))
 
-gender_cd + age_cd  + educ_cd +income_cd + 
-    plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
-
-gender_ab + age_ab  + educ_ab +income_ab + 
-  plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4))
+gender_ab + thm + 
+  age_ab  + thm2 + 
+  educ_ab + thm2 +
+  income_ab + thm2 +
+  plot_layout(nrow=1, guides = "collect", widths = c(2,4,5,4)) &
+  theme(legend.position = "bottom", 
+        legend.box.margin = margin(t = -15, r = 0, b = 0, l = 0, unit = "pt"))
 ```
+
+The resulting model estimates and confidence intervals are shown in \autoref{tbl-demographics}.
+When considering the easier (aligned) task, response patterns do not differ significantly by age, gender, or education level.
+We do observe, however, a significantly higher log odds of selecting the 'correct' or 'they are the same' response (or significantly lower log odds of selecting 'incorrect') among those with an income between \$60,000 and \$100,000.
+When we consider the more difficult (unaligned) task, we see significant separation in response patterns across gender, educational attainment, and income groups.
+We do not see significant differences in responses by age for either task.
+Interestingly, we see lower log odds of selecting the 'correct' response among those with higher educational attainment (those with a bachelor's degree or post graduate study) *and* lower log odds of selecting the 'incorrect' response; as income and educational attainment increase, respondents are more likely to select the 'they are the same' option during the difficult task.
+This speaks to the difficulty of the task, and respondents' interpretation of the task when it is more difficult to perceive small differences.
+
+<!--\hh{XXX the formatting isn't right yet here ... latex problem with large floats ... will fix it.}-->
+
+
 
 
 \blandscape
