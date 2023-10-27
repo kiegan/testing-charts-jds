@@ -13,6 +13,6 @@ Additional materials for this paper are shared in the following GitHub repositor
 
 ## Stimulus
 
-```{r fig.cap="Image shown to participants for the task of comparing two unaligned rectangles in a vertical stacked barchart."}
+```{r, fig.cap="Image shown to participants for the task of comparing two unaligned rectangles in a vertical stacked barchart.", fig.width=10}
 knitr::include_graphics("../SDSS-2023/images/vertical-ab.PNG")
 ```
