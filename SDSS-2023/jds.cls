@@ -340,7 +340,7 @@
 \jdsmonth{July}
 
 \newcommand\jdsyear{\gdef\@jdsyear}
-\jdsyear{2022}
+\jdsyear{2023}
 \newcommand\jdssection{\gdef\@jdssection}
 \jdssection{}
 \newcommand\jdsdoi[1]{
