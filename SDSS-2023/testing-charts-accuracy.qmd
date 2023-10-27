@@ -1,6 +1,6 @@
 ---
 title: "What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts"
-short-title: Testing stacked bar charts in surveys # running title
+runtitle: Testing stacked bar charts in surveys # running title
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in stacked bar charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
 keywords: 'graphical perception, data visualization, survey data'
@@ -1267,7 +1267,7 @@ coefs_zoom <- broom::tidy(logit_zoom)
 #| fig-cap: "Rates of zooming by task, chart design, and correctness. The overlaid rectangles represent 95% confidence intervals. There are significantly higher rates of zooming by respondents for the vertical task compared to both horizontal tasks; rates of zooming do not differ by correctness of response or alignment in the stimulus."
 #| fig-height: 4
 #| fig-width: 11
-#| out-width: 90%
+#| out-width: 95%
 
 confint_zoom1 <- svyby(formula = ~zoom, by = ~task+response3, design = survey_123, svyciprop) %>%
   mutate(task = factor(task, levels=c("cd", "ab"), labels=c("Aligned", "Unaligned")), 
@@ -1374,17 +1374,12 @@ zt + zd + plot_layout(widths=c(6, 9), guides='collect')
 
 #    term = TeX(c("$\\mu$", "They are the same $\\rho_2$", "wrong $\\rho_3$", "Aligned $\\tau_2$", "Horizontal wide $\\delta_2$", "Vertical $\\delta_3$"))
 
-# coefs_zoom$term <- c("$$\\hat{\\mu}$$", "$$\\text{They are the same } \\widehat{\\rho}_{2}$$", 
-#                      "Wrong $$\\widehat{\\rho}_{3}$$", "Aligned $$\\widehat{\\tau}_{2}$$", 
-#                      "Horizontal wide $$\\widehat{\\delta}_{2}$$", "Vertical $$\\widehat{\\delta}_{3}$$")
-
-coefs_zoom$term <- c("\\hat{\\mu}", 
-                         "\\text{They are the same } \\widehat{\\rho}_{2}", 
-                         "Wrong $$\\widehat{\\rho}_{3}$$", 
-                         "Aligned $$\\widehat{\\tau}_{2}$$", 
-                         "Horizontal wide $$\\widehat{\\delta}_{2}$$", 
-                         "Vertical $$\\widehat{\\delta}_{3}$$")
-
+# coefs_zoom$term <- c("\\hat{\\mu}", 
+#                          "\\text{They are the same } \\widehat{\\rho}_{2}", 
+#                          "Wrong $$\\widehat{\\rho}_{3}$$", 
+#                          "Aligned $$\\widehat{\\tau}_{2}$$", 
+#                          "Horizontal wide $$\\widehat{\\delta}_{2}$$", 
+#                          "Vertical $$\\widehat{\\delta}_{3}$$")
 
 
 coefs_zoom %>%

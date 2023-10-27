@@ -169,7 +169,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Testing Charts: viewers' perceptual accuracy in surveys},
+  pdftitle={What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts},
   pdfkeywords={graphical perception, data visualization, survey data},
   colorlinks=true,
   linkcolor={blue},
@@ -178,7 +178,7 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{Testing Charts: viewers' perceptual accuracy in surveys}
+\title[Testing stacked bar charts in surveys]{What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts}
 \date{}
 
 \begin{document}
@@ -190,14 +190,13 @@ what design elements best support the audience's ability to perceive and
 understand the components of the data visualization. We build on the
 foundations of Cleveland and McGill's work in graphical perception,
 employing a large, nationally-representative, probability-based panel of
-survey respondents to test perception in statistical charts. Our
+survey respondents to test perception in stacked bar charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, sharp corners, breakable, interior hidden, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
 
-{\bf Keywords: } \textit{graphical perception, data visualization, survey data}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, interior hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
-
+% take out everything above later
 % keep everything below
 
   \newcommand{\blandscape}{\begin{landscape}} 
@@ -227,16 +226,16 @@ complete accurate and useful comparisons of values across groups or time
 points. More broadly, the design of a data visualization can change how
 viewers interact with the chart.
 
-The viewer's employment of comparisons of the components is a crucial
-step in the process of interacting with and understanding the chart.
-Cleveland and McGill (1984) observed as such, and in their seminal study
-defined the better visual among a pair as the one that allows viewers to
-make more accurate comparisons. Based on mappings of quantitative
-variables to different graphical elements, Cleveland and McGill's study
-resulted in a ranking of perceptual tasks (such as identifying the
-larger of two lengths or areas) from most accurate to least accurate,
-which was then extended by Mackinlay (1986) to a theoretical framework
-ranking tasks' order along their ordinal and nominal scales.
+The comparisons of components is a crucial step in the process of
+interacting with and understanding the chart. Cleveland and McGill
+(1984) observed as such, and in their seminal study defined the better
+visual among a pair as the one that allows viewers to make more accurate
+comparisons. Based on mappings of quantitative variables to different
+graphical elements, Cleveland and McGill's study resulted in a ranking
+of perceptual tasks (such as identifying the larger of two lengths or
+areas) from most accurate to least accurate, which was then extended by
+Mackinlay (1986) to a theoretical framework ranking tasks' order along
+their ordinal and nominal scales.
 
 Cleveland and McGill's work -- while a foundational user study in
 graphical perception -- utilized a small convenience sample, consisting
@@ -245,19 +244,25 @@ and their spouses. Heer and Bostock (2010) reproduced Cleveland and
 McGill's rankings using a larger sample from a crowd sourcing platform,
 employing a total of 82 Amazon Mechanical Turk (mTurk) workers for the
 study. Crowd sourced samples were shown by Borgo et al. (2017) to be
-biased towards more male, younger, and relatively higher education
-relative to the adult U.S. population as a whole; generally, convenience
-and opt-in samples are not representative of the general population, a
-common target audience for data visualization and scientific
-communication work. Further, the populations' emphasis on higher
-education individuals also leads to results which hold for groups of
-individuals who may be more likely to have prior exposure to data
-visualization in the context of scientific communication, or more
-exposure to data topics in higher education, but may not hold across
-other groups within the population.
+biased towards more male, younger, and relatively well-educated
+individuals relative to the adult U.S. population as a whole; generally,
+convenience and opt-in samples are not representative of the general
+population. Further, higher education individuals are likely to have
+prior exposure to data visualization or data topics in higher education,
+which may not be the case for other groups within the population;
+existing differences in exposure to data may drive differences in
+results across groups. The general public is a common target audience
+for data visualization and scientific communication work; results of
+polls, surveys, and scientific work are presented often in the news,
+shared on social media, or posted online or in print materials. It is
+imperative that data visualizations used to communicate these topics are
+designed with the goal of reaching the entire population. To that end,
+an inclusive, representative approach to studying how viewers perceive
+information presented in charts is critical to understand how best to
+communicate with the general public.
 
-Here, we seek to answer whether it is possible to reproduce some of the
-previous findings in the context of a survey with a large,
+In this work, we seek to answer whether it is possible to reproduce some
+of the previous findings in the context of a survey with a large,
 nationally-representative set of respondents. Specifically, we present
 viewers with structural variations of bar charts and ask them to answer
 questions comparing the size of elements within those charts. We employ
@@ -345,33 +350,27 @@ values across those varied images.
 
 We ask participants to determine which of two just-noticeably different
 marked pieces (tiles) is larger within each chart, and focus on three
-main sets of structural variation in the design of that chart:
-
-\begin{itemize}
-\item
-  First, we vary the alignment of the pieces in question. Viewers are
-  presented with two marked pieces in a chart that do not share a common
-  baseline (aligned pieces), then two pieces that do share a common
-  baseline (unaligned pieces).
-\item
-  Second, we vary the orientation of the chart -- we rotate the vertical
-  stacked bar chart, and present a horizontally oriented version of the
-  same chart, with identically sized marked pieces.
-\item
-  Finally, we change the aspect ratio of the chart and present a wider
-  version of the horizontally oriented chart which has longer, but
-  thinner, marked pieces.
-\end{itemize}
+main sets of structural variation in the design of that chart. First, we
+vary the alignment of the pieces in question. Viewers are presented with
+two marked pieces in a chart that do not share a common baseline
+(aligned pieces), then two pieces that do share a common baseline
+(unaligned pieces). Second, we vary the orientation of the chart -- we
+rotate the vertical stacked bar chart, and present a horizontally
+oriented version of the same chart, with identically sized marked
+pieces. Finally, we change the aspect ratio of the chart and present a
+wider version of the horizontally oriented chart which has longer, but
+thinner, marked pieces.
 
 \begin{figure*}[hbt]
 
-{\centering \includegraphics[width=0.9\textwidth,height=\textheight]{images/stimuli-overview.png}
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{images/stimuli-overview-1.png}
 
 }
 
-\caption{\label{fig-tasks}Each of the visual stimuli presented to
-viewers. In each bar chart, two pieces are marked. The larger piece in
-each chart are pieces B and D.}
+\caption{\label{fig-tasks}Overview of all of the visual stimuli
+presented to viewers. In each bar chart, two pieces are marked. The
+larger piece in each chart are pieces B and D. Please refer to the
+appendix for full size images of the stimuli.}
 
 \end{figure*}
 
@@ -435,16 +434,8 @@ sizes of marked elements within the chart:
 
 ``There are many charts used in the news media to portray data visually.
 Looking at the chart below, which of the marked dark blue pieces is
-bigger, A or B? Just your best guess is fine.
-
-\begin{itemize}
-\item
-  A is bigger
-\item
-  B is bigger
-\item
-  They are the same''
-\end{itemize}
+bigger, A or B? Just your best guess is fine. {[}{]} A is bigger; {[}{]}
+B is bigger; {[}{]} They are the same.''
 
 When presented with the aligned version of each chart, pieces were
 marked with a C and D and the question text is updated accordingly. In
@@ -483,10 +474,10 @@ share the same axis.
 Aligned tiles are additionally anchored in the same position along the
 axis, i.e.~the difference between their sizes can be reduced to a
 positional assessment, which in the absence of three-dimensional cues
-seems to be the general strategy viewers use when evaluating barcharts
+seems to be the general strategy viewers use when evaluating bar charts
 (Zacks et al. 1998). Unaligned tiles do not share this anchor of
 position, i.e.~the difference between their sizes needs at least two
-comparisons of positions. However, unaligned bars in a stacked barchart
+comparisons of positions. However, unaligned bars in a stacked bar chart
 are not just assessments of the lengths of bars -- the other tiles in
 the chart provide a reference frame of the shared axis, which
 \emph{should} help with an assessment of the tiles' sizes. As shown in
@@ -501,7 +492,13 @@ mitigating some of this difficulty. In particular, the additional
 context of the other tiles should \emph{help} rather than \emph{hurt}
 the comparison, unlike other situations, where additional information
 besides the pieces involved in the comparison were found to be
-distractors (Talbot, Setlur, and Anand 2014).
+distractors (Talbot, Setlur, and Anand 2014). Participants first saw the
+chart with the unaligned comparison, followed by the chart with the
+aligned comparison, but could not return to the first comparison after
+completing it. While there is some risk of participants recognizing the
+subsequent tasks to be the same value comparisons, the unaligned
+(harder) task was shown first to reduce the likelihood of participants
+carrying over an answer from the aligned (easier) task.
 
 \hypertarget{study-design-participants}{%
 \subsection{Study design --
@@ -551,7 +548,7 @@ When combining responses from different surveys, weights are rescaled
 with respect to the total population, so that their order after
 combining still reflects their relative importance. We \emph{combine}
 (rather than cumulate) a set of \(\ell\) surveys \(S_1\), \(S_2\),
-\ldots{} \(S_\ell\) (with \$ \ell \ge 2\$ ) as described in
+\ldots{} \(S_\ell\) (with \(\ell \ge 2\)) as described in
 O'Muircheartaigh and Pedlow (2002), by multiplying weights in \(S_i\) by
 \(\lambda_i\), for \(1 \le i \le \ell\). \(\lambda_i \in [0,1]\) with
 \(\sum_i \lambda_i = 1\) is given as \begin{equation}
@@ -580,7 +577,8 @@ are shown in \autoref{tbl-rounds}.
   >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
 \caption{\label{tbl-rounds}Survey rounds: dates, number of participants
 (nominal sample size), effective sample size, sum of weights, and
-factors for the combining of surveys as discussed above.}\tabularnewline
+factors for the combining of surveys as discussed above.
+}\tabularnewline
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
@@ -618,7 +616,7 @@ Sum of weights \(\sum_i w_i\)
 Round 1 & April 2022 & 933 & 521.1 & 934.9 & \(\lambda_1\) = 0.343 \\
 Round 2 & May 2022 & 953 & 485.7 & 953.4 & \(\lambda_2\) = 0.320 \\
 Round 3 & June 2022 & 921 & 513.5 & 923.1 & \(\lambda_3\) = 0.338 \\
-\textbf{Total} & --- & 2807 & 1520.8 & & \\
+\textbf{Combined} & --- & 2807 & 1520.8 & & \\
 \end{longtable}
 
 \hypertarget{results}{%
@@ -687,9 +685,13 @@ part cover the Census estimates.
 
 }
 
-\caption{\label{fig-rounds-demographics}Demographics of respondents in
-each of the tasks. The dots show percentages of the national
-demographics as estimated by the American Community Survery (ACS) 2021.}
+\caption{\label{fig-rounds-demographics}Overview of participants'
+demographics in each of the tasks: the colored dots show marginal
+percentages for demographics across the three tasks. In comparison, the
+dark lines show upper and lower 95\% confidence of these demographics as
+estimated by the American Community Survery (ACS) 2021. Note that for a
+lot of these intervals the estimates are so close together that they
+appear as a single line.}
 
 \end{figure*}
 
@@ -754,10 +756,10 @@ across each of the stimuli.
 
 \caption{\label{fig-response-123}Responses by task across the designs.
 The overlaid rectangles represent 95\% confidence intervals. The letters
-in blue and orange encode significances between pairwise proportions:
-two bars have a significantly different proportion (at a 5\%
-significance level) if they do not share a letter. There is no
-significant difference between the designs for wrong responses.}
+in blue and orange encode significances between pairwise proportions
+(Piepho 2004): two bars have a significantly different proportion (at a
+5\% significance level) if they do not have a letter in common. There is
+no significant difference between the designs for wrong responses.}
 
 \end{figure*}
 
@@ -774,11 +776,23 @@ encoded as 3:
 where \(\ell \in \{1, 2\}\); \(i \in \{1, 2\}\) is the comparison type
 (1 = Aligned, 2 = Unaligned), and \(j \in \{1, 2, 3\}\) is the chart
 design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. The
-estimated values and 95\% confidence intervals are shown in
-Table~\ref{tbl-rounds-123}. The lowercase letters indicate significances
-between pairs of estimates: two estimates within the same column are
-significantly different at 5\% level if they do not have any letter in
-common (Piepho 2004).
+letters allow us to assess whether differences between two means are
+significant: two estimates within the same column are significantly
+different (at the 5\% level) if they do not have any letter in common.
+This method is called connected letters and has been introduced by
+Piepho (2004). In Figure~\ref{fig-response-123}, we see, that the
+proportions of wrong responses are significantly different between
+tasks, but designs within each task are not significantly different. For
+correct responses, all proportions are significantly different except
+for the proportion of correctly assessing the difference between
+unaligned rectangles in the wide horizontal design: their label of
+\texttt{ab} shows us that assessing the differences between unaligned
+rectangles in the wide horizontal design is not significantly better
+than in the horizontal design (labelled \texttt{a}), but also not
+significantly worse than in the vertical design (labelled \texttt{b}).
+
+The estimated values and 95\% confidence intervals are shown in
+Table~\ref{tbl-rounds-123}.
 
 \hypertarget{tbl-rounds-123}{}
 \begin{longtable}{lrrlrrl}
@@ -845,13 +859,13 @@ to zoom into charts. We observe that while zooming does help with the
 overall accuracy (which is in agreement with the findings by Lu et al.
 (2022) about the physical size of stimuli), the increase is not
 significant. However, different designs lead to different rates of
-zooming: we observe in \autoref{fig-zoom-123} that when dealing with the
-vertical design, the rate of zooming is significantly higher than for
-the two horizontal designs.
+zooming: we observe in \autoref{fig-zoom-123} that when a significantly
+lower rate of respondents chose to make use of zooming when answering
+the horizontal designs compared to the vertical design.
 
 \begin{figure*}[hbt]
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{./figures/fig-zoom-123-1.png}
+{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{./figures/fig-zoom-123-1.png}
 
 }
 
@@ -874,21 +888,23 @@ in the stimulus.}
 \toprule
 term & estimate & SE & t-statistic & p-value \\ 
 \midrule
-$\hat{\mu}$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
+\multicolumn{5}{l}{} \\ 
+\midrule
+$\widehat{\mu}$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
 \midrule
 \multicolumn{5}{l}{Response} \\ 
 \midrule
-They are the same, $\widehat{\rho_2}$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
-Wrong, $\widehat{\rho_3}$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
+They are the same $\widehat{\rho}_2$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
+Wrong $\widehat{\rho}_3$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
 \midrule
 \multicolumn{5}{l}{Task} \\ 
 \midrule
-Aligned, $\widehat{\tau_2}$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
+Aligned $\widehat{\tau}_2$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
 \midrule
 \multicolumn{5}{l}{Chart design} \\ 
 \midrule
-Horizontal wide, $\widehat{\delta_2}$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
-Vertical, $\widehat{\delta_3}$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
+Horizontal wide $\widehat{\delta}_2$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
+Vertical $\widehat{\rho}_3$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
 \bottomrule
 \end{longtable}
 
@@ -937,7 +953,7 @@ their selection.
 
 \begin{figure*}[hbt]
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{./figures/fig-certainty-1.png}
+{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{./figures/fig-certainty-1.png}
 
 }
 
@@ -969,34 +985,16 @@ response patterns, particularly on the unaligned task, across
 demographic groups.
 
 Let \(Y_k\) be the response of participant \(k\), on a scale from 1 =
-`wrong', 2 = `they are the same' to 3 = `correct'. We use a generalized
-cumulative logistic regression, where \(\mu_i\) are intercepts
-\(1 \le i < 3\), \(X_k\) are demographics of the \(k\)th participant (in
-form of the model matrix), and \(\beta_{i}\) are the coefficients.
+`correct', 2 = `they are the same' to 3 = `wrong'.
+
+We use a generalized cumulative logistic regression, where \(\mu_i\) are
+intercepts \(1 \le i < 3\), \(X_k\) are demographics of the \(k\)th
+participant (in form of the model matrix), and \(\beta_{i}\) are the
+coefficients.
 
 \begin{equation}
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 \end{equation}
-
-The resulting model estimates and confidence intervals are shown in
-\autoref{tbl-demographics}. When considering the easier (aligned) task,
-response patterns do not differ significantly by age, gender, or
-education level. We do observe, however, a significantly higher log odds
-of selecting the `correct' or `they are the same' response (or
-significantly lower log odds of selecting `incorrect') among those with
-an income between \$60,000 and \$100,000. When we consider the more
-difficult (unaligned) task, we see significant separation in response
-patterns across gender, educational attainment, and income groups. We do
-not see significant differences in responses by age for either task.
-Interestingly, we see lower log odds of selecting the `correct' response
-among those with higher educational attainment (those with a bachelor's
-degree or post graduate study) \emph{and} lower log odds of selecting
-the `incorrect' response; as income and educational attainment increase,
-respondents are more likely to select the `they are the same' option
-during the difficult task. This speaks to the difficulty of the task,
-and respondents' interpretation of the task when it is more difficult to
-perceive small differences.
-
 
 \begin{figure}
 
@@ -1043,6 +1041,25 @@ correct answers and wrong answers.}
 
 \end{figure}
 
+The resulting model estimates and confidence intervals are shown in
+\autoref{tbl-demographics}. When considering the easier (aligned) task,
+response patterns do not differ significantly by age, gender, or
+education level. We do observe, however, a significantly higher log odds
+of selecting the `correct' or `they are the same' response (or
+significantly lower log odds of selecting `incorrect') among those with
+an income between \$60,000 and \$100,000. When we consider the more
+difficult (unaligned) task, we see significant separation in response
+patterns across gender, educational attainment, and income groups. We do
+not see significant differences in responses by age for either task.
+Interestingly, we see lower log odds of selecting the `correct' response
+among those with higher educational attainment (those with a bachelor's
+degree or post graduate study) \emph{and} lower log odds of selecting
+the `incorrect' response; as income and educational attainment increase,
+respondents are more likely to select the `they are the same' option
+during the difficult task. This speaks to the difficulty of the task,
+and respondents' interpretation of the task when it is more difficult to
+perceive small differences.
+
 \blandscape
 
 \hypertarget{tbl-demographics}{}
@@ -1077,7 +1094,7 @@ Female & $0.82$ &  [$0.67$, $1.01$] & . & $1.19$ &  [$0.81$, $1.74$] &  & $1.03$
 \midrule
 \multicolumn{13}{l}{Education} \\ 
 \midrule
-HS or equivalent & $0.77$ &  [$0.46$, $1.30$] &  & $0.50$ &  [$0.20$, $1.21$] &  & $0.81$ &  [$0.47$, $1.40$] &  & $1.22$ &  [$0.66$, $2.27$] &  \\ 
+HS or equivalent & $0.77$ &  [$0.46$, $1.30$] &  & $0.50$ &  [$0.20$, $1.21$] &  & $0.81$ &  [$0.47$, $1.40$] &  & $1.22$ &  [$0.66$, $2.26$] &  \\ 
 Some college & $0.91$ &  [$0.56$, $1.49$] &  & $0.74$ &  [$0.32$, $1.71$] &  & $0.63$ &  [$0.38$, $1.06$] & . & $1.17$ &  [$0.65$, $2.12$] &  \\ 
 Bachelor & $0.79$ &  [$0.48$, $1.32$] &  & $1.12$ &  [$0.42$, $2.97$] &  & $0.53$ &  [$0.31$, $0.93$] & * & $1.82$ &  [$0.91$, $3.64$] & . \\ 
 Post graduate & $0.84$ &  [$0.49$, $1.44$] &  & $1.16$ &  [$0.41$, $3.30$] &  & $0.51$ &  [$0.28$, $0.91$] & * & $2.18$ &  [$1.04$, $4.57$] & * \\ 
@@ -1111,12 +1128,13 @@ complete further work in this area.
 With our survey framework, we have shown that we can rank structural
 variations on design and tasks by their relative accuracy; we identified
 significantly different rates of respondent accuracy under different
-designs presenting the same data. The size of our sample aids in
-identifying this signal.
+designs presenting the same data. Our study sample is larger than prior
+studies with a similar scope. That large sample size improves our power
+to identify this signal.
 
 Further, we can also study respondent behavior and how viewers interact
 with the chart. Paradata on viewer interaction with the chart (e.g.,
-zooming and time spent on each task) can be collected as well as asking
+zooming and time spent on each task) can be collected as well as
 directly asking respondents questions about their certainty. Not only
 can we collect this information, but we can also identify significant
 differences in this behavior across different designs. Understanding
@@ -1135,10 +1153,16 @@ differences across educational attainment groups and income groups
 underscore the importance of utilizing a representative population when
 testing perception; prior results in this area may be absorbing bias in
 responses due to the larger representation of individuals with higher
-education levels among those study respondents.
+education levels among those study respondents. If studies using
+non-representative or crowd-sourced samples find non-significant results
+when studying elements of design, those results may not actually be
+non-significant for other populations, particularly lower education or
+lower income populations. Researchers should not disregard
+non-significant findings in those survey studies but rather ask whether
+the lack of significance would hold across population subgroups.
 
 Our study results provide actionable insights that data visualization
-practitioners can utilize in the design of data visualizations.
+practitioners can utilize in the design of stacked bar charts.
 Comparisons of interest should be lined up and share a common baseline
 within a chart; in an interactive setting, it may be beneficial to give
 viewers the possibility of re-ordering categories to support effective
