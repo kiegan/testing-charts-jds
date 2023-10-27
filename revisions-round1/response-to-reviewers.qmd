@@ -14,7 +14,9 @@ editor: source
 
     -   *To address this, we have removed two of the instances of bulleted lists: one which listed out the three variations in testing, each described in a bullet, and a second which demonstrated the options participants have to select from, each option shown in a bullet. The third list, which we have kept intact, is a list of the three research questions we pose to answer through our study. The authors could not identify a reason to remove the list structure for our research questions, as it clearly separates each of the distinct questions for the reader. There are four questions in the text of the paper: one at the very beginning, posing the question 'What do viewers see when we show them a data chart?', and three associated with the research questions. We have not removed any of these, as a question mark at the end of a research question is appropriate, and posing an opening question in the introduction is also appropriate.*
 
--   **There is an overabundance of figures without clear emphasis.**
+-   There is an overabundance of figures without clear emphasis.
+
+    -   *We have removed a redundant sub-figure from Figure 4. Displaying the response patterns for each research question visually is a useful method of communicating our findings in addition to formal modeling results. The inclusion of our results figures highlights the nuance in our findings, particularly when it comes to comparisons across tasks and subgroups, and we feel they are important to convey our findings. For that reason, we have retained most of them.*
 
 -   I have doubts about whether the paper aligns with the Journal's scope.
 
@@ -53,8 +55,8 @@ editor: source
         -   page 2, fourth paragraph: I"m not sure if you should start the paragraph with "Here".
             -   *We have replaced 'Here' with 'In this work'*
 
-    -   **Figure 1, the text within the visualisation are too small to see. Perhaps lay it out as a 3 x 2 instead?**
-            - HH: *Figure 1 was not meant to have readable text within the stimuli visualizations but only give an overview of the different stimuli and the testing situations. We have increased the font size for the overview, expanded the discussion of the figure to reflect its purpose and added image (a) to the supplement in a larger format.* **create supplement and add stimulus**
+    -   Figure 1, the text within the visualisation are too small to see. Perhaps lay it out as a 3 x 2 instead?
+            - *Figure 1 was not meant to have readable text within the stimuli visualizations but only give an overview of the different stimuli and the testing situations. We have increased the font size for the overview, expanded the discussion of the figure to reflect its purpose and added image (a) to the supplement in a larger format.*
 
     -   page 8, first paragraph: "\$ 2\$" is a typo?
         -   *This was a typesetting error and has been resolved in the source code.*
@@ -65,9 +67,8 @@ editor: source
     -   Figure 3: I take it that the American Community Survey 2021 is considered the Census estimates? I think it makes more sense to swap the bar and point so that the bar is the Census estimate. This way you can use the errorbar plot. The margin of error around a barplot is reminiscent of a dynamite plot, which I don't think is well thought of in the community (at least not me). I think you can also color the bars to indicate whether your survey estimate covers the census estimate so it is easier to see which one covers it or not. In this plot, you've facetted by the stimulus type but I think it makes sense to facet by the category level (the comparison of distribution is done with the census estimate directly, and I think the interest is to compare the distribution across stimulus so you want the primary factor of interest to compare to be close in proximity). Within a category level, the census estimate is constant across stimulus so you could substitute is with a horizontal line (instead of a bar or point) as well.
         -   *We have changed the format of this figure to address these concerns, using a dot plot with error bars to represent the uncertainty.*
 
-    -   **Figure 4: I think (b) alone is sufficient as you can gain the same information as (a) (although perhaps it is less familiar for wider audience). You could arguably put figure (a) information in a table instead.**. 
-    
-    XXX HH: What should we do here? I'd be OK with putting all of this into a table. KR: I'm ok with moving to a table, though I like having at least one visual to really highlight the difference between aligned/unaligned. This would help us be responsive to the other comments about overuse of visuals, though. 
+    -   Figure 4: I think (b) alone is sufficient as you can gain the same information as (a) (although perhaps it is less familiar for wider audience). You could arguably put figure (a) information in a table instead.
+        -   *We have removed Figure 4(a) and just kept what was originally 4(b) to avoid this redundancy.*
 
     -   Rephrase needed on page 18 third paragraph "... asking directly asking ...".
         -   *We have removed the extraneous 'asking'.*
@@ -86,7 +87,9 @@ editor: source
 
 -   The AE and I do believe this is within the scope for this special issue, contrary to the final comment from Referee #1, so no need to address that comment.
 
--   **Please add an unnumbered section Supplementary Material to list its content (e.g., data, code, additional simulation results, technical proofs, etc.). See recently published papers for examples. Reproducibility is held high at the JDS; the reproducibility team will check for reproducibility when the paper is accepted.**
+-   Please add an unnumbered section Supplementary Material to list its content (e.g., data, code, additional simulation results, technical proofs, etc.). See recently published papers for examples. Reproducibility is held high at the JDS; the reproducibility team will check for reproducibility when the paper is accepted.
+
+    -   *We have added this section to the end of the paper, and note that we also submitted a supplement document.*
 
 -   When addressing the comments, please keep in mind that there is a 20-page limit (including everything) in the production style.
 
@@ -94,7 +97,9 @@ editor: source
 
     -   *We have updated the language in the title, abstract, introduction, and conclusion to be responsive to these concerns. See our specific responses to Reviewer 2's specific comments, but in general we added more emphasis on the importance of communicating a general audience, why non-representative survey findings don't necessarily hold for the entire population, and clarified that our scope was specifically on stacked bar chart displays.*
 
--   **I believe the figures are fairly clear (per Reviewer 1's comment), but the authors might also be inclined to be more selective with what is shown in Figures 3, 6-8, and maybe move some of the others to an appendix.**
+-   I believe the figures are fairly clear (per Reviewer 1's comment), but the authors might also be inclined to be more selective with what is shown in Figures 3, 6-8, and maybe move some of the others to an appendix.
+
+    -   *In response to a specific comment from Reviewer 2, we have removed a redundant sub-figure from Figure 4. We have retained the other figures given that we are still within the page limit and displaying the response patterns visually is a useful method of communicating our findings in addition to formal modeling results. The inclusion of our results figures highlights the nuance in our findings, particularly when it comes to comparisons across tasks and subgroups.*
 
 -   Can the authors comment further on modeling assumptions, particularly in relation to presenting all participants with the unaligned plot first followed by the aligned plot second (as opposed to randomizing this)? For instance, perhaps some participants notice that the plots are the same, with just the bars stacked in a different order, and their response to the second task is biased to be equivalent to that of the first task. This seems like it would be more of a problem if the plots were presented in the reverse order, but I'm curious if the authors looked into this.
     

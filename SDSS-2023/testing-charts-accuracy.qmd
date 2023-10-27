@@ -2567,6 +2567,9 @@ Our study results provide actionable insights that data visualization practition
 While our results are limited to mapping in a stacked bar chart with a specific topic, they demonstrate among them a wealth of insights about how respondents perceive and interact with data visualizations.
 More expansive work on this topic should be completed to understand how the general public interacts with and understands charts, including expanding to a wider set of structural variations, more aesthetic design variations, and considering differences in respondent behavior across different data topic areas.
 
+# Supplementary Material  
+
+The source code and data used in this paper are available on a GitHub repository at [https://github.com/kiegan/testing-charts-jds](https://github.com/kiegan/testing-charts-jds). In addition, we provide an example stimulus image in that repository. 
 
 <!-- # Supplementary Material {.unnumbered} -->
 
