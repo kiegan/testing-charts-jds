@@ -550,7 +550,7 @@ gender <- acs_gender %>%
   ggtitle("Gender") +
 #  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
   xlab("") +
-#  theme(legend.position ="none") +
+  theme(legend.position ="none") +
   scale_linetype_manual(values=c(2,2,1)) +
   scale_color_manual(values=c("grey20", rounds_col))
 
@@ -864,6 +864,29 @@ income <- acs_income %>%
 # # attempt at flipping
 # gender + coord_flip() + education + coord_flip()+ age + coord_flip() + income + coord_flip()+ plot_layout(ncol=2, nrow=2, heights=c(2, 5, 4,4), byrow=FALSE)
 
+gender <- 
+  gender +
+  annotate("text", x = 0.83, y = 5, label="ACS estimate", hjust=0, 
+           size = 5, colour = "grey20") +
+  annotate("segment", x = 0.5, xend=0.7, y = 5,yend=5, 
+           linewidth = 1, colour="grey20") +
+  annotate("text", x = 0.83, y = 15, label="Horizontal design", hjust=0,
+           size = 5, colour = "grey20") +
+  annotate("segment", x = 0.8333, xend = 0.8333, y = 17, yend=40, 
+           linewidth = 0.75, colour=rounds_col[1], linetype=2) +
+  annotate("text", x = 1, y = 20, label="Horizontal wide", hjust=0,
+           size = 5, colour = "grey20") +
+  annotate("segment", x = 1, xend = 1, y = 22, yend=40, 
+           linewidth = 0.75, colour=rounds_col[2], linetype=2) +
+  annotate("text", x = 1.17, y = 25, label="Vertical design", hjust=0,
+           size = 5, colour = "grey20") +
+  annotate("segment", x = 1.166, xend = 1.166, y = 27, yend=40, 
+           linewidth = 0.75, colour=rounds_col[3], linetype=2) 
+
+  
+
+
+
 
 
 (gender + education + plot_layout(nrow=1, widths=c(2,5))) / 
@@ -873,7 +896,49 @@ income <- acs_income %>%
 ```
 
 
+```{r eval=FALSE, include=FALSE}
+omni <- rbind(
+omni_gender %>% rename(levels = sex) %>% 
+  mutate(variable = "Gender"),
+omni_age %>% rename(levels = age) %>% 
+  mutate(variable = "Age groups"),
+omni_income %>% rename(levels = income) %>% 
+  mutate(variable = "Household income"),
+omni_educ %>% rename(levels = educ) %>% 
+  mutate(variable = "Education"))
 
+acs <- rbind(
+acs_age %>% rename(levels = age4) %>% mutate(variable = "Age groups") %>% 
+  dplyr::select(variable, levels, percent2, moe_percent) %>% rename(percent = percent2),
+acs_educ5 %>% rename(levels = educ5) %>% mutate(variable = "Education") %>% 
+  dplyr::select(variable, levels, percent, moe_percent), 
+acs_gender %>% rename(levels = gender) %>% mutate(variable = "Gender") %>% 
+  dplyr::select(variable, levels, percent, moe_percent), 
+acs_income %>% rename(levels = income4) %>% mutate(variable = "Household income") %>%
+  dplyr::select(variable, levels, percent, moe_percent)
+)
+
+
+acs %>% 
+  ggplot(aes(y = levels)) + 
+  geom_errorbar(aes(xmin = percent-moe_percent, xmax = percent + moe_percent, colour = "ACS Est.")) +
+  facet_grid(rows = vars(variable), space="free", scales = "free") +
+  xlim(c(0,NA)) + ylab("") + xlab("Percent") +
+  scale_color_manual(values=c("grey20", rounds_col)) +
+  geom_linerange(
+    aes(
+      y = levels,
+      xmin = low,
+      xmax=high,
+      colour=chart
+    ),
+    linewidth = 1, 
+    position = position_dodge(width = 0.5),
+    data = omni %>% pivot_wider(names_from=group, values_from=value),
+    show.legend = FALSE
+  )
+  
+```
 
 ### Accuracy of responses
 
@@ -897,7 +962,9 @@ marginal_results <- data.frame(abcd)
 Because each participant was shown both the aligned and unaligned versions of the chart, we can use a paired $t$-test to compare mean accuracy between the two charts.
 The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paired$statistic,1)`, df: `r paired$parameter`, $p$-value: $\ll 0.0001$).
 
-```{r accuracy,   warning=FALSE}
+
+
+```{r accuracy,  warning=FALSE}
 #| fig-cap: "On the left (a), a stacked barchart shows the number of respondents with correct (green) and incorrect (grey) responses to the two comparison questions. When tiles are aligned along the same axis, more than twice the number of responses are correct. The shaded area along the top of the green bars corresponds to  95\\% confidence intervals around (marginal) correct responses. On the right (b), a parallel coordinate plot shows all combinations of responses. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly."
 #| label: fig-alignment
 #| out-width: 90%
@@ -1457,7 +1524,7 @@ coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
 
 ```{r}
 #| label: fig-certainty
-#| out-width: 100%
+#| out-width: 95%
 #| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Error bars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significance at 5%. The scores for two bars are significantly different if they do not share a letter. "
 #| fig-width: 10
 #| fig-height: 4.25
@@ -1545,7 +1612,7 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 #| fig-height: 4.5
 #| fig-width: 10
 #| layout-nrow: 2
-#| out-width: 100%
+#| out-width: 95%
 
 thm <- 
   theme(axis.text.x = element_text(angle=0, hjust = 0.5))
