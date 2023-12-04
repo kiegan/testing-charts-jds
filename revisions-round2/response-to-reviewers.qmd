@@ -1,0 +1,76 @@
+---
+title: "Round 2: Response to the AE"
+format: pdf
+editor: source
+---
+
+
+Amanda, 
+
+thank you for your careful read-through and the thoughtful comments. 
+
+Please find belaow our point-by-point response,
+
+all the best,
+
+
+
+
+Point-by-point response:
+
+
+Major comment:
+
+I find the equations for the models inconsistent and confusing. Making these more consistent would greatly improve readability and understanding. Specific examples below:
++ Eq (3): Var hat and w bar are undefined.
++ Eq (5): the terms and the subscripts need to be defined; the parentheses in the subscript need to be explained (perhaps nested effects). Also, you say “let Y_{jk} describe the zooming behavior”, but only use Y_k in Eq (5). I also don’t understand what i, j, and l are referring to in this equation.
++ The indexing changes between Eq (4) and (6) (design is j in (4) and l in (6)).
++ k=1,...,N isn’t defined until Eq (6), even though it is used earlier. It isn’t clear what N is.
+
+
+Minor comments:
+
+The title is much improved, great change. I’d recommend removing the question from the title, as it seems repetitive with the first sentence of the paper.
+
+Last paragraph of page 2 and first paragraph of page 3 (after numbered list) both start with “In this work”; one of these should be changed (could change the second to “To address these questions”).
+
+Pg 3: “...we either split a survey sample in two and show each subsample a distinct structural version of the chart or test variations of a chart across distinct rounds of the survey.” Please add how much time passes between rounds.
+
+Pg 4, 2nd paragraph: I think “aligned pieces” and “unaligned pieces” in the parentheses should be switched.
+
+Figure 1 caption: “Please refer to the appendix for full size images of the stimuli.” -> “Please refer to the appendix for a full size image of stimuli (a).”
+
+Pg 5: I really like the last sentence of the Task 1 section: “Any differences in observed responses can therefore be attributed to this difference in presentation.” A sentence like this after the other 2 tasks would be a helpful addition.
+
+Pg 7, 1st sentence: “While there is some risk…” A sentence like this should appear earlier, like on page 3 in the study design section.
+
+Pg 8, table 1 caption: Remove “as discussed above”
+
+Pg 9, 1st paragraph: “the dark points” → “the black points and error bars”; “hashed lines” → “vertical lines”
+
+Pg 9, fig 3: increase the axis text size
+
+Pg 10, fig 4: I think the figure would be easier/more natural to read if you switch the ordering of the x axis (unaligned first). This better represents the order in which the questions are shown and would highlight the improvement of moving from unaligned to aligned. Also, this figure should be bigger. Finally, the sentence “There’s a huge asymmetry in the number of responses where participants answered only one of the questions correctly.” is very confusing to me, could you clarify this?
+
+Pg 11: Thanks for adding all the detail about the letter comparisons in the figures and tables, very helpful. I’d start a new paragraph for this description, starting with “The letters allow us to assess…”. I’d also specify: “The letters in the figures and tables allow us to assess…”. Finally, the one sentence paragraph on this page should be combined with another paragraph.
+
+Pg 11: “two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common”: this works for the table, but is confusing for the figures (and the reader is mostly looking at fig 5 when reading this description), be more specific here
+
+Pg 12, Table 3 caption: “at 5%” → “at a 5% level of significance”
+
+Pg 14, fig 7: Could you rephrase this, I find it hard to understand: “Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar.” Also, in the next sentence “the difference…matters significantly” does not make sense.
+
+Pg 15, 1st paragraph: “Our pattern of higher accuracy in selecting the correct response on the aligned task relative to the unaligned task holds across all demographic groups and structural variations.” To make this comparison, shouldn’t the aligned blue letters and the unaligned blue letters be different?
+
+Pg 16, figure 8 caption: Some of the conclusions made seem to conflict with how I interpret the plot. Clarification is needed here. Specifically:
++ “For aligned tiles, gender, age, and education are not significant factors.” It looks like gender is significant? It has a different blue letter.
++ “When income levels increase, the percentage of wrong answers decreases, while the percentage of correct answers increases slightly (significant at 5%).” Looking at the pattern of the orange letters in the “by income, aligned” plot (a,ab,b,ab), it seems like the only significant difference is between the <$30k group and the $60k-$100k group, so it seems incorrect to say “the percentage of wrong answers decreases … (significant at 5%)”. Similarly, the blue letters in that plot are all a, so I don’t think it is correct to say “percentage of correct answers increases slightly (significant at 5%)”.
++ “higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of ‘they are the same’, resulting in significant decreases of both correct answers and wrong answers.” Again, I don’t see evidence in the plot to say these differences are significant. Could you please clarify this? For example, in the “by income, unaligned” plot, the blue letters are all a, so there is no significant decrease of correct responses there.
+
+Overall:
++ The paper suits better the Data Science in Action Section better than the Statistical Data Science Section, since this is a case study.
++ Number the sections as the JDS style does.
+
+To submit your revision, please log in to EJMS and submit it as a revised file to the original submission. Please also include a point-by-point reply to each comment raised by the reviewers. In particular, most of the comments are relevant not just to the reviewers but also to general readers, so in each response, please state what were done to the manuscript.
+
+Please submit your revision until 2023-12-22.

@@ -178,7 +178,9 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title[Testing stacked bar charts in surveys]{What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts}
+\title{What do they see? Testing perceptual accuracy in a U.S. general
+population survey using stacked bar charts}
+\author{}
 \date{}
 
 \begin{document}
@@ -194,7 +196,7 @@ survey respondents to test perception in stacked bar charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, boxrule=0pt, interior hidden, sharp corners, borderline west={3pt}{0pt}{shadecolor}, enhanced, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, sharp corners, borderline west={3pt}{0pt}{shadecolor}, interior hidden, breakable]}{\end{tcolorbox}}\fi
 
 % take out everything above later
 % keep everything below
@@ -793,19 +795,6 @@ significantly worse than in the vertical design (labelled \texttt{b}).
 The estimated values and 95\% confidence intervals are shown in
 Table~\ref{tbl-rounds-123}.
 
-One pattern in accuracy holds across each of the three structural
-variations: \textbf{the aligned task has a higher level of accuracy than
-its unaligned counterpart}. Interestingly, while we expect an
-improvement in accuracy when shifting from the horizontal to the
-horizontal wide design given the larger difference in pixel length
-between the two pieces, the resulting effects on the accuracy of the
-responses are not completely straightforward: the shift from a vertical
-to the (tall) horizontal design is detrimental to an accurate perception
-for both aligned and unaligned comparisons. The re-scaled design of the
-wide horizontal bars reclaims some of the loss for unaligned bars and
-outperforms the vertical design by a similar margin in aligned bars, but
-does not out-perform the vertical design when comparing unaligned tiles.
-
 \hypertarget{tbl-rounds-123}{}
 \begin{longtable}{lrrlrrl}
 \caption{\label{tbl-rounds-123}Estimated odds from the cell-means model for response patterns. Letters
@@ -834,6 +823,19 @@ Horizontal wide & $2.67$ &  [$2.04$, $3.48$] & d & $17.12$ &  [$10.49$, $27.95$]
 Vertical & $1.51$ &  [$1.33$, $1.71$] & e & $11.33$ &  [$8.99$, $14.28$] & b \\ 
 \bottomrule
 \end{longtable}
+
+One pattern in accuracy holds across each of the three structural
+variations: \textbf{the aligned task has a higher level of accuracy than
+its unaligned counterpart}. Interestingly, while we expect an
+improvement in accuracy when shifting from the horizontal to the
+horizontal wide design given the larger difference in pixel length
+between the two pieces, the resulting effects on the accuracy of the
+responses are not completely straightforward: the shift from a vertical
+to the (tall) horizontal design is detrimental to an accurate perception
+for both aligned and unaligned comparisons. The re-scaled design of the
+wide horizontal bars reclaims some of the loss for unaligned bars and
+outperforms the vertical design by a similar margin in aligned bars, but
+does not out-perform the vertical design when comparing unaligned tiles.
 
 Rates of selecting the incorrect response are low across all three
 structural variations and the aligned and unaligned tasks; while viewers
@@ -876,8 +878,8 @@ rates of zooming do not differ by correctness of response or alignment
 in the stimulus.}
 
 \end{figure*}
-\hfill\newpage
-%\hypertarget{tbl-zoom-123}{}
+
+\hypertarget{tbl-zoom-123}{}
 \begin{longtable}{lrrrr}
 \caption{\label{tbl-zoom-123}Coefficients for logistic regression of zooming by task }\tabularnewline
 
@@ -889,21 +891,21 @@ term & estimate & SE & t-statistic & p-value \\
 \midrule
 \multicolumn{5}{l}{} \\ 
 \midrule
-$\widehat{\mu}$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
+Intercept & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
 \midrule
 \multicolumn{5}{l}{Response} \\ 
 \midrule
-They are the same $\widehat{\rho}_2$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
-Wrong $\widehat{\rho}_3$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
+response3They are the same & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
+response3Wrong & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
 \midrule
 \multicolumn{5}{l}{Task} \\ 
 \midrule
-Aligned $\widehat{\tau}_2$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
+taskcd & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
 \midrule
 \multicolumn{5}{l}{Chart design} \\ 
 \midrule
-Horizontal wide $\widehat{\delta}_2$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
-Vertical $\widehat{\rho}_3$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
+chartHorizontal wide & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
+chartVertical & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
 \bottomrule
 \end{longtable}
 
