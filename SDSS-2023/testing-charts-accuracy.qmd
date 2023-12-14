@@ -1,5 +1,5 @@
 ---
-title: "What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts"
+title: "Testing perceptual accuracy in a U.S. general population survey using stacked bar charts"
 runtitle: Testing stacked bar charts in surveys # running title
 bibliography: references.bib
 abstract: "The use of visuals is a key component in scientific communication. Decisions about the design of a data visualization should be informed by what design elements best support the audience's ability to perceive and understand the components of the data visualization. We build on the foundations of Cleveland and McGill's work in graphical perception, employing a large, nationally-representative, probability-based panel of survey respondents to test perception in stacked bar charts. Our findings provide actionable guidance for data visualization practitioners to employ in their work."
@@ -267,7 +267,7 @@ Within that context we focus on the following research questions:
 
 3.  Are there differences in perception and interaction with the tasks across demographic groups?
 
-In this work, we present a series of completed tests and the resulting findings.
+To address these questions, we present a series of completed tests and the resulting findings.
 The remainder of the paper is organized as follows: first, we describe the design of the visual stimuli used in the perception tests.
 We then describe the population of study respondents and obtained survey sample.
 Subsequently, we share a summary of the resulting survey responses across each of the tests, including analyses on accuracy of responses and response behavior.
@@ -297,11 +297,11 @@ Rather than asking the same (or similar) type of question with varied signal str
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
 Therefore, we focus on questions which vary the structure of the presented image, but ask viewers to compare the same underlying data values across those varied images.
 
-We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart. First, we vary the alignment of the pieces in question. Viewers are presented with two marked pieces in a chart that do not share a common baseline (aligned pieces), then two pieces that do share a common baseline (unaligned pieces). Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
+We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart. First, we vary the alignment of the pieces in question. Viewers are presented with two marked pieces in a chart that do not share a common baseline (unaligned pieces), then two pieces that do share a common baseline (aligned pieces). Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
 
 ```{r}
 #| label: fig-tasks
-#| fig-cap: "Overview of all of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. Please refer to the appendix for full size images of the stimuli."
+#| fig-cap: "Overview of all of the visual stimuli presented to viewers. In each bar chart, two pieces are marked. The larger piece in each chart are pieces B and D. Please refer to the appendix for afull size image  of stimulus (a)."
 #| out-width: 100%
 knitr::include_graphics("images/stimuli-overview-1.png")
 ```
@@ -424,7 +424,7 @@ The resulting number of participants, effective sample sizes, and $\lambda$ valu
 | Round 3   | June 2022  | `r nrow(round3_adj)` | `r round(neff(round3_adj$weight),1)` | `r round(sum(round3_adj$weight),1)` |        $\lambda_3$ = `r round(lambdas[3],3)` |
 | **Combined** | ---        |  `r nrow(round_123)` |  `r round(neff(round_123$weight),1)` |                                     |                                              |
 
-: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining of surveys as discussed above.
+: Survey rounds: dates, number of participants (nominal sample size), effective sample size, sum of weights, and factors for the combining of surveys.
 {#tbl-rounds}
 
 # Results
@@ -444,8 +444,8 @@ The resulting sample sizes corresponding to each task are shown in \autoref{tbl-
 
 : Survey tasks: number of participants (nominal sample size) and effective sample size for each task. {#tbl-tasks}
 
-Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the dark points show percentages for US adults based on the 5 year estimates of the American Community Survey 2021.
-The distribution of demographics are all quite similar across tasks and their 90% margin of errors (hashed lines) for the most part cover the Census estimates.
+Distributions of demographic characteristics across each task are shown in \autoref{fig-rounds-demographics}, the black points and error bars show percentages for US adults based on the 5 year estimates of the American Community Survey 2021.
+The distribution of demographics are all quite similar across tasks and their 90% margin of errors (vertical lines) for the most part cover the Census estimates.
 
 
 ```{r}
@@ -1166,7 +1166,7 @@ The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
 
 ```{r}
 #| label: tbl-rounds-123
-#| tbl-cap: Estimated odds from the cell-means model for response patterns. Letters behind numbers indicate pairwise significances. Within the same column, values are significantly different (at 5%) if they do not share the same letter.
+#| tbl-cap: Estimated odds from the cell-means model for response patterns. Letters behind numbers indicate pairwise significances. Within the same column, values are significantly different (at a 5% level of significance) if they do not share the same letter.
 
 dframe <- rbind(
   coefs_123 %>% mutate(level = c("correct | same or wrong")),
