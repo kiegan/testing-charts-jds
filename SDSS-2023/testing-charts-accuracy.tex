@@ -7,6 +7,7 @@
 ]{jds}
 
 \usepackage{amsmath,amssymb}
+\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -16,10 +17,6 @@
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -153,12 +150,10 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 \makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
 \makeatother
 \makeatletter
 \@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
 \makeatother
 \makeatletter
 \makeatother
@@ -169,7 +164,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={What do they see? Testing perceptual accuracy in a U.S. general population survey using stacked bar charts},
+  pdftitle={Testing perceptual accuracy in a U.S. general population survey using stacked bar charts},
   pdfkeywords={graphical perception, data visualization, survey data},
   colorlinks=true,
   linkcolor={blue},
@@ -178,8 +173,8 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{What do they see? Testing perceptual accuracy in a U.S. general
-population survey using stacked bar charts}
+\title{Testing perceptual accuracy in a U.S. general population survey
+using stacked bar charts}
 \author{}
 \date{}
 
@@ -196,7 +191,7 @@ survey respondents to test perception in stacked bar charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, sharp corners, borderline west={3pt}{0pt}{shadecolor}, interior hidden, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, breakable, frame hidden, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
 
 % take out everything above later
 % keep everything below
@@ -294,14 +289,14 @@ questions:
   across demographic groups?
 \end{enumerate}
 
-In this work, we present a series of completed tests and the resulting
-findings. The remainder of the paper is organized as follows: first, we
-describe the design of the visual stimuli used in the perception tests.
-We then describe the population of study respondents and obtained survey
-sample. Subsequently, we share a summary of the resulting survey
-responses across each of the tests, including analyses on accuracy of
-responses and response behavior. Finally, we discuss implications of
-this work and next steps.
+To address these questions, we present a series of completed tests and
+the resulting findings. The remainder of the paper is organized as
+follows: first, we describe the design of the visual stimuli used in the
+perception tests. We then describe the population of study respondents
+and obtained survey sample. Subsequently, we share a summary of the
+resulting survey responses across each of the tests, including analyses
+on accuracy of responses and response behavior. Finally, we discuss
+implications of this work and next steps.
 
 \hypertarget{study-design-stimulus}{%
 \subsection{Study design -- stimulus}\label{study-design-stimulus}}
@@ -323,7 +318,9 @@ slight variations of the same stimulus in a row (and risk unforeseen
 order effects or respondents using prior questions to inform their
 responses), we either split a survey sample in two and show each
 subsample a distinct structural version of the chart or test variations
-of a chart across distinct rounds of the survey.
+of a chart across distinct rounds of the survey. Survey rounds are
+fielded once a month, so distinct rounds are separated by approximately
+one month.
 
 Each task is made up of two elements: a visual stimulus and a question
 about the stimulus. In our study, each visual stimulus is an image of a
@@ -356,8 +353,8 @@ marked pieces (tiles) is larger within each chart, and focus on three
 main sets of structural variation in the design of that chart. First, we
 vary the alignment of the pieces in question. Viewers are presented with
 two marked pieces in a chart that do not share a common baseline
-(aligned pieces), then two pieces that do share a common baseline
-(unaligned pieces). Second, we vary the orientation of the chart -- we
+(unaligned pieces), then two pieces that do share a common baseline
+(aligned pieces). Second, we vary the orientation of the chart -- we
 rotate the vertical stacked bar chart, and present a horizontally
 oriented version of the same chart, with identically sized marked
 pieces. Finally, we change the aspect ratio of the chart and present a
@@ -373,7 +370,7 @@ thinner, marked pieces.
 \caption{\label{fig-tasks}Overview of all of the visual stimuli
 presented to viewers. In each bar chart, two pieces are marked. The
 larger piece in each chart are pieces B and D. Please refer to the
-appendix for full size images of the stimuli.}
+appendix for afull size image of stimulus (a).}
 
 \end{figure*}
 
@@ -580,9 +577,8 @@ are shown in \autoref{tbl-rounds}.
   >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
 \caption{\label{tbl-rounds}Survey rounds: dates, number of participants
 (nominal sample size), effective sample size, sum of weights, and
-factors for the combining of surveys as discussed above.
-}\tabularnewline
-\toprule\noalign{}
+factors for the combining of surveys. }\tabularnewline
+\toprule()
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -596,9 +592,9 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule\noalign{}
+\midrule()
 \endfirsthead
-\toprule\noalign{}
+\toprule()
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -612,14 +608,13 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule\noalign{}
+\midrule()
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Round 1 & April 2022 & 933 & 521.1 & 934.9 & \(\lambda_1\) = 0.343 \\
 Round 2 & May 2022 & 953 & 485.7 & 953.4 & \(\lambda_2\) = 0.320 \\
 Round 3 & June 2022 & 921 & 513.5 & 923.1 & \(\lambda_3\) = 0.338 \\
 \textbf{Combined} & --- & 2807 & 1520.8 & & \\
+\bottomrule()
 \end{longtable}
 
 \hypertarget{results}{%
@@ -644,7 +639,7 @@ resulting sample sizes corresponding to each task are shown in
   >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \caption{\label{tbl-tasks}Survey tasks: number of participants (nominal
 sample size) and effective sample size for each task.}\tabularnewline
-\toprule\noalign{}
+\toprule()
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -654,9 +649,9 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule\noalign{}
+\midrule()
 \endfirsthead
-\toprule\noalign{}
+\toprule()
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -666,21 +661,20 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule\noalign{}
+\midrule()
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Task 1 & Vertical & 1886 & 1007.1 \\
 Task 2 & Horizontal & 459 & 266.5 \\
 Task 3 & Horizontal wide & 462 & 249.1 \\
+\bottomrule()
 \end{longtable}
 
 Distributions of demographic characteristics across each task are shown
-in \autoref{fig-rounds-demographics}, the dark points show percentages
-for US adults based on the 5 year estimates of the American Community
-Survey 2021. The distribution of demographics are all quite similar
-across tasks and their 90\% margin of errors (hashed lines) for the most
-part cover the Census estimates.
+in \autoref{fig-rounds-demographics}, the black points and error bars
+show percentages for US adults based on the 5 year estimates of the
+American Community Survey 2021. The distribution of demographics are all
+quite similar across tasks and their 90\% margin of errors (vertical
+lines) for the most part cover the Census estimates.
 
 \begin{figure*}[hbt]
 
@@ -738,9 +732,12 @@ significant (\(t\) statistic: 21.2, df: 2265, \(p\)-value:
 questions. The coloring reflects the number of correct responses (two in
 full green, zero in grey, and one correct answer in grey-green). When
 tiles are aligned along the same axis, more than twice the number of
-respondents correctly identifies the larger tile. There's a huge
-asymmetry in the number of responses where participants answered only
-one of the questions correctly.}
+respondents correctly identifies the larger tile. The pattern in
+responses for participants who only answered one of the questions
+correctly is asymmetric; that is, a much higher percentage of
+participants answered the unaligned task incorrectly and the aligned
+task correctly than answered the unaligned task correctly and the
+aligned task incorrectly.}
 
 \end{figure*}
 
@@ -776,31 +773,31 @@ encoded as 3:
 
 where \(\ell \in \{1, 2\}\); \(i \in \{1, 2\}\) is the comparison type
 (1 = Aligned, 2 = Unaligned), and \(j \in \{1, 2, 3\}\) is the chart
-design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. The
-letters allow us to assess whether differences between two means are
-significant: two estimates within the same column are significantly
-different (at the 5\% level) if they do not have any letter in common.
-This method is called connected letters and has been introduced by
-Piepho (2004). In Figure~\ref{fig-response-123}, we see, that the
-proportions of wrong responses are significantly different between
-tasks, but designs within each task are not significantly different. For
-correct responses, all proportions are significantly different except
-for the proportion of correctly assessing the difference between
-unaligned rectangles in the wide horizontal design: their label of
-\texttt{ab} shows us that assessing the differences between unaligned
-rectangles in the wide horizontal design is not significantly better
-than in the horizontal design (labelled \texttt{a}), but also not
-significantly worse than in the vertical design (labelled \texttt{b}).
+design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
 
-The estimated values and 95\% confidence intervals are shown in
-Table~\ref{tbl-rounds-123}.
+The letters in the figures and tables allow us to assess whether
+differences between two means are significant: two estimates within the
+same column are significantly different (at the 5\% level) if they do
+not have any letter in common. This method is called connected letters
+and has been introduced by Piepho (2004). In
+Figure~\ref{fig-response-123}, we see, that the proportions of wrong
+responses are significantly different between tasks, but designs within
+each task are not significantly different. For correct responses, all
+proportions are significantly different except for the proportion of
+correctly assessing the difference between unaligned rectangles in the
+wide horizontal design: their label of \texttt{ab} shows us that
+assessing the differences between unaligned rectangles in the wide
+horizontal design is not significantly better than in the horizontal
+design (labelled \texttt{a}), but also not significantly worse than in
+the vertical design (labelled \texttt{b}). The estimated values and 95\%
+confidence intervals are shown in Table~\ref{tbl-rounds-123}.
 
 \hypertarget{tbl-rounds-123}{}
 \begin{longtable}{lrrlrrl}
 \caption{\label{tbl-rounds-123}Estimated odds from the cell-means model for response patterns. Letters
 behind numbers indicate pairwise significances. Within the same column,
-values are significantly different (at 5\%) if they do not share the
-same letter. }\tabularnewline
+values are significantly different (at a 5\% level of significance) if
+they do not share the same letter. }\tabularnewline
 
 \caption*{
 {\large Odds of selecting responses by task and chart type}
@@ -960,10 +957,9 @@ their selection.
 
 \caption{\label{fig-certainty}Certainty by task, chart design, and
 correctness. Correct answers in the unaligned task have the lowest
-certainty scores associated with them. Incorrect responses on the
-unaligned task show a significant boost in certainty in the vertical
-stacked bar. For horizontal stacked bars the difference between aligned
-and unaligned charts matters significantly. Error bars around the points
+certainty scores associated with them. Incorrect responses to the
+unaligned task when viewing the vertical stacked bar are associated with
+a significantly higher certainty score. Error bars around the points
 show estimated scores (on a scale of 1 to 5) with corresponding 95\% CI.
 The letters underneath the bars indicate significance at 5\%. The scores
 for two bars are significantly different if they do not share a letter.}
@@ -986,16 +982,18 @@ response patterns, particularly on the unaligned task, across
 demographic groups.
 
 Let \(Y_k\) be the response of participant \(k\), on a scale from 1 =
-`correct', 2 = `they are the same' to 3 = `wrong'.
-
-We use a generalized cumulative logistic regression, where \(\mu_i\) are
-intercepts \(1 \le i < 3\), \(X_k\) are demographics of the \(k\)th
-participant (in form of the model matrix), and \(\beta_{i}\) are the
-coefficients.
+`correct', 2 = `they are the same' to 3 = `wrong'. We use a generalized
+cumulative logistic regression, where \(\mu_i\) are intercepts
+\(1 \le i < 3\), \(X_k\) are demographics of the \(k\)th participant (in
+form of the model matrix), and \(\beta_{i}\) are the coefficients.
 
 \begin{equation}
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
 \end{equation}
+
+\begin{verbatim}
+Warning in RET$pfunction("adjusted", ...): Completion with error > abseps
+\end{verbatim}
 
 \begin{figure}
 
@@ -1030,15 +1028,14 @@ coefficients.
 \end{minipage}%
 
 \caption{\label{fig-demographics}Response patterns by alignment and
-demographic levels. For aligned tiles, gender, age, and education are
-not significant factors. However, income levels do have a (small)
-effect. When income levels increase, the percentage of wrong answers
-decreases, while the percentage of correct answers increases slightly
-(significant at 5\%). For the more difficult task of comparing unaligned
-tiles, higher levels of education and higher levels of income are
-associated with a significant increase of panelists choosing a response
-of `they are the same', resulting in significant decreases of both
-correct answers and wrong answers.}
+demographic levels. For aligned tiles, age and education are not
+significant factors. However, gender and income levels do have a (small)
+effect. For the more difficult task of comparing unaligned tiles, higher
+levels of education and higher levels of income are associated with a
+significant increase of panelists choosing a response of `they are the
+same', resulting in significant decreases of wrong answers for higher
+education attainment and higher income groups, and significant decreases
+in correct answers for higher levels of education.}
 
 \end{figure}
 
@@ -1252,7 +1249,7 @@ Graphics} 5 (2): 110--41. \url{https://doi.org/10.1145/22949.22950}.
 \leavevmode\vadjust pre{\hypertarget{ref-omuircheartaighCombiningSamplesVs2002}{}}%
 O'Muircheartaigh, Colm, and Steven Pedlow. 2002. {``Combining {Samples
 Vs}. {Cumulating Cases}: {A Comparison} of {Two Weighting Strategies} in
-{NLSY97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
+{Nlsy97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
 Meetings}}, 2557--62.
 \url{http://www.asasrms.org/Proceedings/y2002/Files/JSM2002-001082.pdf}.
 

@@ -282,7 +282,7 @@ First, participant instructions must be delivered in a very short and easily und
 Our tasks are presented as a short series of questions within a larger survey on a variety of topics.
 Second, we want to utilize content within the stimulus which is not socially or politically charged for the average U.S. adult; this risks participants reacting to the subject matter within the chart rather than focusing on the task.
 For this reason, we utilize data on living arrangements of older U.S. adults -- a topic which most U.S. adults will have some familiarity with, but is not inherently polarizing.
-Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct structural version of the chart or test variations of a chart across distinct rounds of the survey.
+Finally, to prevent viewers from being exposed to slight variations of the same stimulus in a row (and risk unforeseen order effects or respondents using prior questions to inform their responses), we either split a survey sample in two and show each subsample a distinct structural version of the chart or test variations of a chart across distinct rounds of the survey. Survey rounds are fielded once a month, so distinct rounds are separated by approximately one month. 
 
 Each task is made up of two elements: a visual stimulus and a question about the stimulus.
 In our study, each visual stimulus is an image of a data visualization, while each question prompts viewers to identify which of two marked pieces in the data visualization is larger.
@@ -550,7 +550,7 @@ gender <- acs_gender %>%
   ggtitle("Gender") +
 #  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
   xlab("") +
-  theme(legend.position ="none") +
+  theme(legend.position ="none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12)) +
   scale_linetype_manual(values=c(2,2,1)) +
   scale_color_manual(values=c("grey20", rounds_col))
 
@@ -647,7 +647,7 @@ age <- acs_age %>%
   ) +
   ylab("Percent") + 
   ggtitle("Age groups") +
-  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
+  theme(axis.text.x = element_text(angle=0, vjust = 0.5, size = 12), axis.text.y = element_text(size = 12)) +
   xlab("") +
   theme(legend.position ="none") +
   scale_linetype_manual(values=c(2,2,1)) +
@@ -746,7 +746,7 @@ education <- acs_educ5 %>%
   ggtitle("Education") +
 #  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
   xlab("") +
-  theme(legend.position ="none") +
+  theme(legend.position ="none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12)) +
   scale_linetype_manual(values=c(2,2,1)) +
   scale_color_manual(values=c("grey20", rounds_col)) 
   
@@ -856,7 +856,7 @@ income <- acs_income %>%
   ggtitle("Income") +
 #  theme(axis.text.x = element_text(angle=0, vjust = 0.5)) +
   xlab("") +
-  theme(legend.position ="none") +
+  theme(legend.position ="none", axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12)) +
   scale_linetype_manual(values=c(2,2,1)) +
   scale_color_manual(values=c("grey20", rounds_col))
 
@@ -968,7 +968,7 @@ The resulting $t$-statistic is highly significant ($t$ statistic: `r round(paire
 
 
 ```{r accuracy,  warning=FALSE}
-#| fig-cap: "Participants' response pattern to both questions. The coloring reflects the number of correct responses (two in full green, zero in grey, and one correct answer in grey-green). When tiles are aligned along the same axis, more than twice the number of respondents correctly identifies the larger tile. There's a huge asymmetry in the number of responses where participants answered only one of the questions correctly."
+#| fig-cap: "Participants' response pattern to both questions. The coloring reflects the number of correct responses (two in full green, zero in grey, and one correct answer in grey-green). When tiles are aligned along the same axis, more than twice the number of respondents correctly identifies the larger tile. The pattern in responses for participants who only answered one of the questions correctly is asymmetric; that is, a much higher percentage of participants answered the unaligned task incorrectly and the aligned task correctly than answered the unaligned task correctly and the aligned task incorrectly."
 #| label: fig-alignment
 #| out-width: 40%
 #| fig-width: 4
@@ -1009,7 +1009,7 @@ gg2 <- round_123 %>%
     `Unaligned: A or B?` = ifelse(CorrectAB, "Correct", "Not correct"),
     `Aligned: C or D?` = ifelse(CorrectCD, "Correct", "Not correct")
     ) %>%
-  pcp_select(`Aligned: C or D?`, `Unaligned: A or B?`) %>%
+  pcp_select(`Unaligned: A or B?`, `Aligned: C or D?`) %>%
   pcp_scale() %>%
   pcp_arrange() %>%
   ggplot(aes_pcp()) +
@@ -1159,10 +1159,9 @@ round_123_long %>%
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
 \end{equation}
 
-where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
-The letters allow us to assess whether differences between two means are significant:  two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common. This method is called connected letters and has been introduced by @piephoAlgorithmLetterBasedRepresentation2004. In @fig-response-123, we see, that the proportions of wrong responses are significantly different between tasks, but designs within each task are not significantly different. For correct responses, all proportions are significantly different except for the proportion of correctly assessing the difference between unaligned rectangles in the wide horizontal design: their label of `ab` shows us that assessing the differences between unaligned rectangles in the wide horizontal design is not significantly better than in the horizontal design (labelled `a`), but also not significantly worse than in the vertical design (labelled `b`).
+where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.  
 
-The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
+The letters in the figures and tables allow us to assess whether differences between two means are significant:  two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common. This method is called connected letters and has been introduced by @piephoAlgorithmLetterBasedRepresentation2004. In @fig-response-123, we see, that the proportions of wrong responses are significantly different between tasks, but designs within each task are not significantly different. For correct responses, all proportions are significantly different except for the proportion of correctly assessing the difference between unaligned rectangles in the wide horizontal design: their label of `ab` shows us that assessing the differences between unaligned rectangles in the wide horizontal design is not significantly better than in the horizontal design (labelled `a`), but also not significantly worse than in the vertical design (labelled `b`). The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
 
 ```{r}
 #| label: tbl-rounds-123
@@ -1523,7 +1522,7 @@ coefs_certainty$letters <- cld(cross_compare_certainty)$mcletters$Letters
 ```{r}
 #| label: fig-certainty
 #| out-width: 95%
-#| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses on the unaligned task show a significant boost in certainty in the vertical stacked bar. For horizontal stacked bars the difference between aligned and unaligned charts matters significantly. Error bars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significance at 5%. The scores for two bars are significantly different if they do not share a letter. "
+#| fig-cap: "Certainty by task, chart design, and correctness. Correct answers in the unaligned task have the lowest certainty scores associated with them. Incorrect responses to the unaligned task when viewing the vertical stacked bar are associated with a significantly higher certainty score. Error bars around the points show estimated scores (on a scale of 1 to 5) with corresponding 95% CI. The letters underneath the bars indicate significance at 5%. The scores for two bars are significantly different if they do not share a letter. "
 #| fig-width: 10
 #| fig-height: 4.25
 
@@ -1577,9 +1576,7 @@ Finally, we turn to investigating responses across demographic groups, a core be
 Our pattern of higher accuracy in selecting the correct response on the aligned task relative to the unaligned task holds across all demographic groups and structural variations.
 However, we do observe different response patterns, particularly on the unaligned task, across demographic groups.
 
-Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'correct', 2 = 'they are the same' to 3 = 'wrong'.
-
-We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
+Let $Y_k$ be the response of participant $k$, on a scale from 1 = 'correct', 2 = 'they are the same' to 3 = 'wrong'. We use a generalized cumulative logistic regression, where $\mu_i$ are intercepts $1 \le i < 3$, $X_k$ are demographics of the $k$th participant (in form of the model matrix), and $\beta_{i}$ are the coefficients.
 
 \begin{equation}
 \text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
@@ -1603,7 +1600,7 @@ coefs_ab_correct_same <- broom::tidy(logit_demo_task_ab_correct_same)
 
 ```{r}
 #| label: fig-demographics
-#| fig-cap: "Response patterns by alignment and demographic levels. For aligned tiles, gender, age, and education are not significant factors. However, income levels do have a (small) effect. When income levels increase, the percentage of wrong answers decreases, while the percentage of correct answers increases slightly (significant at 5%). For the  more difficult task of comparing unaligned tiles, higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of both correct answers and wrong answers. "
+#| fig-cap: "Response patterns by alignment and demographic levels. For aligned tiles, age and education are not significant factors. However, gender and income levels do have a (small) effect. For the  more difficult task of comparing unaligned tiles, higher levels of education and higher levels of income are associated with a significant increase of panelists choosing a response of 'they are the same', resulting in significant decreases of wrong answers for higher education attainment and higher income groups, and significant decreases in correct answers for higher levels of education. "
 #| fig-subcap: 
 #|   - Comparisons of aligned tiles
 #|   - Comparisons of unaligned tiles
