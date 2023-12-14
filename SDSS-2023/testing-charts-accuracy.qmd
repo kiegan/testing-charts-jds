@@ -893,7 +893,7 @@ gender <-
 
 
 
-(gender + education + plot_layout(nrow=1, widths=c(2,5))) / 
+(gender + education + plot_spacer() + plot_layout(nrow=1, widths=c(2,5,1))) / 
   (age + income + plot_layout(nrow=1, widths = c(4,4)))
 
 
