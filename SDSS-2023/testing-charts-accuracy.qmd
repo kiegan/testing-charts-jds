@@ -297,7 +297,7 @@ Rather than asking the same (or similar) type of question with varied signal str
 With a small set of tasks, we need to present tasks that are perceptually hard, and thus ask questions about stimuli that are close to our perceptual threshold.
 Therefore, we focus on questions which vary the structure of the presented image, but ask viewers to compare the same underlying data values across those varied images.
 
-We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart. First, we vary the alignment of the pieces in question. Viewers are presented with two marked pieces in a chart that do not share a common baseline (unaligned pieces), then two pieces that do share a common baseline (aligned pieces). Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
+We ask participants to determine which of two just-noticeably different marked pieces (tiles) is larger within each chart, and focus on three main sets of structural variation in the design of that chart. First, we vary the alignment of the pieces in question. Viewers are presented with two marked pieces in a chart that do not share a common baseline (unaligned pieces), then two pieces that do share a common baseline (aligned pieces). We present the unaligned comparison first to reduce the likelihood that participants recognize that the tasks are identical excepting the alignment and carry over an answer from the aligned task to the unaligned task. Second, we vary the orientation of the chart -- we rotate the vertical stacked bar chart, and present a horizontally oriented version of the same chart, with identically sized marked pieces. Finally, we change the aspect ratio of the chart and present a wider version of the horizontally oriented chart which has longer, but thinner, marked pieces.
 
 ```{r}
 #| label: fig-tasks
@@ -325,15 +325,15 @@ Any differences in observed responses can therefore be attributed to this differ
 ### Task 2: Horizontal stacked bar
 
 The visual mappings in the second task, shown in \autoref{fig-tasks}(b,e), are identical to the first task, but the axes of the chart are rotated so that the stacked bars are represented in a horizontal format.
-This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare.
+This represents a structural change in how the data are presented to the viewer while preserving the pixel size of the elements viewers must compare. Differences in participant accuracy across Tasks 1 and 2 can thus be assumed to be due to the orientation or layout of the chart rather than the comparison task itself.
 Tasks 2 and 3 were asked within the same survey round (Round 3) and the full sample was randomly split among respondents, with 50% of participants seeing the Task 2 stimuli and 50% of participants seeing the Task 3 stimuli.
 
 ### Task 3: Horizontal wide stacked bar
 
 The images utilized in the third task, \autoref{fig-tasks}(c,f), again represent the same data as in the first two tasks, and the overall image has dimensions which are identical to the images in the first two tasks, displaying at the same size during the survey. However, the aspect ratio is adjusted to make the plotting area match that of Task 1, with the mapping area being wider rather than taller. 
 The length of bars is increased to fit the new dimensions.
-This increases the difference in the length of bars to 13 pixels (previously 8 pixels).
-The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant.
+This increases the difference in the length of bars to 13 pixels (previously 8 pixels). This increase in width allows us to test whether participant accuracy is higher when the elements in the comparison task have a larger visual difference in length relative to Tasks 1 and 2.
+The widths of the tiles are adjusted accordingly (from 50 to 30 pixels) to keep the overall area of the tiles approximately constant. 
 
 #### Question text
 
@@ -1161,7 +1161,7 @@ round_123_long %>%
 
 where $\ell \in \{1, 2\}$; $i \in \{1, 2\}$ is the comparison type (1 = Aligned, 2 = Unaligned), and $j \in \{1, 2, 3\}$ is the chart design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.  
 
-The letters in the figures and tables allow us to assess whether differences between two means are significant:  two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common. This method is called connected letters and has been introduced by @piephoAlgorithmLetterBasedRepresentation2004. In @fig-response-123, we see, that the proportions of wrong responses are significantly different between tasks, but designs within each task are not significantly different. For correct responses, all proportions are significantly different except for the proportion of correctly assessing the difference between unaligned rectangles in the wide horizontal design: their label of `ab` shows us that assessing the differences between unaligned rectangles in the wide horizontal design is not significantly better than in the horizontal design (labelled `a`), but also not significantly worse than in the vertical design (labelled `b`). The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
+The letters in the figures and tables allow us to assess whether differences between two means are significant: in the tables, two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common. The same is true for letters along the top and bottom of the figures. This method is called connected letters and has been introduced by @piephoAlgorithmLetterBasedRepresentation2004. In @fig-response-123, we see, that the proportions of wrong responses are significantly different between tasks, but designs within each task are not significantly different. For correct responses, all proportions are significantly different except for the proportion of correctly assessing the difference between unaligned rectangles in the wide horizontal design: their label of `ab` shows us that assessing the differences between unaligned rectangles in the wide horizontal design is not significantly better than in the horizontal design (labelled `a`), but also not significantly worse than in the vertical design (labelled `b`). The estimated values and 95% confidence intervals are shown in @tbl-rounds-123.
 
 ```{r}
 #| label: tbl-rounds-123

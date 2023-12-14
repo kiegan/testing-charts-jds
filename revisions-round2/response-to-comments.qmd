@@ -35,9 +35,11 @@ editor: source
 
     -   *We have updated this caption accordingly.*
 
--   **Pg 5: I really like the last sentence of the Task 1 section: "Any differences in observed responses can therefore be attributed to this difference in presentation." A sentence like this after the other 2 tasks would be a helpful addition.**
+-   Pg 5: I really like the last sentence of the Task 1 section: "Any differences in observed responses can therefore be attributed to this difference in presentation." A sentence like this after the other 2 tasks would be a helpful addition.
+    -   *Great idea! We have added some language to this effect for both Tasks 2 and 3.*
 
--   **Pg 7, 1st sentence: "While there is some risk..." A sentence like this should appear earlier, like on page 3 in the study design section.**
+-   Pg 7, 1st sentence: "While there is some risk..." A sentence like this should appear earlier, like on page 3 in the study design section.
+    -   *We have added a sentence in the paragraph starting with "We ask participants to determine which of two..." to clarify that the unaligned task comes first to reduce the likelihood of participants recognizing they are the same task and carrying over responses.*
 
 -   Pg 8, table 1 caption: Remove "as discussed above"
 
@@ -56,7 +58,8 @@ editor: source
 -   Pg 11: Thanks for adding all the detail about the letter comparisons in the figures and tables, very helpful. I'd start a new paragraph for this description, starting with "The letters allow us to assess...". I'd also specify: "The letters in the figures and tables allow us to assess...". Finally, the one sentence paragraph on this page should be combined with another paragraph.
     -   *We have made these edits.*
 
--   **Pg 11: "two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common": this works for the table, but is confusing for the figures (and the reader is mostly looking at fig 5 when reading this description), be more specific here**
+-   Pg 11: "two estimates within the same column are significantly different (at the 5% level) if they do not have any letter in common": this works for the table, but is confusing for the figures (and the reader is mostly looking at fig 5 when reading this description), be more specific here
+    -   *We have expanded this description to explain the table and figure interpretation separately.*
 
 -   Pg 12, Table 3 caption: "at 5%" → "at a 5% level of significance"
 
