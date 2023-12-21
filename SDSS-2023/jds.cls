@@ -170,6 +170,7 @@
   %% reset all default counters
   \setcounter{part}{0}
   % \setcounter{chapter}{0}
+  \setcounter{secnumdepth}{3}
   \setcounter{section}{0}
   \setcounter{subsection}{0}
   \setcounter{subsubsection}{0}
