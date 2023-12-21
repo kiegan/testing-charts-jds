@@ -6,20 +6,20 @@ editor: source
 
 ## Major Comment
 
--   **I find the equations for the models inconsistent and confusing. Making these more consistent would greatly improve readability and understanding. Specific examples below:**
+-   I find the equations for the models inconsistent and confusing. Making these more consistent would greatly improve readability and understanding. Specific examples below:
 
     -   *Eq (3): Var hat and w bar are defined now as:*
     where $\bar{w}$ and $\widehat{Var(w)}$ are sample mean and sample variance of the weights $w$ of survey sample $S$, respectively. 
     
     
     - Model equations<br> 
-    *We are sorry for the previous index salad. For all of the model equations, i, j, $\ell$ and k are now used in the same way (i main factor: aligned/unaligned, j secondary design factor, \ell participant's decision, ordered from correct  to wrong, and k as the kth participant's response, $1 \le k \le N$, $N$ number of survey responses)*
+    *We are sorry for the previous index salad. For all of the model equations, i, j, $\ell$ and k are now used in the same way (i main factor: aligned/unaligned, j secondary design factor, $\ell$ participant's decision, ordered from correct  to wrong, and k as the kth participant's response, $1 \le k \le N$, $N$ number of survey responses)*
     *We have explained the notation of $i(k)$ for the indices -- essentially, we are trying to combine the advantage of the model matrix form that explicitly connects responses to outcomes ($k$th row of model matrix $X$ is connects to $k$th response $Y_k$)  with the interpretability of the parametric form, i.e. $j(k)$ is defined as the value of $j$ for response $k$.* 
     *This should address the comments below:*
 
-      -   **Eq (5): the terms and the subscripts need to be defined; the parentheses in the subscript need to be explained (perhaps nested effects). Also, you say "let Y\_{jk} describe the zooming behavior", but only use Y_k in Eq (5). I also don't understand what i, j, and l are referring to in this equation.**
-      -   **The indexing changes between Eq (4) and (6) (design is j in (4) and l in (6)).**
-      -   **k=1,...,N isn't defined until Eq (6), even though it is used earlier. It isn't clear what N is.**
+      -   Eq (5): the terms and the subscripts need to be defined; the parentheses in the subscript need to be explained (perhaps nested effects). Also, you say "let Y\_{jk} describe the zooming behavior", but only use Y_k in Eq (5). I also don't understand what i, j, and l are referring to in this equation.
+      -   The indexing changes between Eq (4) and (6) (design is j in (4) and l in (6)).
+      -   k=1,...,N isn't defined until Eq (6), even though it is used earlier. It isn't clear what N is.
 
 
 
