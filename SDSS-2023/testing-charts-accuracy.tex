@@ -7,7 +7,6 @@
 ]{jds}
 
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -17,6 +16,10 @@
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -150,10 +153,12 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 \makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
 \makeatother
 \makeatletter
 \@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
 \makeatother
 \makeatletter
 \makeatother
@@ -173,9 +178,8 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{Testing perceptual accuracy in a U.S. general population survey
+\title[Testing stacked bar charts in surveys]{Testing perceptual accuracy in a U.S. general population survey
 using stacked bar charts}
-\author{}
 \date{}
 
 \begin{document}
@@ -191,7 +195,7 @@ survey respondents to test perception in stacked bar charts. Our
 findings provide actionable guidance for data visualization
 practitioners to employ in their work.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, breakable, frame hidden, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, boxrule=0pt, sharp corners, interior hidden, enhanced, borderline west={3pt}{0pt}{shadecolor}, frame hidden]}{\end{tcolorbox}}\fi
 
 % take out everything above later
 % keep everything below
@@ -354,8 +358,11 @@ main sets of structural variation in the design of that chart. First, we
 vary the alignment of the pieces in question. Viewers are presented with
 two marked pieces in a chart that do not share a common baseline
 (unaligned pieces), then two pieces that do share a common baseline
-(aligned pieces). Second, we vary the orientation of the chart -- we
-rotate the vertical stacked bar chart, and present a horizontally
+(aligned pieces). We present the unaligned comparison first to reduce
+the likelihood that participants recognize that the tasks are identical
+excepting the alignment and carry over an answer from the aligned task
+to the unaligned task. Second, we vary the orientation of the chart --
+we rotate the vertical stacked bar chart, and present a horizontally
 oriented version of the same chart, with identically sized marked
 pieces. Finally, we change the aspect ratio of the chart and present a
 wider version of the horizontally oriented chart which has longer, but
@@ -406,10 +413,12 @@ The visual mappings in the second task, shown in
 of the chart are rotated so that the stacked bars are represented in a
 horizontal format. This represents a structural change in how the data
 are presented to the viewer while preserving the pixel size of the
-elements viewers must compare. Tasks 2 and 3 were asked within the same
-survey round (Round 3) and the full sample was randomly split among
-respondents, with 50\% of participants seeing the Task 2 stimuli and
-50\% of participants seeing the Task 3 stimuli.
+elements viewers must compare. Differences in participant accuracy
+across Tasks 1 and 2 can thus be assumed to be due to the orientation or
+layout of the chart rather than the comparison task itself. Tasks 2 and
+3 were asked within the same survey round (Round 3) and the full sample
+was randomly split among respondents, with 50\% of participants seeing
+the Task 2 stimuli and 50\% of participants seeing the Task 3 stimuli.
 
 \hypertarget{task-3-horizontal-wide-stacked-bar}{%
 \subsubsection{Task 3: Horizontal wide stacked
@@ -422,9 +431,12 @@ displaying at the same size during the survey. However, the aspect ratio
 is adjusted to make the plotting area match that of Task 1, with the
 mapping area being wider rather than taller. The length of bars is
 increased to fit the new dimensions. This increases the difference in
-the length of bars to 13 pixels (previously 8 pixels). The widths of the
-tiles are adjusted accordingly (from 50 to 30 pixels) to keep the
-overall area of the tiles approximately constant.
+the length of bars to 13 pixels (previously 8 pixels). This increase in
+width allows us to test whether participant accuracy is higher when the
+elements in the comparison task have a larger visual difference in
+length relative to Tasks 1 and 2. The widths of the tiles are adjusted
+accordingly (from 50 to 30 pixels) to keep the overall area of the tiles
+approximately constant.
 
 \hypertarget{question-text}{%
 \paragraph{Question text}\label{question-text}}
@@ -558,14 +570,16 @@ O'Muircheartaigh and Pedlow (2002), by multiplying weights in \(S_i\) by
 estimated as \begin{equation}
 d_i = 1 + CV(w \in S_i)^2
 \end{equation} where \(CV\) is the coefficient of variation of the
-weights \(w\) within each sample, and is estimated as in Kish (1965) :
-\begin{equation}
-CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2}.
-\end{equation}
+weights \(w\) within each survey sample \(S_i\), and is estimated as in
+Kish (1965) : \begin{equation}
+CV(w \in S) = \frac{\widehat{Var(w)}}{\bar{w}^2},
+\end{equation} and where \(\bar{w}\) and \(\widehat{Var(w)}\) are sample
+mean and sample variance of the weights \(w\) of survey sample \(S\),
+respectively.
 
 The data for this paper were collected in several rounds. The resulting
-number of participants, effective sample sizes, and \(\lambda\) values
-are shown in \autoref{tbl-rounds}.
+number of panelists, effective sample sizes, and \(\lambda\) values are
+shown in \autoref{tbl-rounds}.
 
 \hypertarget{tbl-rounds}{}
 \begin{longtable}[]{@{}
@@ -575,16 +589,16 @@ are shown in \autoref{tbl-rounds}.
   >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
   >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
   >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
-\caption{\label{tbl-rounds}Survey rounds: dates, number of participants
+\caption{\label{tbl-rounds}Survey rounds: dates, number of panelists
 (nominal sample size), effective sample size, sum of weights, and
 factors for the combining of surveys. }\tabularnewline
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Date
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-\# Participants
+\# Panelists
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
@@ -592,15 +606,15 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endfirsthead
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Date
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-\# Participants
+\# Panelists
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
@@ -608,13 +622,14 @@ Sum of weights \(\sum_i w_i\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 \(\lambda_i\)
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Round 1 & April 2022 & 933 & 521.1 & 934.9 & \(\lambda_1\) = 0.343 \\
 Round 2 & May 2022 & 953 & 485.7 & 953.4 & \(\lambda_2\) = 0.320 \\
 Round 3 & June 2022 & 921 & 513.5 & 923.1 & \(\lambda_3\) = 0.338 \\
 \textbf{Combined} & --- & 2807 & 1520.8 & & \\
-\bottomrule()
 \end{longtable}
 
 \hypertarget{results}{%
@@ -623,7 +638,7 @@ Round 3 & June 2022 & 921 & 513.5 & 923.1 & \(\lambda_3\) = 0.338 \\
 \hypertarget{respondents}{%
 \subsubsection{Respondents}\label{respondents}}
 
-A total of 2807 respondents participated across the three rounds. The
+A total of 2807 panelists participated across the three rounds. The
 number of responses and corresponding effective sample sizes in each
 round are shown in \autoref{tbl-rounds}. All responses were combined
 into one set of survey responses, with adjusted combined sample weights
@@ -639,7 +654,7 @@ resulting sample sizes corresponding to each task are shown in
   >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \caption{\label{tbl-tasks}Survey tasks: number of participants (nominal
 sample size) and effective sample size for each task.}\tabularnewline
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -649,9 +664,9 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endfirsthead
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Name
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -661,12 +676,13 @@ Description
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
 Effective Sample Size
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Task 1 & Vertical & 1886 & 1007.1 \\
 Task 2 & Horizontal & 459 & 266.5 \\
 Task 3 & Horizontal wide & 462 & 249.1 \\
-\bottomrule()
 \end{longtable}
 
 Distributions of demographic characteristics across each task are shown
@@ -696,13 +712,13 @@ appear as a single line.}
 \subsubsection{Accuracy of responses}\label{accuracy-of-responses}}
 
 We first investigate respondent accuracy in selecting the correct
-response. As participants were able to select the option `They are the
-same', there are several ways to model accuracy and response. The
-argument could be made that for the purposes of practical
-interpretation, `they are the same' is a correct choice, as the options
-are visually very similar and not substantially different values within
-the context of the data shown in the chart. However, we are interested
-in understanding whether viewers \emph{can} perceive the difference and
+response. Participants were able to select the option `They are the
+same', there are several ways to model accuracy and response. For the
+purposes of practical interpretation, the argument could be made that
+`they are the same' is a correct choice, as the options are visually
+very similar and not substantially different values within the context
+of the data shown in the chart. However, we are interested in
+understanding whether viewers \emph{can} perceive the difference and
 correctly identify which piece is larger and thus consider multiple ways
 of modeling response to investigate participant response patterns. We
 begin by defining a measure of binary `correctness', for which all
@@ -762,24 +778,32 @@ no significant difference between the designs for wrong responses.}
 \end{figure*}
 
 Figure~\ref{fig-response-123} shows the results of a cell-means model
-with ordinal response \(Y_k\), where \(Y_k\) is the \(k\)th
-participant's response, \(Y_k \in \{1, 2, 3\}\), where `correct' is
-encoded as 1, `they are the same' is encoded as 2, and `wrong' is
-encoded as 3:
+with ordinal response \(Y_{ik}\), where \(Y_{ik}\) is the \(k\)th
+response, \(1 \le k \le N\) for \(N\) number of (nominal) responses. We
+use an encoding of \(Y_k \in \{1, 2, 3\}\) for `correct'=1, `they are
+the same'= 2, and `wrong' = 3:
 
 \begin{equation}
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
 \end{equation}
 
-where \(\ell \in \{1, 2\}\); \(i \in \{1, 2\}\) is the comparison type
-(1 = Aligned, 2 = Unaligned), and \(j \in \{1, 2, 3\}\) is the chart
-design, with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide.
+where \(1 \le \ell < 3\); \(i \in \{1, 2\}\) is the comparison type (1 =
+Aligned, 2 = Unaligned), and \(j \in \{1, 2, 3\}\) is the chart design,
+with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. Note that we
+are using the notation \(ij\ell(k)\) to emphasize the functional
+relationship between the \(k\)th response and the model parameters while
+avoiding double-subscripts, i.e.~\(ij\ell(k)\) signifies the index
+combination of \(i, j,\) and \(\ell\) of the \(k\)th response,
+i.e.~\(ij\ell(k)\) is 123, if the \(k\)th response was a wrong response
+(\(\ell\)=3) for an aligned comparison (\(i\)=1) in a horizontal
+(\(j\)=2) barchart.
 
 The letters in the figures and tables allow us to assess whether
-differences between two means are significant: two estimates within the
-same column are significantly different (at the 5\% level) if they do
-not have any letter in common. This method is called connected letters
-and has been introduced by Piepho (2004). In
+differences between two means are significant: in the tables, two
+estimates within the same column are significantly different (at the 5\%
+level) if they do not have any letter in common. The same is true for
+letters along the top and bottom of the figures. This method is called
+connected letters and has been introduced by Piepho (2004). In
 Figure~\ref{fig-response-123}, we see, that the proportions of wrong
 responses are significantly different between tasks, but designs within
 each task are not significantly different. For correct responses, all
@@ -888,32 +912,31 @@ term & estimate & SE & t-statistic & p-value \\
 \midrule
 \multicolumn{5}{l}{} \\ 
 \midrule
-Intercept & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
+$\widehat{\mu}$ & $-0.35$ & $0.15$ & $-2.4$ & 0.0155 \\ 
 \midrule
 \multicolumn{5}{l}{Response} \\ 
 \midrule
-response3They are the same & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
-response3Wrong & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
+They are the same $\widehat{\rho}_2$ & $-0.17$ & $0.09$ & $-1.9$ & 0.0578 \\ 
+Wrong $\widehat{\rho}_3$ & $-0.06$ & $0.13$ & $-0.5$ & 0.6466 \\ 
 \midrule
 \multicolumn{5}{l}{Task} \\ 
 \midrule
-taskcd & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
+Aligned $\widehat{\tau}_2$ & $0.00$ & $0.06$ & $-0.1$ & 0.9435 \\ 
 \midrule
 \multicolumn{5}{l}{Chart design} \\ 
 \midrule
-chartHorizontal wide & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
-chartVertical & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
+Horizontal wide $\widehat{\delta}_2$ & $0.27$ & $0.15$ & $1.8$ & 0.0752 \\ 
+Vertical $\widehat{\delta}_3$ & $0.98$ & $0.13$ & $7.7$ & < 0.0001 \\ 
 \bottomrule
 \end{longtable}
 
-To formalize this pattern in a model, let \(Y_{jk}\) describe the
-zooming behavior of panelist \(k\) on task \(j\). We model zooming
-behavior (no = 0, yes = 1) as a logistic regression by correctness of
-response (\(\rho\)), task (\(\tau\)), and design (\(\delta\)) of the
-chart:
+To formalize this pattern in a model, let \(Y_k\) describe the zooming
+behavior on the \(k\)th response. We model zooming behavior (no = 0, yes
+= 1) as a logistic regression by correctness of response (\(\rho\)),
+task (\(\tau\)), and design (\(\delta\)) of the chart:
 
 \begin{equation}
-\text{logit } P(Y_k \le 1) = \mu + \rho_{i(k)} + \tau_{j(k)} + \delta_{\ell(k)},
+\text{logit } P(Y_k \le 1) = \mu + \rho_{\ell(k)} + \tau_{i(k)} + \delta_{j(k)},
 \end{equation}
 
 The resulting model estimates and confidence intervals are displayed in
@@ -932,15 +955,15 @@ all' assigned a score of 1 and `extremely certain' assigned a score of
 5, we can estimate the effects of task, chart design, and correctness on
 certainty by using a cell-means model of the form: \begin{equation}
 Y_{k} = \mu_{ij\ell(k)} + \epsilon_{k},
-\end{equation} where \(k = 1, ..., N\), \(\mu_{ij\ell(k)}\) is average
-certainty (measured on a scale from 1 to 5) of the four combinations of
-task and correctness by each of the three designs, where \(i = 1, 2\)
-encodes unaligned/aligned, and \(j=1,2\) encodes wrong, correct, and
-\(\ell = 1, 2, 3\) encodes horizontal, wide horizontal, and vertical
-stacked bar charts, respectively. We also assume that errors are
-normally distributed,
+\end{equation} where \(1 \le k \le N\) for \(N\) responses,
+\(\mu_{ij\ell(k)}\) is average certainty (measured on a scale from 1 to
+5) of the four combinations of task and correctness by each of the three
+designs, for task \(i = 1, 2\) (unaligned/aligned), design \(j=1, 2, 3\)
+encoded as horizontal, wide horizontal, and vertical stacked bar charts,
+and participant's decision \(\ell = 1, 2\), encoded as correct or wrong,
+respectively. We also assume that errors are normally distributed,
 i.e.~\(\epsilon_k \stackrel{i.i.d}{\sim} N(0, \sigma^2)\) for all
-\(k = 1, ..., N\). The results are shown in Figure~\ref{fig-certainty}.
+\(1 \le k \le N\). The results are shown in Figure~\ref{fig-certainty}.
 We find that the highest scores for certainty are associated with the
 aligned task, but certainty scores are not significantly different
 between correct and wrong responses. Scores are (mostly) significantly
@@ -982,18 +1005,15 @@ response patterns, particularly on the unaligned task, across
 demographic groups.
 
 Let \(Y_k\) be the response of participant \(k\), on a scale from 1 =
-`correct', 2 = `they are the same' to 3 = `wrong'. We use a generalized
-cumulative logistic regression, where \(\mu_i\) are intercepts
-\(1 \le i < 3\), \(X_k\) are demographics of the \(k\)th participant (in
-form of the model matrix), and \(\beta_{i}\) are the coefficients.
+`wrong', 2 = `they are the same' to 3 = `correct'. We use a generalized
+cumulative logistic regression, where \(\mu_\ell\) are intercepts
+\(1 \le \ell < 3\), \(X_k\) are demographics of the \(k\)th participant
+(the \(k\)th row of the corresponding model matrix), and
+\(\beta_{\ell}\) are the coefficients.
 
 \begin{equation}
-\text{ logit } P(Y_k \le i \mid X_k) = \mu_i + X_{k}'\beta_{i}
+\text{ logit } P(Y_k \le \ell \mid X_k) = \mu_\ell + X_{k}\beta_{\ell}
 \end{equation}
-
-\begin{verbatim}
-Warning in RET$pfunction("adjusted", ...): Completion with error > abseps
-\end{verbatim}
 
 \begin{figure}
 
@@ -1249,7 +1269,7 @@ Graphics} 5 (2): 110--41. \url{https://doi.org/10.1145/22949.22950}.
 \leavevmode\vadjust pre{\hypertarget{ref-omuircheartaighCombiningSamplesVs2002}{}}%
 O'Muircheartaigh, Colm, and Steven Pedlow. 2002. {``Combining {Samples
 Vs}. {Cumulating Cases}: {A Comparison} of {Two Weighting Strategies} in
-{Nlsy97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
+{NLSY97}.''} In \emph{{ASA Proceedings} of the {Joint Statistical
 Meetings}}, 2557--62.
 \url{http://www.asasrms.org/Proceedings/y2002/Files/JSM2002-001082.pdf}.
 
