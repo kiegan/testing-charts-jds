@@ -380,7 +380,7 @@ thinner, marked pieces.
 \caption{\label{fig-tasks}Overview of all of the visual stimuli
 presented to viewers. In each bar chart, two pieces are marked. The
 larger piece in each chart are pieces B and D. Please refer to the
-appendix for afull size image of stimulus (a).}
+appendix for a full size image of stimulus (a).}
 
 \end{figure*}
 
@@ -391,7 +391,7 @@ bar}\label{task-1-vertical-stacked-bar}}
 \autoref{fig-tasks}(a,d) shows the two stacked bar charts shown to
 participants in the first task. The marked tiles in each plot are 155
 pixels apart, which leads to a JND of 3.5 pixels based on Lu et al.
-(2022)`s model. The heights of the bars are 205 (left) and 213 pixels
+(2022)'s model. The heights of the bars are 205 (left) and 213 pixels
 (right), corresponding to about twice the JND. This difference should
 lead to a relatively high accuracy rate for participants and
 simultaneously limit the amount of frustration resulting from a task
@@ -702,11 +702,13 @@ lines) for the most part cover the Census estimates.
 
 \caption{\label{fig-rounds-demographics}Overview of participants'
 demographics in each of the tasks: the colored dots show marginal
-percentages for demographics across the three tasks. In comparison, the
+percentages (with 90\% margins of error as vertical lines in the same color) for demographics across the three tasks.  
+In comparison, the
 dark lines show upper and lower 95\% confidence of these demographics as
 estimated by the American Community Survery (ACS) 2021. Note that for a
 lot of these intervals the estimates are so close together that they
 appear as a single line.}
+
 
 \end{figure*}
 
@@ -714,8 +716,8 @@ appear as a single line.}
 \subsection{Accuracy of responses}\label{accuracy-of-responses}}
 
 We first investigate respondent accuracy in selecting the correct
-response. Participants were able to select the option `They are the
-same', there are several ways to model accuracy and response. For the
+response. Remember, that participants were able to select the option `They are the
+same' as response. This leads us to several ways to model accuracy and response. For the
 purposes of practical interpretation, the argument could be made that
 `they are the same' is a correct choice, as the options are visually
 very similar and not substantially different values within the context
@@ -780,16 +782,16 @@ no significant difference between the designs for wrong responses.}
 \end{figure*}
 
 Figure~\ref{fig-response-123} shows the results of a cell-means model
-with ordinal response \(Y_{ik}\), where \(Y_{ik}\) is the \(k\)th
+with ordinal response \(Y_{k}\), where \(Y_{k}\) is the \(k\)th
 response, \(1 \le k \le N\) for \(N\) number of (nominal) responses. We
-use an encoding of \(Y_k \in \{1, 2, 3\}\) for `correct'=1, `they are
-the same'= 2, and `wrong' = 3:
+use an encoding of \(Y_k \in \{1, 2, 3\}\) for `correct' ($\ell$=1), `they are
+the same' ($\ell$ = 2), and `wrong' ($\ell$ = 3):
 
 \begin{equation}
 \text{logit }P(Y_k \le \ell) = \mu_{ij\ell(k)},
 \end{equation}
 
-where \(1 \le \ell < 3\); \(i \in \{1, 2\}\) is the comparison type (1 =
+where \(i \in \{1, 2\}\) is the comparison type (1 =
 Aligned, 2 = Unaligned), and \(j \in \{1, 2, 3\}\) is the chart design,
 with 1 = Vertical, 2 = Horizontal, and 3 = Horizontal wide. Note that we
 are using the notation \(ij\ell(k)\) to emphasize the functional
@@ -829,7 +831,7 @@ they do not share the same letter. }\tabularnewline
 {\large Odds of selecting responses by task and chart type}
 } \\ 
 \toprule
- & \multicolumn{3}{c}{correct | same or wrong} & \multicolumn{3}{c}{correct or same | wrong} \\ 
+ & \multicolumn{3}{c}{correct vs. same or wrong} & \multicolumn{3}{c}{correct or same vs. wrong} \\ 
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
  & Est. &           [95\% CI] &   & Est. &           [95\% CI] &   \\ 
 \midrule
@@ -860,9 +862,9 @@ wide horizontal bars reclaims some of the loss for unaligned bars and
 outperforms the vertical design by a similar margin in aligned bars, but
 does not out-perform the vertical design when comparing unaligned tiles.
 
-Rates of selecting the incorrect response are low across all three
+Rates of selecting the response `wrong' are low across all three
 structural variations and the aligned and unaligned tasks; while viewers
-select the incorrect response at significantly higher rates for all
+select the  response `wrong' at significantly higher rates for all
 three unaligned tasks relative to the aligned tasks, those rates do not
 differ significantly across the three structural variations. Most of the
 observed differences in response patterns across structural variations
@@ -883,7 +885,7 @@ to zoom into charts. We observe that while zooming does help with the
 overall accuracy (which is in agreement with the findings by Lu et al.
 (2022) about the physical size of stimuli), the increase is not
 significant. However, different designs lead to different rates of
-zooming: we observe in \autoref{fig-zoom-123} that when a significantly
+zooming: we observe in \autoref{fig-zoom-123} that a significantly
 lower rate of respondents chose to make use of zooming when answering
 the horizontal designs compared to the vertical design.
 
@@ -951,7 +953,7 @@ are significantly higher for the vertical orientation relative to the
 horizontal orientation, they are not significantly higher -- and in
 fact, are significantly lower on the aligned task -- than the accuracy
 for the horizontal wide orientation.
-
+%
 Using linear scores for the response of certainty, with `not certain at
 all' assigned a score of 1 and `extremely certain' assigned a score of
 5, we can estimate the effects of task, chart design, and correctness on
@@ -1011,11 +1013,12 @@ Let \(Y_k\) be the response of participant \(k\), on a scale from 1 =
 cumulative logistic regression, where \(\mu_\ell\) are intercepts
 \(1 \le \ell < 3\), \(X_k\) are demographics of the \(k\)th participant
 (the \(k\)th row of the corresponding model matrix), and
-\(\beta_{\ell}\) are the coefficients.
+\(\beta_{\ell}\) is a vector of coefficients: 
 
 \begin{equation}
 \text{ logit } P(Y_k \le \ell \mid X_k) = \mu_\ell + X_{k}\beta_{\ell}
 \end{equation}
+
 
 \begin{figure}
 
@@ -1061,8 +1064,10 @@ in correct answers for higher levels of education.}
 
 \end{figure}
 
-The resulting model estimates and confidence intervals are shown in
-\autoref{tbl-demographics}. When considering the easier (aligned) task,
+Note, that $\beta_\ell$ encompasses all estimable parameters of the demographic variables gender, age category, education category and income category for a total of eleven parameters. The resulting model estimates and confidence intervals are shown in
+\autoref{tbl-demographics}. 
+
+When considering the easier (aligned) task,
 response patterns do not differ significantly by age, gender, or
 education level. We do observe, however, a significantly higher log odds
 of selecting the `correct' or `they are the same' response (or
@@ -1115,7 +1120,7 @@ harder. }\tabularnewline
 \toprule
  & \multicolumn{6}{c}{Aligned tiles} & \multicolumn{6}{c}{Unaligned tiles} \\ 
 \cmidrule(lr){2-7} \cmidrule(lr){8-13}
- & \multicolumn{3}{c}{correct | same or wrong} & \multicolumn{3}{c}{correct or same | wrong} & \multicolumn{3}{c}{correct | same or wrong } & \multicolumn{3}{c}{correct or same | wrong } \\ 
+ & \multicolumn{3}{c}{correct vs. same or wrong} & \multicolumn{3}{c}{correct or same vs. wrong} & \multicolumn{3}{c}{correct vs. same or wrong } & \multicolumn{3}{c}{correct or same vs. wrong } \\ 
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
   & Est. &           [95\% CI] &   & Est. &           [95\% CI] &   & Est. &           [95\% CI] &   & Est. &           [95\% CI] &   \\ 
 \midrule
